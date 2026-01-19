@@ -1,0 +1,21 @@
+/* Estilo general del contenedor del menú */
+nav {
+  display: flex;
+  border-radius: 5px;
+  justify-content: center;       /* Centra los enlaces horizontalmente */
+  align-items: center;
+  background-color: #1e1e2f;     /* Fondo oscuro elegante */
+  padding: 0.5rem;
+  gap: 2rem;                     /* Espaciado entre enlaces */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para los enlaces */
+.menu-elemento {
+  color: #f5f5f5;                /* Texto claro */
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;     /* Efecto suave al pasar el ratón */
+  position: relative;
+}

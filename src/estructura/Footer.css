@@ -1,0 +1,10 @@
+.contenedor-footer {
+    width: 600px;
+    border: solid 2px #1e1e2f;
+    border: solid 2px #ada2a2;
+    border-radius: 5px;
+    margin: auto;
+    margin-bottom: 10px;
+    
+    font-size:medium;
+}

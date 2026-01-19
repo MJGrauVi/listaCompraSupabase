@@ -1,0 +1,36 @@
+.disco-item {
+  display: flex;
+  align-items: center;     /* centra verticalmente */
+  gap: 16px;               /* espacio entre columnas */
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+
+}
+
+.disco-imagen img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.disco-imagen .sin-imagen {
+  width: 80px;
+  height: 80px;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disco-info {
+  flex: 1;                 /* ocupa el espacio central */
+  cursor: pointer;
+  
+}
+
+.disco-acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+}

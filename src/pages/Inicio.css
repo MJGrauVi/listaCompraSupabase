@@ -1,0 +1,66 @@
+.contenedor-inicio {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.contenedor-inicio h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+}
+
+.presentacion {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.descripcion {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #34495e;
+  text-align: center;
+  padding: 20px;
+  background-color: #ecf0f1;
+  border-radius: 8px;
+}
+
+.caracteristicas {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.caracteristicas h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+.caracteristicas ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.caracteristicas li {
+  margin-bottom: 15px;
+  padding-left: 25px;
+ /*  position: relative; */
+  line-height: 1.6;
+  color: #34495e;
+}
+
+/* .caracteristicas li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+} */
+
+.caracteristicas li strong {
+  color: #2c3e50;
+}
+
