@@ -1,8 +1,15 @@
+import BotonSesion from "../components/BotonSesion.jsx";
+
 import "./Header.css";
-const Header = (props) => {
-    return (
-      <div className="contenedor-header">
-        {props.children}
-      </div>);
-}
+
+const Header = () => {
+  
+  return (
+    <header className="contenedor-header">
+   
+       <BotonSesion />
+     
+    </header>
+  );
+};
 export default Header;

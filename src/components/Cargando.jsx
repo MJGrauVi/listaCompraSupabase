@@ -4,7 +4,7 @@ const Cargando = () => {
   return (
     <div className="contenedor-cargando">
       <div className="spinner"></div>
-      <p>Cargando discos...</p>
+      <p>Cargando ...</p>
     </div>
   );
 };

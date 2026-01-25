@@ -1,28 +1,110 @@
-import React, {createContext, useState, useEffect} from "react";
-import {supabaseConexion} from "../supabase/supabase.js";
-import {useNavigate} from "react-router-dom";
+import { createContext, useEffect, useState } from "react";
+import { supabaseConexion } from "../supabase/supabase.js";
 
-const contextoSesion = createContext();
+const ContextoSesion = createContext();
+
+const ProveedorSesion = ({ children }) => {
+ 
+ //Supabase devualve null cuando no hay usuario, por lo tanto el estado a null.
+  const [usuario, setUsuario] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const datosSesionInicial = {
+      email: "", 
+      password:"",
+      displa_name: "",
+    }
+  
+  const [datosSesion, setDatosSesion] = useState(datosSesionInicial);
+ /*  const limpiarDatosSesion = ()=>{
+    setDatosSesion({
+      email: "", 
+      password:"",
+      displa_name: "",
+    });
+  }; */
+
+  useEffect(() => {
+    // Sesión inicial, con getSesion para arrancar.
+    supabaseConexion.auth.getSession().then(({ data }) => {
+      setUsuario(data.session?.user ?? null);
+      setLoading(false);
+      
+    });
+
+    // Listener de cambios de sesión.
+    const { data: listener } =
+      supabaseConexion.auth.onAuthStateChange((_event, session) => {
+        setUsuario(session?.user ?? null);
+      });
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  const actualizarDatos = (e) => {
+    const { name, value } = e.target;
+    setDatosSesion({ ...datosSesion, [name]: value });
+  };
 
 
+  const login = async () => {
+    const { data, error } = await supabaseConexion.auth.signInWithPassword({
+      email: datosSesion.email,
+      password: datosSesion.password,
+    });
+    if (error) {
+      console.error("Error login:", error.message);
+    }
+  return { data, error };
+};
+/* const login = async (email, password) =>{
+  const {data, error} = await supabaseConexion.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+   if (error) {
+      console.error("Error login:", error.message);
+    }
+  return { data, error };
+} */
 
+  const registro = async () => {
+    const {data, error} = await supabaseConexion.auth.signUp({
+      email: datosSesion.email,
+      password: datosSesion.password,
+      options: {
+        data: {
+          display_name: datosSesion.display_name,
+        },
+      },
+    });
+    if(error){
+      console.log("Error:", error.message)
+    }else{
+      console.log("Usuario creado: ", data)
+    }
+  };
 
+  const logout = async () => {
+    await supabaseConexion.auth.signOut();
+  };
 
-
-
-
-const datosAproveer = {
-
+  return (
+    <ContextoSesion.Provider
+      value={{
+        usuario,
+        loading,
+        datosSesion,
+        actualizarDatos,
+        login,
+        registro,
+        logout,
+        /* limpiarDatosSesion */
+      }}
+    >
+      {children}
+    </ContextoSesion.Provider>
+  );
 };
 
-const ProveedorSesion = () => {
-  return (
-    <contextoSesion.Provider value={datosAproveer}>
-      {children}
-    </contextoSesion.Provider>
-  )
-}
-
 export default ProveedorSesion;
-export {contextoSesion};
-
+export { ContextoSesion };

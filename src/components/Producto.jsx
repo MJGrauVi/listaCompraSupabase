@@ -1,5 +1,5 @@
 import React from "react";
-import "./Disco.css";
+import "./Producto.css";
 import DiscoAcciones from "./DiscoAcciones.jsx";
 import DiscoInfo from "./DiscoInfo.jsx";
 

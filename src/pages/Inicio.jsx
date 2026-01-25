@@ -10,8 +10,6 @@ const Inicio = () => {
         <p className="descripcion">
           Aplicación con React y Supabase.
         </p>
-
-        
       </div>
     </div>
   );

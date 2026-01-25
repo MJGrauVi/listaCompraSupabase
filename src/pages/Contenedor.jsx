@@ -1,12 +1,10 @@
 
-import FormularioDisco from "../components/FormularioDisco.jsx";
 
-
-/*  Cargo formulario para insertar discos ******************/
+/*  Pendiente formulario para insertar productos ******************/
 const Contenedor = () => {
   return (
     <div className="contenedor-formulario">
-      <FormularioDisco />
+      <h2>Insertar Productos</h2>
     </div>
   );
 };

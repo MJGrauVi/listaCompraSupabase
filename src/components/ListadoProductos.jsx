@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "./ListadoDiscos.css";
-import Disco from "./Disco.jsx";
+import "./ListadoProductos.css";
+import Producto from "./Producto.jsx";
 import Cargando from "./Cargando.jsx";
-import FiltroDiscos from "./FiltroDiscos.jsx";
-import useDiscos from "../hooks/useDiscos.js";
 
-const ListadoDiscos = () => {
-  const { discos, cargando, borrarDisco, discoExpandido, toggleDisco } =
-    useDiscos();
+
+const ListadoProductos = () => {
+
 
   //Estados.
 
@@ -15,7 +13,7 @@ const ListadoDiscos = () => {
   const [mensajeEliminado, setMensajeEliminado] = useState("");
 
   // Filtrado de discos.
-  const discosFiltrados = discos.filter((d) => {
+  const discosFiltrados = producto.filter((d) => {
     if (!textoFiltro.trim()) return true;
     const texto = textoFiltro.toLowerCase();
     return (
@@ -39,7 +37,7 @@ const ListadoDiscos = () => {
     const discoAEliminar = discos.find((d) => String(d.id) === String(id));
     try {
       await borrarDisco(id);
-      setMensajeEliminado(`Disco "${discoAEliminar?.nombreDisco}" eliminado.`);
+      setMensajeEliminado(`Producto "${discoAEliminar?.nombreDisco}" eliminado.`);
     } catch {
       console.log("Error al borrar disco");
       setMensajeEliminado("Error al eliminar el disco.");
@@ -74,7 +72,7 @@ const ListadoDiscos = () => {
 
       <div className="lista-discos">
         {discosFiltrados.map((disco) => (
-          <Disco
+          <Producto
             key={disco.id}
             disco={disco}
             expandido={discoExpandido === disco.id}
@@ -94,4 +92,4 @@ const ListadoDiscos = () => {
   );
 };
 
-export default ListadoDiscos;
+export default ListadoProductos;

@@ -1,25 +1,25 @@
-.contenedor-formulario-disco {
-  max-width: 600px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+form {
+  max-width: 400px;
   margin: 0 auto;
   padding: 20px;
 }
 
-.contenedor-formulario-disco h2 {
+.form h2 {
   color: #2c3e50;
   margin-bottom: 20px;
   text-align: center;
-}
-
-.formulario-disco {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
 }
 
 .campo-formulario {
   display: flex;
   flex-direction: column;
   gap: 5px;
+ 
 }
 select {
   width: 80%;
@@ -62,38 +62,6 @@ form button {
   margin-top: -5px;
 }
 
-.label-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.checkbox-formulario {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
-
-.radio-group {
-  display: flex;
-  gap: 20px;
-  margin-top: 5px;
-}
-
-.label-radio {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-weight: normal;
-}
-
-.label-radio input[type="radio"] {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
 
 .boton-guardar {
   padding: 12px 24px;
@@ -134,4 +102,88 @@ form button {
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
+}
+/* Reinicio básico para evitar estilos del navegador */
+form, input, label, button {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+}
+
+/* Contenedor del formulario */
+form {
+  width: 530px;
+  margin: 60px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* separa los elementos */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+
+form h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+
+.campo-formulario {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+
+.campo-formulario label {
+  margin-bottom: 2px;
+  font-size: 14px;
+  color: #2c3e50;;
+  text-align: left;
+  margin-left:10px
+}
+
+
+.campo-formulario input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+
+button {
+  width: 100%;
+  padding: 8px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+ .boton-alternativo{
+  border: none;
+  color: #3498db;
+  background-color: white;
+  font-size: 15px;
+  font-weight: bolder;
+  text-align: center;
+  width:auto;
+  padding:0;
+ 
+}
+.boton-alternativo:focus{
+  outline:none;
+}
+span{
+  color:#2c3e50;
+  font-size: 12px;
+  padding-top:10px;
 }

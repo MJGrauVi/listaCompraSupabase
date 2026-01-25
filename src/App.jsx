@@ -5,17 +5,18 @@ import Rutas from "./routes/Rutas.jsx";
 import Contenedor from "./estructura/Contenedor.jsx";
 import Header from "./estructura/Header.jsx";
 import Footer from "./estructura/Footer.jsx";
-import ProveedorDiscos from "./context/ProveedorDiscos.jsx";
-import InicioSesion from "./components/InicioSesion.jsx";
+import BotonSesion from "./components/BotonSesion.jsx";
+//import useSesion from "./hooks/useSesion.js";
 
 const App = () => {
+
   return (
     <>
-      <ProveedorDiscos>
         <div className="contenedor-app">
           <Header>
-            <InicioSesion />
+            <BotonSesion />
           </Header>
+          
           <Contenedor>
             <Menu />
           </Contenedor>
@@ -24,7 +25,7 @@ const App = () => {
           </Contenedor>
           <Footer />
         </div>
-      </ProveedorDiscos>
+      
     </>
   );
 };
