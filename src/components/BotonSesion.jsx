@@ -12,9 +12,11 @@ const BotonSesion = () => {
           <span>
             Hola {usuario.user_metadata.display_name}
           </span>
+          <Link to="/">
           <button className="btn-logout" onClick={logout}>
             Cerrar sesión
           </button>
+          </Link>
         </>
       ) : (
         <Link to="/login">
