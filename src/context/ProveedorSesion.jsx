@@ -13,15 +13,11 @@ const ProveedorSesion = ({ children }) => {
       password:"",
       displa_name: "",
     }
-  
+  const limpiarDatosSesion = ()=>{
+    setDatosSesion(datosSesionInicial)
+  }
   const [datosSesion, setDatosSesion] = useState(datosSesionInicial);
- /*  const limpiarDatosSesion = ()=>{
-    setDatosSesion({
-      email: "", 
-      password:"",
-      displa_name: "",
-    });
-  }; */
+
 
   useEffect(() => {
     // Sesión inicial, con getSesion para arrancar.
@@ -56,16 +52,7 @@ const ProveedorSesion = ({ children }) => {
     }
   return { data, error };
 };
-/* const login = async (email, password) =>{
-  const {data, error} = await supabaseConexion.auth.signInWithPassword({
-    email: email,
-    password: password,
-  });
-   if (error) {
-      console.error("Error login:", error.message);
-    }
-  return { data, error };
-} */
+
 
   const registro = async () => {
     const {data, error} = await supabaseConexion.auth.signUp({
@@ -86,6 +73,7 @@ const ProveedorSesion = ({ children }) => {
 
   const logout = async () => {
     await supabaseConexion.auth.signOut();
+    limpiarDatosSesion();
   };
 
   return (
@@ -98,7 +86,8 @@ const ProveedorSesion = ({ children }) => {
         login,
         registro,
         logout,
-        /* limpiarDatosSesion */
+        limpiarDatosSesion
+      
       }}
     >
       {children}

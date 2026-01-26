@@ -6,7 +6,7 @@ import Contenedor from "./estructura/Contenedor.jsx";
 import Header from "./estructura/Header.jsx";
 import Footer from "./estructura/Footer.jsx";
 import BotonSesion from "./components/BotonSesion.jsx";
-//import useSesion from "./hooks/useSesion.js";
+
 
 const App = () => {
 

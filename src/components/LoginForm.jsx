@@ -17,7 +17,7 @@ const LoginForm = () => {
     if (modoRegistro) {
       const { data, error } = await registro();
       if (error) {
-        console.log("Datas:",data)
+        
         setMensaje(`Error: ${error.message}`);
       } else {
         setMensaje("¡Cuenta creada!.");
