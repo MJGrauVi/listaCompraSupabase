@@ -49,6 +49,7 @@ const ProveedorSesion = ({ children }) => {
     });
     if (error) {
       console.error("Error login:", error.message);
+      limpiarDatosSesion();
     }
   return { data, error };
 };
