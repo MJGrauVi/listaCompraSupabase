@@ -1,52 +1,101 @@
 import React from "react";
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
+import Mensaje from "./Mensaje.jsx";
 import useSesion from "../hooks/useSesion.js";
 
 const LoginForm = () => {
-  const { datosSesion, actualizarDatos, login, registro, limpiarDatosSesion } = useSesion();
+  const { iniciarLogin, registrarUsuario, cargando } = useSesion();
+
   const [modoRegistro, setModoRegistro] = useState(true);
-  const [mensaje, setMensaje] = useState("");
+  const [mensaje, setMensaje] = useState({ tipo: "", texto: "" });
   const navegar = useNavigate();
 
-  const submitLogin = async (e) => {
-    e.preventDefault();
-    setMensaje(""); // Limpiar mensajes previos.
+  // Estado inicial del formulario
+  const estadoInicial = { email: "", password: "", displayName: "" };
+  const [form, setForm] = useState(estadoInicial);
 
-    if (modoRegistro) {
-      const { data, error } = await registro();
-      if (error) {
-        
-        setMensaje(`Error: ${error.message}`);
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const submitFormulario = async (e) => {
+    e.preventDefault();
+    setMensaje({ tipo: "", texto: "" }); // Limpiar mensajes previos.
+    try {
+      if (modoRegistro) {
+        await registrarUsuario(form.email, form.password, form.displayName);
+        setMensaje({
+          tipo: "success",
+          texto: "¡Cuenta creada! Revisa tu correo.",
+        });
+        setForm(estadoInicial);
+
+        // Cierra mensaje después de 2 segundos
+        setTimeout(() => {
+          setMensaje({ tipo: "", texto: "" });
+          navegar("/");
+        }, 2000);
       } else {
-        setMensaje("¡Cuenta creada!.");
-        //Pendiente ver la confirmación con email, no recibo email.
-        limpiarDatosSesion();
-      
+        await iniciarLogin(form.email, form.password);
+
+        setMensaje({ tipo: "success", texto: "¡Has iniciado sesión!" });
+        setForm(estadoInicial);
+        setTimeout(() => {
+          setMensaje({ tipo: "", texto: "" });
+          navegar("/");
+        }, 2000);
       }
-    } else {
-      const { error } = await login();
-      if (error) {
-        setMensaje("Email o contraseña incorrectos.");
-      
-      }else{
-        limpiarDatosSesion();
-        navegar("/")
+    } catch (err) {
+      if (err.message === "User already registered") {
+        setMensaje({
+          tipo: "info",
+          texto: "Este correo ya está registrado. Inicia sesión.",
+        });
+        // Cierra mensaje después de 2 segundos
+
+        setModoRegistro(false);
+        setForm({ email: form.email, password: "", displayName: "" });
+        setTimeout(() => setMensaje({ tipo: "", texto: "" }), 3000);
+        return;
+      }
+
+      // Si Supabase devuelve "Invalid login credentials", lo traducimos
+      if (err.message === "Invalid login credentials") {
+        setMensaje({
+          tipo: "error",
+          texto: "El correo o la contraseña no son correctos.",
+        });
+
+        setForm(estadoInicial);
+        // Cierra mensaje después de 2 segundos
+        setTimeout(() => setMensaje({ tipo: "", texto: "" }), 2000);
+      } else {
+        setMensaje({
+          tipo: "error",
+          texto: "Hubo un problema al conectar con el servidor.",
+        });
+        // Cierra mensaje después de 2 segundos
+        setTimeout(() => setMensaje({ tipo: "", texto: "" }), 2000);
       }
     }
   };
   return (
-    <form className="form-login-registro" onSubmit={submitLogin}>
-      <h2>{modoRegistro ? "Crea tu cuenta" : "Entra a la lista de la Compra"}</h2>
-      {mensaje && <p className="alerta">{mensaje}</p>}
+    <form className="form-login-registro" onSubmit={submitFormulario}>
+      <h2>{modoRegistro ? "Crea tu cuenta" : "Inicia sesión"}</h2>
+
+      <Mensaje tipo={mensaje.tipo} texto={mensaje.texto} />
+      <Mensaje tipo="info" texto="Mensaje de prueba" />
       <div className="campo-formulario">
         <label htmlFor="email">Email</label>
         <input
           type="email"
           name="email"
-          value={datosSesion.email || ""}
-          onChange={actualizarDatos}
+          value={form.email}
+          onChange={handleChange}
           required
         />
       </div>
@@ -55,41 +104,48 @@ const LoginForm = () => {
         <input
           type="password"
           name="password"
-          value={datosSesion.password || ""}
-          onChange={actualizarDatos}
+          value={form.password}
+          onChange={handleChange}
           required
         />
       </div>
 
       {/* Solo mostramos el nombre si estamos registrando */}
       {modoRegistro && (
-      <div className="campo-formulario">
-        <label>Nombre (solo para registro)</label>
-        <input
-          type="text"
-          name="display_name"
-          value={datosSesion.display_name || ""}
-          onChange={actualizarDatos}
-        />
-      </div>
-       )}
+        <div className="campo-formulario">
+          <label>Nombre (solo para registro)</label>
+          <input
+            type="text"
+            name="displayName"
+            value={form.displayName}
+            onChange={handleChange}
+          />
+        </div>
+      )}
       <div className="botones">
-        <button type="submit">
+        <button type="submit" disabled={cargando}>
           {modoRegistro ? "Registrarme" : "Iniciar Sesión"}
         </button>
-        
-        <button 
-          type="button" 
+
+        <button
+          type="button"
           className="boton-alternativo"
+          disabled={cargando}
           onClick={() => {
-            setModoRegistro(!modoRegistro);
+            setModoRegistro(!modoRegistro); //Solo cambia modo.
+            setForm(estadoInicial); //Se limpia si cambias de registo a login.
             setMensaje("");
           }}
         >
           {modoRegistro ? (
             <>
-            <span className="cuenta">¿Ya tienes cuenta?</span> Entra aquí </>) : (  
-            <><span className="cuenta">¿No tienes cuenta?</span> Regístrate</>)}
+              <span className="cuenta">¿Ya tienes cuenta?</span> Entra aquí
+            </>
+          ) : (
+            <>
+              <span className="cuenta">¿No tienes cuenta?</span> Regístrate
+            </>
+          )}
         </button>
       </div>
     </form>

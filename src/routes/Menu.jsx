@@ -12,7 +12,9 @@ const Menu = () => {
           Inicio
         </Link>
         {usuario && (
+          
           <>
+          {/*  <pre>{JSON.stringify(usuario, null, 2)}</pre> */}
             <Link className="menu-elemento" to="/insertar">
               Insertar
             </Link>

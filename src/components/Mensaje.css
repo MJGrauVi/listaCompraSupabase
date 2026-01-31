@@ -1,0 +1,27 @@
+.mensaje {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+}
+
+.mensaje.info {
+  background: #e3f2fd;
+  color: #0d47a1;
+}
+
+.mensaje.error {
+  background: #fdecea;
+  color: #b71c1c;
+}
+
+.mensaje.success {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.cerrar {
+  background: none;
+  border: none;
+  float: right;
+  cursor: pointer;
+}

@@ -9,6 +9,7 @@ import useSesion from "../hooks/useSesion.js";
 
 const Rutas = () => {
   const { usuario } = useSesion();
+  console.log(`Usuario: ${usuario}`);
   return (
     <div className="contenedor-rutas">
       <Routes>

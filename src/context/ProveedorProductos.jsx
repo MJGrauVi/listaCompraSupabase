@@ -1,0 +1,58 @@
+import { createContext, useState, useEffect} from "react";
+import { supabase } from "../supabaseClient"; // Ajusta la ruta a tu cliente
+import useSesion from "../hooks/useSesion.js";
+
+const ProductosContext = createContext();
+
+export const ProveedorProductos = ({ children }) => {
+  const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(false);
+  const { usuario } = useSesion();
+
+  // Función principal para obtener datos
+  const obtenerProductos = async (filtros = {}, orden = { campo: 'nombre', ascendente: true }) => {
+    setCargando(true);
+    try {
+      let query = supabase.from("productos").select("*");
+
+      // Solo aplicamos filtros y orden si el usuario está registrado
+      if (usuario) {
+        // Filtros simples (uno a la vez según enunciado)
+        if (filtros.nombre) {
+          query = query.ilike("nombre", `%${filtros.nombre}%`);
+        } else if (filtros.precio) {
+          query = query.lte("precio", filtros.precio); // Menor o igual
+        } else if (filtros.peso) {
+          query = query.lte("peso", filtros.peso); // Menor o igual
+        }
+
+        // Ordenación
+        query = query.order(orden.campo, { ascending: orden.ascendente });
+      } else {
+        // Comportamiento por defecto para no registrados
+        query = query.order("nombre", { ascending: true });
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      setProductos(data);
+    } catch (error) {
+      console.error("Error cargando productos:", error.message);
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  // Carga inicial
+  useEffect(() => {
+    obtenerProductos();
+  }, [usuario]); // Recargar si el estado del usuario cambia
+
+  return (
+    <ProductosContext.Provider value={{ productos, cargando, obtenerProductos }}>
+      {children}
+    </ProductosContext.Provider>
+  );
+};
+
+export default ProductosContext;

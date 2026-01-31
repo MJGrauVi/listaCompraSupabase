@@ -1,29 +1,28 @@
 import useSesion from "../hooks/useSesion.js";
-import { Link } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
- 
 const BotonSesion = () => {
-  const { usuario, logout} = useSesion();
+  const { usuario, cerrarSesion } = useSesion();
+  const navigate = useNavigate();
+
+  const handleCerrarSesion = async ()=>{
+    await cerrarSesion();
+    navigate("/login")
+  };
 
   return (
     <div className="inicio-sesion">
       {usuario ? (
         <>
-          <span>
-            Hola {usuario.user_metadata.display_name}
-          </span>
-          <Link to="/">
-          <button className="btn-logout" onClick={logout}>
-            Cerrar sesión
-          </button>
-          </Link>
+          <span>Hola {usuario.user_metadata.display_name}</span>
+            <button className="btn-logout" onClick={handleCerrarSesion}>
+              Cerrar sesión
+            </button>
         </>
       ) : (
-        <Link to="/login">
-          <button className="btn-inicio">
+          <button className="btn-inicio" onClick={()=>navigate("/login")}>
             Iniciar sesión
-          </button>
-        </Link>
+            </button>
       )}
     </div>
   );

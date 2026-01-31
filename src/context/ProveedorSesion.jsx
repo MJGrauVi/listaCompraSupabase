@@ -1,80 +1,45 @@
 import { createContext, useEffect, useState } from "react";
 import { supabaseConexion } from "../supabase/supabase.js";
+import useSupabaseAuth from "../hooks/useSupabaseAuth.js";
 
 const ContextoSesion = createContext();
 
 const ProveedorSesion = ({ children }) => {
- 
- //Supabase devualve null cuando no hay usuario, por lo tanto el estado a null.
+  // Estado global de sesión(supabase devuelve null cuando no hay user.)
   const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(true);
-  const datosSesionInicial = {
-      email: "", 
-      password:"",
-      displa_name: "",
-    }
-  const limpiarDatosSesion = ()=>{
-    setDatosSesion(datosSesionInicial)
-  }
-  const [datosSesion, setDatosSesion] = useState(datosSesionInicial);
 
+  // Traemos de useSupabaseAuth;
+  const { login, registro, logout, cargando, error } = useSupabaseAuth();
 
+  // Sesión inicial, con getSesion para arrancar.
   useEffect(() => {
-    // Sesión inicial, con getSesion para arrancar.
-    supabaseConexion.auth.getSession().then(({ data }) => {
-      setUsuario(data.session?.user ?? null);
-      setLoading(false);
-      
-    });
-
-    // Listener de cambios de sesión.
-    const { data: listener } =
-      supabaseConexion.auth.onAuthStateChange((_event, session) => {
+    //podemos omitir getSesion(), porque supabase escucha y dispara automaticamente event === "INITIAL_SESSION", pero
+    //así controlo yo momento del arranque de la app.
+    //  Escucha cambios de Auth (Login/Logout) en tiempo real
+    const { data: authListener } = supabaseConexion.auth.onAuthStateChange(
+      (event, session) => {
         setUsuario(session?.user ?? null);
-      });
+        setLoading(false);
+      },
+    );
 
-    return () => listener.subscription.unsubscribe();
+    return () => authListener.subscription.unsubscribe();
   }, []);
 
-  const actualizarDatos = (e) => {
-    const { name, value } = e.target;
-    setDatosSesion({ ...datosSesion, [name]: value });
+  const iniciarLogin = async (email, password) => {
+    const user = await login(email, password);
+    setUsuario(user);
   };
 
-
-  const login = async () => {
-    const { data, error } = await supabaseConexion.auth.signInWithPassword({
-      email: datosSesion.email,
-      password: datosSesion.password,
-    });
-    if (error) {
-      console.error("Error login:", error.message);
-      limpiarDatosSesion();
-    }
-  return { data, error };
-};
-
-
-  const registro = async () => {
-    const {data, error} = await supabaseConexion.auth.signUp({
-      email: datosSesion.email,
-      password: datosSesion.password,
-      options: {
-        data: {
-          display_name: datosSesion.display_name,
-        },
-      },
-    });
-    if(error){
-      console.log("Error:", error.message)
-    }else{
-      console.log("Usuario creado: ", data)
-    }
+  const registrarUsuario = async (email, password, displayName) => {
+    const user = await registro(email, password, displayName);
+    setUsuario(user);
   };
 
-  const logout = async () => {
-    await supabaseConexion.auth.signOut();
-    limpiarDatosSesion();
+  const cerrarSesion = async () => {
+    await logout();
+    setUsuario(null);
   };
 
   return (
@@ -82,16 +47,14 @@ const ProveedorSesion = ({ children }) => {
       value={{
         usuario,
         loading,
-        datosSesion,
-        actualizarDatos,
-        login,
-        registro,
-        logout,
-        limpiarDatosSesion
-      
+        cargando,
+        error,
+        iniciarLogin,
+        registrarUsuario,
+        cerrarSesion,
       }}
     >
-      {children}
+      {!loading && children}
     </ContextoSesion.Provider>
   );
 };
