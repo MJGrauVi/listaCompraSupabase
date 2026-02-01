@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 import Mensaje from "./Mensaje.jsx";
@@ -10,6 +10,7 @@ const LoginForm = () => {
 
   const [modoRegistro, setModoRegistro] = useState(true);
   const [mensaje, setMensaje] = useState({ tipo: "", texto: "" });
+  const [ocultarMensaje, setOcultarMensaje] = useState(false);
   const navegar = useNavigate();
 
   // Estado inicial del formulario
@@ -22,73 +23,77 @@ const LoginForm = () => {
       [e.target.name]: e.target.value,
     });
   };
+  const mostrarMensaje = (tipo, texto, tiempo = 2000) => {
+    setMensaje({ tipo, texto });
+
+    setTimeout(() => {
+      setMensaje({ tipo: "", texto: "" });
+    }, tiempo);
+  };
   const submitFormulario = async (e) => {
     e.preventDefault();
     setMensaje({ tipo: "", texto: "" }); // Limpiar mensajes previos.
+
     try {
       if (modoRegistro) {
         await registrarUsuario(form.email, form.password, form.displayName);
-        setMensaje({
-          tipo: "success",
-          texto: "¡Cuenta creada! Revisa tu correo.",
-        });
+
+        mostrarMensaje("success", "¡Cuenta creada! Revisa tu correo.", 2500);
         setForm(estadoInicial);
 
-        // Cierra mensaje después de 2 segundos
         setTimeout(() => {
-          setMensaje({ tipo: "", texto: "" });
           navegar("/");
-        }, 2000);
+        }, 2500);
       } else {
         await iniciarLogin(form.email, form.password);
 
-        setMensaje({ tipo: "success", texto: "¡Has iniciado sesión!" });
-        setForm(estadoInicial);
-        setTimeout(() => {
-          setMensaje({ tipo: "", texto: "" });
-          navegar("/");
-        }, 2000);
+        mostrarMensaje("success", "¡Has iniciado sesión!", 2000);
+        setForm(estadoInicial); //Limpio formulario.
+        
+         setTimeout(() => navegar("/"), 2000);
       }
     } catch (err) {
       if (err.message === "User already registered") {
-        setMensaje({
-          tipo: "info",
-          texto: "Este correo ya está registrado. Inicia sesión.",
-        });
+        mostrarMensaje(
+          "info",
+          "Este correo ya está registrado. Inicia sesión.",
+          3000,
+        );
         // Cierra mensaje después de 2 segundos
-
         setModoRegistro(false);
         setForm({ email: form.email, password: "", displayName: "" });
-        setTimeout(() => setMensaje({ tipo: "", texto: "" }), 3000);
+
         return;
       }
 
       // Si Supabase devuelve "Invalid login credentials", lo traducimos
       if (err.message === "Invalid login credentials") {
-        setMensaje({
-          tipo: "error",
-          texto: "El correo o la contraseña no son correctos.",
-        });
 
+        mostrarMensaje("error", "El correo o la contraseña no son correctos.");
         setForm(estadoInicial);
-        // Cierra mensaje después de 2 segundos
-        setTimeout(() => setMensaje({ tipo: "", texto: "" }), 2000);
+      
       } else {
-        setMensaje({
-          tipo: "error",
-          texto: "Hubo un problema al conectar con el servidor.",
-        });
-        // Cierra mensaje después de 2 segundos
-        setTimeout(() => setMensaje({ tipo: "", texto: "" }), 2000);
+     mostrarMensaje("error", "Hubo un problema al conectar con el servidor.");
+       
       }
     }
   };
+  //Eliminamos el mensaje a los segundos que indica el timer.
+  useEffect(() => {
+    if (ocultarMensaje) {
+      const timer = setTimeout(() => setOcultarMensaje(""), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [ocultarMensaje]);
+
+  /*if (cargando) return <Cargando />; */
+
   return (
     <form className="form-login-registro" onSubmit={submitFormulario}>
       <h2>{modoRegistro ? "Crea tu cuenta" : "Inicia sesión"}</h2>
 
+      {/*   {ocultarMensaje && <Mensaje tipo={mensaje.tipo} texto={mensaje.texto} />} */}
       <Mensaje tipo={mensaje.tipo} texto={mensaje.texto} />
-      <Mensaje tipo="info" texto="Mensaje de prueba" />
       <div className="campo-formulario">
         <label htmlFor="email">Email</label>
         <input

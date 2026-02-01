@@ -8,11 +8,10 @@ const Menu = () => {
   return (
     <>
       <nav>
-        <Link className="menu-elemento" to="/">
+       { <Link className="menu-elemento" to="/">
           Inicio
-        </Link>
-        {usuario && (
-          
+        </Link>}
+        {usuario && ( 
           <>
           {/*  <pre>{JSON.stringify(usuario, null, 2)}</pre> */}
             <Link className="menu-elemento" to="/insertar">
