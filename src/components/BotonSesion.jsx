@@ -7,7 +7,7 @@ const BotonSesion = () => {
 
   const handleCerrarSesion = async ()=>{
     await cerrarSesion();
-    navigate("/login")
+    navigate("/")
   };
 
   return (
@@ -21,7 +21,7 @@ const BotonSesion = () => {
         </>
       ) : (
           <button className="btn-inicio" onClick={()=>navigate("/login")}>
-            Iniciar sesión
+            Iniciar sesión / Registrate
             </button>
       )}
     </div>

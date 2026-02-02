@@ -15,11 +15,13 @@ const Rutas = () => {
       <Routes>
         {/* Rutas siempre disponibles */}
         <Route path="/" element={<Inicio />} />
+        <Route path="/login" element={<LoginForm />} />
 
         {!usuario ? (
           //Si no hay usuario, permitimos login.
           <>
-            <Route path="/login" element={<LoginForm />} />
+           {/*  <Route path="/login" element={<LoginForm />} /> */}
+            <Route path="/" element={<Inicio />} />
           </>
         ) : (
           // Rutas solo para autenticados

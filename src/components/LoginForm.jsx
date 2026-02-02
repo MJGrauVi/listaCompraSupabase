@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 import Mensaje from "./Mensaje.jsx";
@@ -10,19 +10,21 @@ const LoginForm = () => {
 
   const [modoRegistro, setModoRegistro] = useState(true);
   const [mensaje, setMensaje] = useState({ tipo: "", texto: "" });
-  const [ocultarMensaje, setOcultarMensaje] = useState(false);
   const navegar = useNavigate();
 
   // Estado inicial del formulario
   const estadoInicial = { email: "", password: "", displayName: "" };
   const [form, setForm] = useState(estadoInicial);
 
+  //Funcion que sirve para tomar el valor de todos los inputs, copia el estado anterior y actualiza ese campo.
+  //hace falta el name, sino da undefined.
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value,//
     });
   };
+  
   const mostrarMensaje = (tipo, texto, tiempo = 2000) => {
     setMensaje({ tipo, texto });
 
@@ -78,13 +80,6 @@ const LoginForm = () => {
       }
     }
   };
-  //Eliminamos el mensaje a los segundos que indica el timer.
-  useEffect(() => {
-    if (ocultarMensaje) {
-      const timer = setTimeout(() => setOcultarMensaje(""), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [ocultarMensaje]);
 
   /*if (cargando) return <Cargando />; */
 
@@ -92,7 +87,7 @@ const LoginForm = () => {
     <form className="form-login-registro" onSubmit={submitFormulario}>
       <h2>{modoRegistro ? "Crea tu cuenta" : "Inicia sesión"}</h2>
 
-      {/*   {ocultarMensaje && <Mensaje tipo={mensaje.tipo} texto={mensaje.texto} />} */}
+    
       <Mensaje tipo={mensaje.tipo} texto={mensaje.texto} />
       <div className="campo-formulario">
         <label htmlFor="email">Email</label>
