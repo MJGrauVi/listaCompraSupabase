@@ -2,28 +2,31 @@ import React, { useState, useEffect } from "react";
 import "./ListadoProductos.css";
 import Producto from "./Producto.jsx";
 import Cargando from "./Cargando.jsx";
+import FiltroProductos from "./FiltroProductos.jsx";
+import useProductos from "../hooks/useProductos.js";
 
 
 const ListadoProductos = () => {
 
-
+  const { productos, cargando, borrarProducto, productoExpandido, toggleProducto } =
+    useProductos();
   //Estados.
 
   const [textoFiltro, setTextoFiltro] = useState("");
   const [mensajeEliminado, setMensajeEliminado] = useState("");
 
-  // Filtrado de discos.
-  const discosFiltrados = producto.filter((d) => {
+  // Filtrado de productos.
+  const productosFiltrados = productos.filter((d) => {
     if (!textoFiltro.trim()) return true;
     const texto = textoFiltro.toLowerCase();
     return (
-      d.nombreDisco?.toLowerCase().includes(texto) ||
+      d.nombreProducto?.toLowerCase().includes(texto) ||
       d.grupo?.toLowerCase().includes(texto) ||
       d.genero?.toLowerCase().includes(texto)
     );
   });
 
-  //Guardamos el texto introducido en el input de filtrado, por el cual buscamos discos.
+  //Guardamos el texto introducido en el input de filtrado, por el cual buscamos productos.
   const manejarCambioFiltro = (e) => {
     setTextoFiltro(e.target.value);
   };
@@ -32,15 +35,15 @@ const ListadoProductos = () => {
     setTextoFiltro("");
   };
 
-  const handleBorrarDisco = async (id) => {
-    //LLamamos a borrarDisco del hook con el id del disco a eliminar. Informamos al usuario.
-    const discoAEliminar = discos.find((d) => String(d.id) === String(id));
+  const handleBorrarProducto = async (id) => {
+    //LLamamos a borrarProducto del hook con el id del producto a eliminar. Informamos al usuario.
+    const productoAEliminar = productos.find((d) => String(d.id) === String(id));
     try {
-      await borrarDisco(id);
-      setMensajeEliminado(`Producto "${discoAEliminar?.nombreDisco}" eliminado.`);
+      await borrarProducto(id);
+      setMensajeEliminado(`Producto "${productoAEliminar?.nombreProducto}" eliminado.`);
     } catch {
-      console.log("Error al borrar disco");
-      setMensajeEliminado("Error al eliminar el disco.");
+      console.log("Error al borrar producto");
+      setMensajeEliminado("Error al eliminar el producto.");
     }
   };
   //Eliminamos el mensaje a los segundos que indica el timer.
@@ -54,30 +57,30 @@ const ListadoProductos = () => {
   if (cargando) return <Cargando />;
 
   return (
-    <div className="contenedor-listado-discos">
-      <h2>Listado de Discos</h2>
+    <div className="contenedor-listado-productos">
+      <h2>Listado de Productos</h2>
 
       {/* Sección de filtrado. */}
 
-      <FiltroDiscos
+      <FiltroProductos
         textoFiltro={textoFiltro}
         onChange={manejarCambioFiltro}
         onLimpiar={limpiarFiltro}
       />
       {/* Mensaje del filtrado */}
       <p>
-        Mostrando {discosFiltrados.length} de {discos.length} discos
+        Mostrando {productosFiltrados.length} de {productos.length} productos
         {textoFiltro.trim() && ` (filtrados por "${textoFiltro}")`}
       </p>
 
-      <div className="lista-discos">
-        {discosFiltrados.map((disco) => (
+      <div className="lista-productos">
+        {productosFiltrados.map((producto) => (
           <Producto
-            key={disco.id}
-            disco={disco}
-            expandido={discoExpandido === disco.id}
-            onToggle={() => toggleDisco(disco.id)}
-            onBorrar={() => handleBorrarDisco(disco.id)}
+            key={producto.id}
+            producto={producto}
+            expandido={productoExpandido === producto.id}
+            onToggle={() => toggleProducto(producto.id)}
+            onBorrar={() => handleBorrarProducto(producto.id)}
           />
         ))}
       </div>

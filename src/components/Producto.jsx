@@ -1,26 +1,26 @@
 import React from "react";
 import "./Producto.css";
-import DiscoAcciones from "./DiscoAcciones.jsx";
-import DiscoInfo from "./DiscoInfo.jsx";
+import ProductoAcciones from "./ProductoAcciones.jsx";
+import ProductoInfo from "./ProductoInfo.jsx";
 
-const Disco = ({ disco, onBorrar }) => {
+const Producto = ({ producto, onBorrar }) => {
   //Leer del contexto.
 
   return (
-    <div className="disco-item">
-      <div className="disco-imagen">
-        {disco.url_caratula ? (
-          <img src={disco.url_caratula} alt={disco.nombreDisco} />
+    <div className="producto-item">
+      <div className="producto-imagen">
+        {producto.url_caratula ? (
+          <img src={producto.url_caratula} alt={producto.nombreProducto} />
         ) : (
           <div className="sin-imagen">Sin imagen</div>
         )}
       </div>
-      <DiscoInfo disco={disco} />
-      <div className="disco-acciones">
-        <DiscoAcciones disco={disco} onBorrar={onBorrar} />
+      <ProductoInfo producto={producto} />
+      <div className="producto-acciones">
+        <ProductoAcciones producto={producto} onBorrar={onBorrar} />
       </div>
     </div>
   );
 };
 
-export default Disco;
+export default Producto;
