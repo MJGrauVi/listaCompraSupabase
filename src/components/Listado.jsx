@@ -51,9 +51,7 @@ const Listado = () => {
           <Producto
             key={producto.id}
             producto={producto}
-           /*  expandido={productoExpandido === producto.id}
-            onToggle={() => toggleProducto(producto.id)}
-            onBorrar={() => handleBorrarProducto(producto.id)} */
+         
           />
         ))}
       </div>

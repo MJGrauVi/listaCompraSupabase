@@ -1,9 +1,9 @@
 import React from "react";
 import "./Producto.css";
-import ProductoAcciones from "./ProductoAcciones.jsx";
+import ProductoPP from "./ProductoPP.jsx";
 import ProductoInfo from "./ProductoInfo.jsx";
 
-const Producto = ({ producto, onBorrar }) => {
+const Producto = ({ producto }) => {
   //Leer del contexto.
 
   return (
@@ -16,8 +16,8 @@ const Producto = ({ producto, onBorrar }) => {
         )}
       </div>
       <ProductoInfo producto={producto} />
-      <div className="producto-acciones">
-        <ProductoAcciones producto={producto} onBorrar={onBorrar} />
+      <div className="producto-pp2">
+        <ProductoPP producto={producto} />
       </div>
     </div>
   );

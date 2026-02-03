@@ -1,23 +1,13 @@
 import React from 'react'
 import "./ProductoInfo.css";
-import ProductoDetalle from "./Productodetalle.jsx";
-import  useProductos  from "../hooks/useProductos.js";
 
 const ProductoInfo = ({ producto}) => {
 
-    //Leer del contexto.
-    const {productoExpandido, toggleProducto }= useProductos();
-
-    const expandido = productoExpandido === producto.id;
-
     return (
-        <div className="producto-info" onClick={() => toggleProducto(producto.id)}>
+        <div className="producto-info">
             <h3>{producto.nombre}</h3>
-            <p> {producto.peso} gr - {producto.precio.toLocaleString("es-ES", {
-            style: "currency",
-            currency: "EUR"
-        })}</p>
-            {expandido && <ProductoDetalle producto={producto} />}
+            <div className="producto-descripcion"> {producto.descripcion} </div>
+            
         </div>
     )
 }
