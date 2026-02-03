@@ -1,7 +1,9 @@
 import "./FiltroProductos.css";
-const {usuario} = useSesion;
+import useSesion from "../context/ProveedorSesion.jsx";
+
 const FiltroProductos = ({ textoFiltro, onChange, onLimpiar }) => {
 
+const {usuario} = useSesion();
   if(!usuario) return null;
   return (
     <div className="controles-filtrado">

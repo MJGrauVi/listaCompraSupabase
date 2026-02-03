@@ -5,8 +5,10 @@ import FormularioProducto from "../components/FormularioProducto.jsx";
 const Contenedor = () => {
   console.log(" CONTENEDOR MONTADO 🔥");
   return (
+    
     <div className="contenedor-formulario">
-      <FormularioProducto />
+      <h2>Formulario Insertar prod</h2>
+      {/* <FormularioProducto /> */}
     </div>
   );
 };
