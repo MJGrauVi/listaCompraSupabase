@@ -1,6 +1,6 @@
 import React from 'react'
 import "./ProductoInfo.css";
-import ProductoDetalle from "./ProductoDetalle.jsx";
+import ProductoDetalle from "./Productodetalle.jsx";
 import  useProductos  from "../hooks/useProductos.js";
 
 const ProductoInfo = ({ producto}) => {

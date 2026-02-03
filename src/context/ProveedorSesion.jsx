@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { supabaseConexion } from "../supabase/supabase.js";
-import useSupabaseAuth from "../hooks/useSupabaseAuth.js";
+import useSupabaseAuth from "./../hooks/UseSupabaseAuth.js";
 
 const ContextoSesion = createContext();
 

@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect} from "react";
 import { supabaseConexion } from "../supabase/supabase.js";
-import {useSesion} from "../hooks/useSesion.js"; 
+import useSesion from "../hooks/useSesion.js"; 
 
 const ProductosContext = createContext();
 
