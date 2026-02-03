@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./ListadoProductos.css";
-import Producto from "./Producto.jsx";
-import Cargando from "./Cargando.jsx";
-import FiltroProductos from "./FiltroProductos.jsx";
-import useProductos from "../hooks/useProductos.js";
-
+import Producto from "../Producto.jsx";
+import Cargando from "../Cargando.jsx";
+import FiltroProductos from "../FiltroProductos.jsx";
+import useProductos from "../../hooks/useProductos.js";
+import useSesion from "../../hooks/useSesion.js";
 
 const ListadoProductos = () => {
-
-  const { productos, cargando, borrarProducto, productoExpandido, toggleProducto } =
-    useProductos();
+  const {
+    productos,
+    cargando,
+    borrarProducto,
+    productoExpandido,
+    toggleProducto,
+  } = useProductos();
+  const {usuario} = useSesion();
   //Estados.
 
   const [textoFiltro, setTextoFiltro] = useState("");
@@ -37,7 +42,9 @@ const ListadoProductos = () => {
 
   const handleBorrarProducto = async (id) => {
     //LLamamos a borrarProducto del hook con el id del producto a eliminar. Informamos al usuario.
-    const productoAEliminar = productos.find((d) => String(d.id) === String(id));
+    const productoAEliminar = productos.find(
+      (d) => String(d.id) === String(id),
+    );
     try {
       await borrarProducto(id);
       setMensajeEliminado(`Producto "${productoAEliminar?.nombre}" eliminado.`);
@@ -84,9 +91,11 @@ const ListadoProductos = () => {
           />
         ))}
       </div>
-      
+
       {mensajeEliminado && (
-        <div className={`mensaje-eliminado ${!mensajeEliminado ? "oculto" : ""}`}>
+        <div
+          className={`mensaje-eliminado ${!mensajeEliminado ? "oculto" : ""}`}
+        >
           {mensajeEliminado}
         </div>
       )}

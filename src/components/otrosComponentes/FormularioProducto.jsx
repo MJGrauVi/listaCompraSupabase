@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./FormularioProducto.css";
-import Errores from "./Errores.jsx";
-import Cargando from "./Cargando.jsx";
-import { validarProducto, parsePrecio } from "../biblioteca/funciones.js";
+import Errores from "../Errores.jsx";
+import Cargando from "../Cargando.jsx";
+import { validarProducto, parsePrecio } from "../../biblioteca/funciones.js";
 /* import useSesion from "../hooks/useSesion.js"; */
-import useProductos from "../hooks/useProductos.js";
-
+import useProductos from "../../hooks/useProductos.js";
 
 //Formulario para insertar o editar Productos.
 const FormularioProducto = () => {
   console.log("🟢 FormularioProducto MONTADO");
   /* const {cargando} = useSesion(); */
-  const { productos,  guardarProducto} =useProductos(); //Para consumir los datos del contexto.
+  const { productos, guardarProducto } = useProductos(); //Para consumir los datos del contexto.
   const { id } = useParams(); //Obtenemos el id del elemento que queremos editar.
   const navigate = useNavigate(); //Para redirigir despues de actualizar un producto.
   const esEdicion = !!id; //Si hay id el la URL estará editando y sino está creando.
@@ -137,13 +136,12 @@ const FormularioProducto = () => {
 
   const todosLosErrores = Object.values(errores).flat();
   //Renderizado bloqueante que sustituye al formulario.Muestra espiner mientras espera datos.
-/*   if (cargando) {
+  /*   if (cargando) {
     return <Cargando />;
   } */
 
   return (
     <div className="contenedor-formulario-producto">
-
       <h2>Formulario cargando</h2>
       <h2>{esEdicion ? "Editar Producto" : "Insertar Producto"}</h2>
 

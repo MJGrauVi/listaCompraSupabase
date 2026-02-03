@@ -1,14 +1,14 @@
 import { createContext, useState, useEffect} from "react";
 import { supabaseConexion } from "../supabase/supabase.js";
-import useSesion from "../hooks/useSesion.js";
+/* import {useSesion} from "../hooks/useSesion.js" */;
 
 const ProductosContext = createContext();
 
-export const ProveedorProductos = ({ children }) => {
+const ProveedorProductos = ({ children }) => {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(false);
-  const { usuario } = useSesion();
-  console.log("El usuario: ", usuario);
+ /*  const { usuario } = useSesion(); */
+/*   console.log("El usuario: ", usuario); */
 
   // Función principal para obtener datos
   const cargarProductos = async (filtros = {}, orden = { campo: 'nombre', ascendente: true }) => {
@@ -59,4 +59,5 @@ export const ProveedorProductos = ({ children }) => {
   );
 };
 
-export default ProductosContext;
+export {ProductosContext};
+export default ProveedorProductos;

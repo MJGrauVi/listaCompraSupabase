@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import ProductosContext from "../context/ProveedorProductos.jsx";
+import {ProductosContext} from "../context/ProveedorProductos.jsx";
 
 //useProductos es un hook que centralizar el acceso a la información y acciones 
 // relacionadas con los productos, evita el uso directo de useContext en los componentes 
