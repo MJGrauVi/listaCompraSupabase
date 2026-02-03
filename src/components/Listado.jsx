@@ -11,7 +11,8 @@ import {calcularResumenProductos} from "../biblioteca/funciones.js";
 const Listado = () => {
   const { usuario } = useSesion();
   const { productos, cargando } = useProductos();
-  console.log(productos);
+
+  console.log("Listado usuario: ", usuario);
 
   const [textoFiltro, setTextoFiltro] = useState("");
 
@@ -41,6 +42,8 @@ const { cantidad, precioMedio } =
       <h2>Listado de productos</h2>
 
       {/* Sección de filtrado. */}
+      {usuario && (
+        <>
       <FiltroProductos
         textoFiltro={textoFiltro}
         onChange={manejarCambioFiltro}
@@ -51,11 +54,14 @@ const { cantidad, precioMedio } =
         Mostrando {productosFiltrados.length} de {productos.length} productos
         {textoFiltro.trim() && ` (filtrados por "${textoFiltro}")`}
       </p>
+      </>
+      )}
       <div className="lista-productos">
         {productosFiltrados.map((producto) => (
           <Producto key={producto.id} producto={producto} />
         ))}
       </div>
+      {usuario && (
       <div className="productos-resumen">
         <h3>Resumen del listado</h3>
         <p>
@@ -65,6 +71,7 @@ const { cantidad, precioMedio } =
           <strong>Precio medio:</strong> {precioMedio} €
         </p>
       </div>
+      )}
     </div>
   );
 };
