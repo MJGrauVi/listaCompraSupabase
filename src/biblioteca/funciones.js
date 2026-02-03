@@ -33,4 +33,23 @@ const parsePrecio = (precio) => {
   );
 };
 
-export { validarProducto, parsePrecio };
+const calcularResumenProductos = (productos) => {
+  const cantidad = productos.length;
+
+  const precioMedio =
+    cantidad > 0
+      ? (
+          productos.reduce(
+            (total, p) => total + Number(p.precio || 0),
+            0
+          ) / cantidad
+        ).toFixed(2)
+      : 0;
+
+  return {
+    cantidad,
+    precioMedio,
+  };
+};
+
+export { validarProducto, parsePrecio, calcularResumenProductos };

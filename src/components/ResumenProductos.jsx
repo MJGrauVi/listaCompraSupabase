@@ -1,5 +1,5 @@
 import React from 'react'
-
+import "./ResumenProductos.css";
 const ResumenProductos = ({ productos }) => {
     const total = productos.length;
 

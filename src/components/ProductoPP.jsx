@@ -12,13 +12,15 @@ const ProductoPP = ({ producto }) => {
           </tr>
         </thead>
         <tbody>
-          <td>{producto.peso} gr.</td>
-          <td>
-            {producto.precio.toLocaleString("es-ES", {
-              style: "currency",
-              currency: "EUR",
-            })}
-          </td>
+          <tr>
+            <td>{producto.peso} gr.</td>
+            <td>
+              {producto.precio.toLocaleString("es-ES", {
+                style: "currency",
+                currency: "EUR",
+              })}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

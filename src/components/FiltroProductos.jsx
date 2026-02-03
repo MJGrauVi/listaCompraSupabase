@@ -2,15 +2,15 @@ import "./FiltroProductos.css";
 import useSesion from "../hooks/useSesion.js";
 
 
-const FiltroProductos = ({ textoFiltro, onChange, onLimpiar, productos}) => {
+const FiltroProductos = ({ textoFiltro, onChange, onLimpiar}) => {
 /*   const {productos, textoFiltro, onChange, onLimpiar} = use */
   const { usuario } = useSesion();
   
   console.log("FiltroProducto:Usuario", usuario);
-  console.log("Producto a filtrat: ", productos);
-  if (!usuario) return null;
+  /* console.log("Producto a filtrat: ", productos); */
+/*   if (!usuario) return null; */
   return (
-    <div className="controles-filtrado">
+    <div className="filtrado-contenedor">
       <div className="controles-filtrado">
         <label htmlFor="filtro">Filtrar productos por: </label>
         <input

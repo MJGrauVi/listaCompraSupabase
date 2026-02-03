@@ -6,21 +6,23 @@ import useSesion from "../hooks/useSesion.js";
 import Producto from "./Producto.jsx";
 import Cargando from "./Cargando.jsx";
 import FiltroProductos from "./FiltroProductos.jsx";
+import {calcularResumenProductos} from "../biblioteca/funciones.js";
 
 const Listado = () => {
-  const {usuario} = useSesion();
+  const { usuario } = useSesion();
   const { productos, cargando } = useProductos();
   console.log(productos);
+
   const [textoFiltro, setTextoFiltro] = useState("");
 
   // Filtrado de productos.
-  const productosFiltrados = productos.filter((d) => {
+  const productosFiltrados = productos.filter((p) => {
     if (!textoFiltro.trim()) return true;
     const texto = textoFiltro.toLowerCase();
     return (
-      d.nombre?.toLowerCase().includes(texto) ||
-      d.peso?.toLowerCase().includes(texto) ||
-      d.precio?.toLowerCase().includes(texto)
+      p.nombre?.toLowerCase().includes(texto) ||
+      (p.peso != null && String(p.peso).includes(texto)) ||
+      (p.precio != null && String(p.precio).includes(texto))
     );
   });
   //Guardamos el texto introducido en el input de filtrado, por el cual buscamos productos.
@@ -31,10 +33,11 @@ const Listado = () => {
   const limpiarFiltro = () => {
     setTextoFiltro("");
   };
-
+const { cantidad, precioMedio } =
+  calcularResumenProductos(productosFiltrados);
   if (cargando) return <Cargando />;
   return (
-    <div>
+    <div className="contenedor-listado-productos">
       <h2>Listado de productos</h2>
 
       {/* Sección de filtrado. */}
@@ -50,12 +53,17 @@ const Listado = () => {
       </p>
       <div className="lista-productos">
         {productosFiltrados.map((producto) => (
-          <Producto
-            key={producto.id}
-            producto={producto}
-         
-          />
+          <Producto key={producto.id} producto={producto} />
         ))}
+      </div>
+      <div className="productos-resumen">
+        <h3>Resumen del listado</h3>
+        <p>
+          <strong>Número de productos:</strong> {cantidad}
+        </p>
+        <p>
+          <strong>Precio medio:</strong> {precioMedio} €
+        </p>
       </div>
     </div>
   );
