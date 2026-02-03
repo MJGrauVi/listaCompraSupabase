@@ -1,5 +1,6 @@
 import useSesion from "../hooks/useSesion.js";
 import {useNavigate} from "react-router-dom";
+import Mensaje from "./Mensaje.jsx";
 
 const BotonSesion = () => {
   const { usuario, cerrarSesion } = useSesion();
@@ -12,6 +13,7 @@ const BotonSesion = () => {
 
   return (
     <div className="inicio-sesion">
+      <Mensaje tipo={Mensaje.tipo} texto={Mensaje.texto}/>
       {usuario ? (
         <>
           <span>Hola {usuario.user_metadata.display_name}</span>
