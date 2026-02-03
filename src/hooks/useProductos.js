@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import {ProductosContext} from "../context/ProveedorProductos.jsx";
+import {ContextoProductos} from "../context/ProveedorProductos.jsx";
 
 //useProductos es un hook que centralizar el acceso a la información y acciones 
 // relacionadas con los productos, evita el uso directo de useContext en los componentes 
@@ -7,7 +7,7 @@ import {ProductosContext} from "../context/ProveedorProductos.jsx";
 //Si cambiamos el contexto( nombre, estructura, lógica) no se rompen los componentes.
 
 const useProductos = () => {
-  const context = useContext(ProductosContext);
+  const context = useContext(ContextoProductos);
   if (!context) {
     throw new Error("useProductos debe usarse dentro de un ProveedorProductos");
   }

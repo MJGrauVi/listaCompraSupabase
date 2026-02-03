@@ -14,6 +14,7 @@ const ListadoProductos = () => {
     productoExpandido,
     toggleProducto,
   } = useProductos();
+  console.log("ListadoProductos.jsx:" ,productos);
   const {usuario} = useSesion();
   //Estados.
 

@@ -1,0 +1,83 @@
+.contenedor-listado-discos {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.lista-discos {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contenedor-listado-discos h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.info-listado {
+  margin: 10px 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Controles del filtro */
+.controles-filtrado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.campo-filtro {
+  flex: 1;
+}
+
+.campo-filtro input {
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 1rem;
+}
+
+/* Mensaje temporal */
+.mensaje-formulario {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.mensaje-exito {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.mensaje-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+ .mensaje-eliminado {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #28a745; 
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  z-index: 1000;
+  text-align: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+} 
+
+.mensaje-eliminado.oculto {
+  opacity: 0;
+}

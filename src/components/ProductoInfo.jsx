@@ -13,7 +13,10 @@ const ProductoInfo = ({ producto}) => {
     return (
         <div className="producto-info" onClick={() => toggleProducto(producto.id)}>
             <h3>{producto.nombre}</h3>
-            <p>{producto.precio} - {producto.precio}</p>
+            <p> {producto.peso} gr - {producto.precio.toLocaleString("es-ES", {
+            style: "currency",
+            currency: "EUR"
+        })}</p>
             {expandido && <ProductoDetalle producto={producto} />}
         </div>
     )

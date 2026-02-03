@@ -1,25 +1,29 @@
 import "./FiltroProductos.css";
-import useSesion from "../context/ProveedorSesion.jsx";
+import useSesion from "../hooks/useSesion.js";
 
 const FiltroProductos = ({ textoFiltro, onChange, onLimpiar }) => {
-
-const {usuario} = useSesion();
-  if(!usuario) return null;
+  const { usuario } = useSesion();
+  if (!usuario) return null;
   return (
     <div className="controles-filtrado">
-      <input
-        type="text"
-        value={textoFiltro}
-        onChange={onChange}
-        placeholder="Buscar por nombre, precio o peso..."
-      />
-      <button
-        type="button"
-        onClick={onLimpiar}
-        disabled={!textoFiltro.trim()}
-      >
-        Limpiar
-      </button>
+      <div className="controles-filtrado">
+        <label htmlFor="filtro">Filtrar productos por: </label>
+        <input
+          type="text"
+          value={textoFiltro}
+          onChange={onChange}
+          placeholder="nombre, precio o peso..."
+        />
+      </div>
+      <div>
+        <button
+          type="button"
+          onClick={onLimpiar}
+          disabled={!textoFiltro.trim()}
+        >
+          Limpiar
+        </button>
+      </div>
     </div>
   );
 };

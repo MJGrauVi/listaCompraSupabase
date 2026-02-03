@@ -2,7 +2,7 @@ import { createContext, useState, useEffect} from "react";
 import { supabaseConexion } from "../supabase/supabase.js";
 import useSesion from "../hooks/useSesion.js"; 
 
-const ProductosContext = createContext();
+const ContextoProductos = createContext();
 
 const ProveedorProductos = ({ children }) => {
   const [productos, setProductos] = useState([]);
@@ -11,9 +11,25 @@ const ProveedorProductos = ({ children }) => {
    console.log("El usuario: ", usuario); 
 
   // Función principal para obtener datos
-  const cargarProductos = async (filtros = {}, orden = { campo: 'nombre', ascendente: true }) => {
+  const cargarProductos = async () => {
     setCargando(true);
-    try {
+    const { data, error } = await supabaseConexion
+      .from("productos")
+      .select("*")
+
+    if (error) {
+      console.error("Error al obtener productos:", error)
+    } else {
+      console.log("Productos:", data) // Ver en consola.
+      setProductos(data || []);
+      setCargando(false);
+    }
+  }
+
+
+/*   const cargarProductos = async (filtros = {}, orden = { campo: 'nombre', ascendente: true }) => {
+    setCargando(true);
+     try {
       let query = supabaseConexion.from("productos").select("*");
 
       // Solo aplicamos filtros y orden si el usuario está registrado
@@ -41,23 +57,25 @@ const ProveedorProductos = ({ children }) => {
       console.error("Error cargando productos:", error.message);
     } finally {
       setCargando(false);
-    }
+    } 
   };
+   */
 /*     const editarProducto = async (id, datos) => {
     await editarDatosCompleto(`${URL_API}/${id}`, datos);
     await cargarDiscos();
   }; */
+
   // Carga inicial
   useEffect(() => {
     cargarProductos();
   }, []); // Recargar si el estado del usuario cambia
 
   return (
-    <ProductosContext.Provider value={{ productos, cargando, cargarProductos/* , editarProducto */ }}>
+    <ContextoProductos.Provider value={{ productos, cargando, cargarProductos/* , editarProducto */ }}>
       {children}
-    </ProductosContext.Provider>
+    </ContextoProductos.Provider>
   );
 };
 
-export {ProductosContext};
+export {ContextoProductos};
 export default ProveedorProductos;
