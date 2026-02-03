@@ -12,8 +12,8 @@ const ProductoInfo = ({ producto}) => {
 
     return (
         <div className="producto-info" onClick={() => toggleProducto(producto.id)}>
-            <h3>{producto.nombreProducto}</h3>
-            <p>{producto.grupo} - {producto.genero}</p>
+            <h3>{producto.nombre}</h3>
+            <p>{producto.precio} - {producto.precio}</p>
             {expandido && <ProductoDetalle producto={producto} />}
         </div>
     )

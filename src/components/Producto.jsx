@@ -9,8 +9,8 @@ const Producto = ({ producto, onBorrar }) => {
   return (
     <div className="producto-item">
       <div className="producto-imagen">
-        {producto.url_caratula ? (
-          <img src={producto.url_caratula} alt={producto.nombreProducto} />
+        {producto.imagen_url ? (
+          <img src={producto.imagen_url} alt={producto.nombre} />
         ) : (
           <div className="sin-imagen">Sin imagen</div>
         )}

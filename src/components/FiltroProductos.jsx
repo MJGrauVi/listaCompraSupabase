@@ -1,6 +1,8 @@
 import "./FiltroProductos.css";
-
+const {usuario} = useSesion;
 const FiltroProductos = ({ textoFiltro, onChange, onLimpiar }) => {
+
+  if(!usuario) return null;
   return (
     <div className="controles-filtrado">
       <input

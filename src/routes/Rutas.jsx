@@ -15,11 +15,11 @@ const Rutas = () => {
       {/* Públicas */}
       <Route path="/" element={<Inicio />} />
       <Route path="/login" element={<LoginForm />} />
-
+      <Route path="/insertar" element={<Contenedor />} />
       {/* Privadas */}
       {usuario && (
         <>
-          <Route path="/insertar" element={<Contenedor />} />
+          {/* <Route path="/insertar" element={<Contenedor />} /> */}
           <Route path="/productos" element={<ListadoProductos />} />
           <Route path="/productos/:id/editar" element={<Contenedor />} />
         </>

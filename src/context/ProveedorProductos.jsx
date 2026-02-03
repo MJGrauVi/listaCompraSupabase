@@ -11,7 +11,7 @@ export const ProveedorProductos = ({ children }) => {
   console.log("El usuario: ", usuario);
 
   // Función principal para obtener datos
-  const obtenerProductos = async (filtros = {}, orden = { campo: 'nombre', ascendente: true }) => {
+  const cargarProductos = async (filtros = {}, orden = { campo: 'nombre', ascendente: true }) => {
     setCargando(true);
     try {
       let query = supabaseConexion.from("productos").select("*");
@@ -49,11 +49,11 @@ export const ProveedorProductos = ({ children }) => {
   }; */
   // Carga inicial
   useEffect(() => {
-    obtenerProductos();
-  }, [usuario]); // Recargar si el estado del usuario cambia
+    cargarProductos();
+  }, []); // Recargar si el estado del usuario cambia
 
   return (
-    <ProductosContext.Provider value={{ productos, cargando, obtenerProductos/* , editarProducto */ }}>
+    <ProductosContext.Provider value={{ productos, cargando, cargarProductos/* , editarProducto */ }}>
       {children}
     </ProductosContext.Provider>
   );

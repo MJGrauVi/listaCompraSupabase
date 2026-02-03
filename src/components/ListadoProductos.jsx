@@ -20,9 +20,9 @@ const ListadoProductos = () => {
     if (!textoFiltro.trim()) return true;
     const texto = textoFiltro.toLowerCase();
     return (
-      d.nombreProducto?.toLowerCase().includes(texto) ||
-      d.grupo?.toLowerCase().includes(texto) ||
-      d.genero?.toLowerCase().includes(texto)
+      d.nombre?.toLowerCase().includes(texto) ||
+      d.peso?.toLowerCase().includes(texto) ||
+      d.precio?.toLowerCase().includes(texto)
     );
   });
 
@@ -40,7 +40,7 @@ const ListadoProductos = () => {
     const productoAEliminar = productos.find((d) => String(d.id) === String(id));
     try {
       await borrarProducto(id);
-      setMensajeEliminado(`Producto "${productoAEliminar?.nombreProducto}" eliminado.`);
+      setMensajeEliminado(`Producto "${productoAEliminar?.nombre}" eliminado.`);
     } catch {
       console.log("Error al borrar producto");
       setMensajeEliminado("Error al eliminar el producto.");
