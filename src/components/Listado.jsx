@@ -9,17 +9,14 @@ import { calcularResumenProductos } from "../biblioteca/funciones.js";
 
 const Listado = () => {
   const { usuario } = useSesion();
-  const { productos, cargando } = useProductos();
+  const { productos, cargando, setOrden } = useProductos();
 
   const [textoFiltro, setTextoFiltro] = useState("");
-  const [orden, setOrden] = useState(""); // "", "nombre", "peso", "precio"
 
   if (cargando) return <Cargando />;
 
-  // -----------------------------
-  // 1. FILTRADO
-  // -----------------------------
-  let productosProcesados = productos.filter((p) => {
+  // Filtrado de productos.
+  let productosFiltrados = productos.filter((p) => {
     if (!textoFiltro.trim()) return true;
     const texto = textoFiltro.toLowerCase();
     return (
@@ -29,27 +26,10 @@ const Listado = () => {
     );
   });
 
-  // -----------------------------
-  // 2. ORDENACIÓN
-  // -----------------------------
-  if (orden === "nombre") {
-    productosProcesados.sort((a, b) => a.nombre.localeCompare(b.nombre));
-  }
-  if (orden === "peso") {
-    productosProcesados.sort((a, b) => a.peso - b.peso);
-  }
-  if (orden === "precio") {
-    productosProcesados.sort((a, b) => a.precio - b.precio);
-  }
+  // Resumen.
+  const { cantidad, precioMedio } =
+    calcularResumenProductos(productosFiltrados);
 
-  // -----------------------------
-  // 3. RESUMEN
-  // -----------------------------
-  const { cantidad, precioMedio } = calcularResumenProductos(productosProcesados);
-
-  // -----------------------------
-  // 4. MANEJADORES
-  // -----------------------------
   const manejarCambioFiltro = (e) => setTextoFiltro(e.target.value);
   const limpiarFiltro = () => setTextoFiltro("");
 
@@ -65,20 +45,26 @@ const Listado = () => {
             onChange={manejarCambioFiltro}
             onLimpiar={limpiarFiltro}
           />
+        </>
+      )}
+      {/* ORDENACIÓN SOLO SI HAY USUARIO */}
+      {usuario && (
+        <div className="ordenar">
+          <label>Ordenar por: </label>
+          <select onChange={(e) => setOrden(e.target.value || null)}>
+            <option value="">Sin orden</option>
+            <option value="nombre">Nombre</option>
+            <option value="peso">Peso</option>
+            <option value="precio">Precio</option>
+          </select>
+        </div>
+      )}
 
-          {/* ORDENACIÓN SOLO SI HAY USUARIO */}
-          <div className="ordenar">
-            <label>Ordenar por: </label>
-            <select value={orden} onChange={(e) => setOrden(e.target.value)}>
-              <option value="">Sin orden</option>
-              <option value="nombre">Nombre</option>
-              <option value="peso">Peso</option>
-              <option value="precio">Precio</option>
-            </select>
-          </div>
-
+      {usuario && (
+        <>
           <p>
-            Mostrando {productosProcesados.length} de {productos.length} productos
+            Mostrando {productosFiltrados.length} de {productos.length}{" "}
+            productos
             {textoFiltro.trim() && ` (filtrados por "${textoFiltro}")`}
           </p>
         </>
@@ -86,7 +72,7 @@ const Listado = () => {
 
       {/* LISTA DE PRODUCTOS */}
       <div className="lista-productos">
-        {productosProcesados.map((producto) => (
+        {productosFiltrados.map((producto) => (
           <Producto key={producto.id} producto={producto} />
         ))}
       </div>
