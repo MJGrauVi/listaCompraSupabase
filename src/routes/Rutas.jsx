@@ -17,11 +17,13 @@ const Rutas = () => {
       <Route path="/" element={<Inicio />} />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/insertar" element={<Contenedor />} />
+      <Route path="/productos" element={<Listado />} />
+
       {/* Privadas */}
       {usuario && (
         <>
           {/* <Route path="/insertar" element={<Contenedor />} /> */}
-          <Route path="/productos" element={<Listado />} />
+          {/* <Route path="/productos" element={<Listado />} /> */}
           <Route path="/productos/:id/editar" element={<Contenedor />} />
         </>
       )}

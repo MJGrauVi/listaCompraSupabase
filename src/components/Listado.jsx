@@ -1,12 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import "./Listado.css";
-import useProductos from "../hooks/useProductos";
+import useProductos from "../hooks/useProductos.js";
+import useSesion from "../hooks/useSesion.js";
 import Producto from "./Producto.jsx";
 import Cargando from "./Cargando.jsx";
 import FiltroProductos from "./FiltroProductos.jsx";
 
 const Listado = () => {
+  const {usuario} = useSesion();
   const { productos, cargando } = useProductos();
   console.log(productos);
   const [textoFiltro, setTextoFiltro] = useState("");

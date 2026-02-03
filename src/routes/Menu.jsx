@@ -8,18 +8,23 @@ const Menu = () => {
   return (
     <>
       <nav>
-       { <Link className="menu-elemento" to="/">
-          Inicio
-        </Link>}
-        {usuario && ( 
+        {
+          <Link className="menu-elemento" to="/">
+            Inicio
+          </Link>
+        }
+        <Link className="menu-elemento" to="/productos">
+          Productos
+        </Link>
+        {usuario && (
           <>
-          {/*  <pre>{JSON.stringify(usuario, null, 2)}</pre> */}
+            {/*  <pre>{JSON.stringify(usuario, null, 2)}</pre> */}
             <Link className="menu-elemento" to="/insertar">
               Insertar
             </Link>
-            <Link className="menu-elemento" to="/productos">
+        {/*     <Link className="menu-elemento" to="/productos">
               Listado
-            </Link>
+            </Link> */}
           </>
         )}
       </nav>
