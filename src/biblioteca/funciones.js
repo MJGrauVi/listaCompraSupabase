@@ -1,34 +1,36 @@
 "use strict";
- const validarDisco = ({ nombreDisco, tipoGrupo, grupo, genero, lanzamiento, localizacion }) => {
-    let errores = [];
-    const regExp = /^[A-Za-z\s]{4,}$/;
-    const localizaRegExp = /^ES-\d{3}[A-Z]{2}$/;
-    const anioRegExp = /^\d{4}$/;
-    
-    if (!nombreDisco || !regExp.test(nombreDisco)) {
-        errores.push("El nombre es obligatorio y debe tener al menos 4 caracteres.");
-    }
-   /*   if (url_caratula) {
-        errores.push("La carátula no es obligatorio.");
-    } */
-   
-    if (!tipoGrupo || tipoGrupo.length < 4) {
-        errores.push("El tipo de Grupo es obligatorio y debe tener al menos 4 caracteres.");
-    }
-    if (!grupo || grupo.length < 4) {
-        errores.push("El nombre del grupo o solista es obligatorio y debe tener al menos 4 caracteres.");
-    }
-    if (!genero) {
-        errores.push("El género es obligatoriooooooo.");
-    }
-    if (!lanzamiento || !anioRegExp.test(lanzamiento)) {
-        errores.push("El año de lanzamiento es obligatorio.");
-    }
-    if (!localizacion || !localizaRegExp.test(localizacion.toUpperCase())) {
-        errores.push("La localización es obligatoria y debe cumplir el patron (ES-111AA).");
-    }
-    return errores;
+const validarProducto = ({ nombre, peso, precio, descripcion }) => {
+  let errores = [];
+  const regExp = /^[A-Za-z\s]{4,}$/;
+  const regExpPeso = /^\d+([.,]\d+)?$/;
+  const regExpPrecio = /^\d{1,3}(\.\d{3})*(,\d{2})\s?€$/;
 
-} 
+  if (!nombre || !regExp.test(nombre)) {
+    errores.push(
+      "El nombre es obligatorio y debe tener al menos 4 caracteres.",
+    );
+  }
 
-export { validarDisco};
+  if (!peso || regExpPeso.test(peso)) {
+    errores.push("Campo obligatorio, introduzca su valor.");
+  }
+  if (!precio || regExpPrecio.test(precio)) {
+    errores.push("Campo obligatorio, debe tener formato 1.000,00 €.");
+  }
+  if (!descripcion || descripcion.trim().length < 10) {
+    errores.descripcion = "La descripción debe tener al menos 10 caracteres.";
+  }
+
+  return errores;
+};
+const parsePrecio = (precio) => {
+  return Number(
+    precio
+      .replace(/\./g, "") // quitar separadores de miles
+      .replace(",", ".") // cambiar coma por punto
+      .replace("€", "") // quitar símbolo €
+      .trim(),
+  );
+};
+
+export { validarProducto, parsePrecio };

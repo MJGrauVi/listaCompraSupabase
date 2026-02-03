@@ -1,0 +1,39 @@
+{
+  "productos": [
+    {
+      "nombre": "Reloj Inteligente Mujer Smartwatch",
+      "peso": "0,25",
+      "precio": "23,99 €",
+      "url_caratula": "https://www.amazon.es/Reloj-Inteligente-Mujer-Smartwatch-Llamadas/dp/B0FM3L8TCQ",
+      "descripcion": "Smartwatch con pantalla grande, llamadas Bluetooth, más de 110 modos deportivos y funciones de salud"
+    },
+    {
+      "nombre": "Lenovo V15 G2 IJL",
+      "peso": "1,2",
+      "precio": "339,55 €",
+      "url_caratula": "https://www.pccomponentes.com/lenovo-v15-g2-ijl-intel-celeron-n4500-8gb-256gb-ssd-156",
+      "descripcion": "Portátil de 15.6\" Full HD, ideal para tareas diarias, diseño ligero y eficiente."
+    },
+    {
+      "nombre": "Xiaomi Redmi 15C – 128GB + 4GB RAM",
+      "peso": "0,2 €",
+      "precio": "89,98 €",
+      "url_caratula": "https://www.carrefour.es/movil-xiaomi-redmi-15c-128gb-4gb-ram-verde/6932554455484/p",
+      "descripcion": "Smartphone equilibrado con buena autonomía y rendimiento básico."
+    },
+    {
+      "nombre": "Tablet ROENLLCE 7\" Android 13 – 4GB RAM, 32GB ROM",
+      "peso": "0,12",
+      "precio": "41,91",
+      "url_caratula": "https://www.temu.com/ul/kuiper/un9.html?goods_id=601100102730405",
+      "descripcion": "Tablet compacta, pantalla HD, Android 13 y altavoces estéreo."
+    },
+    {
+      "nombre": "Cascos Inalámbricos Bluetooth LAN XUN",
+      "peso": "0,1",
+      "precio": "6,31 €",
+      "url_caratula": "https://www.temu.com/ul/kuiper/un9.html?goods_id=601105537531756",
+      "descripcion": "Auriculares inalámbricos con cancelación de ruido para llamadas y carga USB‑C."
+    }
+  ]
+}

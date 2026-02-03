@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect} from "react";
-import { supabase } from "../supabaseClient"; // Ajusta la ruta a tu cliente
+import { supabaseConexion } from "../supabase/supabase.js";
 import useSesion from "../hooks/useSesion.js";
 
 const ProductosContext = createContext();
@@ -8,12 +8,13 @@ export const ProveedorProductos = ({ children }) => {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(false);
   const { usuario } = useSesion();
+  console.log("El usuario: ", usuario);
 
   // Función principal para obtener datos
   const obtenerProductos = async (filtros = {}, orden = { campo: 'nombre', ascendente: true }) => {
     setCargando(true);
     try {
-      let query = supabase.from("productos").select("*");
+      let query = supabaseConexion.from("productos").select("*");
 
       // Solo aplicamos filtros y orden si el usuario está registrado
       if (usuario) {
@@ -42,14 +43,17 @@ export const ProveedorProductos = ({ children }) => {
       setCargando(false);
     }
   };
-
+/*     const editarProducto = async (id, datos) => {
+    await editarDatosCompleto(`${URL_API}/${id}`, datos);
+    await cargarDiscos();
+  }; */
   // Carga inicial
   useEffect(() => {
     obtenerProductos();
   }, [usuario]); // Recargar si el estado del usuario cambia
 
   return (
-    <ProductosContext.Provider value={{ productos, cargando, obtenerProductos }}>
+    <ProductosContext.Provider value={{ productos, cargando, obtenerProductos/* , editarProducto */ }}>
       {children}
     </ProductosContext.Provider>
   );
