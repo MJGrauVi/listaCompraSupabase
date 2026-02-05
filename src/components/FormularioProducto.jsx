@@ -47,7 +47,7 @@ const FormularioProducto = () => {
       setProducto({
         nombre: productoEncontrado.nombre || "",
         peso: productoEncontrado.peso.toString().replace(".", ",") || "",
-        precio: productoEncontrado.precio.toLocaleString("es-ES") || "",
+        precio: productoEncontrado.precio.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "",//Cuando modificamos carga con decimales.
         imagen_url: productoEncontrado.imagen_url || "",
         descripcion: productoEncontrado.descripcion || "",
       });
@@ -112,7 +112,7 @@ const FormularioProducto = () => {
           texto: `Producto "${productoCompleto.nombre}" actualizado correctamente.`,
         });
         setTimeout(() => {
-          navigate("/listadoProductos");
+          navigate("/productos");
         }, 5000);
       } else {
         //Guardamos el producto creado.
@@ -122,7 +122,7 @@ const FormularioProducto = () => {
           texto: `Producto "${productoCompleto.nombre}" añadido correctamente a la colección.`,
         });
         setTimeout(() => {
-          navigate("/listadoProductos");
+          navigate("/productos");
         }, 2000);
       }
 
@@ -136,12 +136,6 @@ const FormularioProducto = () => {
       });
     }
   };
-
-  /*   const obtenerClaseError = (nombreCampo) => {
-      return errores[nombreCampo] && errores[nombreCampo].length > 0
-        ? "campo-error"
-        : "";
-    }; */
 
   const todosLosErrores = Object.values(errores).flat();
   //Muestra espiner mientras espera la carga del formulario.
