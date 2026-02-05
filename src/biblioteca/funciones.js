@@ -12,10 +12,12 @@ const validarProducto = ({ nombre, peso, precio, descripcion }) => {
   }
 
   if (!peso || regExpPeso.test(peso)) {
-    errores.push("Campo obligatorio, introduzca su valor.");
+    errores.push("El peso es obligatorio, introduzca su valor.");
   }
   if (!precio || regExpPrecio.test(precio)) {
-    errores.push("Campo obligatorio, debe tener formato 1.000,00 €.");
+    errores.push(
+      "Introduzca el valor del producto, debe tener formato 1.000,00 €.",
+    );
   }
   if (!descripcion || descripcion.trim().length < 10) {
     errores.descripcion = "La descripción debe tener al menos 10 caracteres.";
@@ -39,10 +41,8 @@ const calcularResumenProductos = (productos) => {
   const precioMedio =
     cantidad > 0
       ? (
-          productos.reduce(
-            (total, p) => total + Number(p.precio || 0),
-            0
-          ) / cantidad
+          productos.reduce((total, p) => total + Number(p.precio || 0), 0) /
+          cantidad
         ).toFixed(2)
       : 0;
 

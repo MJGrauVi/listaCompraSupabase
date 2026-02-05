@@ -1,17 +1,17 @@
-.contenedor-listado-discos {
+.contenedor-listado-productos {
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
 }
 
-.lista-discos {
+.lista-productos {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.contenedor-listado-discos h2 {
+.contenedor-listado-productos h2 {
   text-align: center;
   margin-bottom: 20px;
 }

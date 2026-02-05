@@ -9,23 +9,8 @@ const ProveedorProductos = ({ children }) => {
   const [cargando, setCargando] = useState(false);
   const [orden, setOrden] = useState(null);
   const { usuario } = useSesion();
-  console.log("El usuario: ", usuario);
 
-  // Función principal para obtener datos
-  /*   const cargarProductos = async () => {
-    setCargando(true);
-    const { data, error } = await supabaseConexion
-      .from("productos")
-      .select("*")
 
-    if (error) {
-      console.error("Error al obtener productos:", error)
-    } else {
-      console.log("Productos:", data) // Ver en consola.
-      setProductos(data || []);
-      setCargando(false);
-    }
-  } */
 
   const cargarProductos = async (campoOrden = null) => {
     setCargando(true);
@@ -51,6 +36,56 @@ const ProveedorProductos = ({ children }) => {
     }
   };
 
+  const guardarProducto = async (nuevoProducto)=>{
+    try{
+      const {data} = await supabaseConexion
+      .from("productos")
+      .insert(nuevoProducto)
+      console.log(data);
+    }catch(error){
+      throw new error;
+      
+    }
+  }
+const actualizarProducto = async (id, datosActualizados) => {
+  try {
+    const { error } = await supabaseConexion
+      .from("productos")
+      .update(datosActualizados)
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error al actualizar el producto:", error);
+    } else {
+      //Cargarmos desde Supabase los datos.
+      cargarProductos(orden);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+const borrarProducto = async (id) => {
+  try {
+    //Borro el elemento de la BBDD.
+    const { error } = await supabaseConexion
+      .from("productos")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error al borrar producto:", error);
+    } else {
+      // Actualizamos el estado local filtrando el listado del estado previo.
+      setProductos(prev=>prev.filter((p) => p.id !== id));
+      //Podemmos llamar de nuevo a cargarDatos() y hacer la peticion con los datos actualizados.
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
   // Carga inicial
   useEffect(() => {
     cargarProductos(orden);
@@ -58,7 +93,7 @@ const ProveedorProductos = ({ children }) => {
 
   return (
     <ContextoProductos.Provider
-      value={{ productos, cargando, cargarProductos, setOrden }}
+      value={{ productos, cargando, cargarProductos, guardarProducto, setOrden, actualizarProducto, borrarProducto }}
     >
       {children}
     </ContextoProductos.Provider>

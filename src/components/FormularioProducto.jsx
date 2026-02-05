@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./FormularioProducto.css";
-import Errores from "../Errores.jsx";
-import Cargando from "../Cargando.jsx";
-import { validarProducto, parsePrecio } from "../../biblioteca/funciones.js";
+import Errores from "./Errores.jsx";
+import Cargando from "./Cargando.jsx";
+import { validarProducto, parsePrecio } from "../biblioteca/funciones.js";
 /* import useSesion from "../hooks/useSesion.js"; */
-import useProductos from "../../hooks/useProductos.js";
+import useProductos from "../hooks/useProductos.js";
 
 //Formulario para insertar o editar Productos.
 const FormularioProducto = () => {
-  console.log("🟢 FormularioProducto MONTADO");
   /* const {cargando} = useSesion(); */
-  const { productos, guardarProducto } = useProductos(); //Para consumir los datos del contexto.
+  const {
+    productos,
+    guardarProducto,
+    actualizarProducto,
+    cargando,
+    borrarProducto,
+  } = useProductos(); //Para consumir los datos del contexto.
   const { id } = useParams(); //Obtenemos el id del elemento que queremos editar.
   const navigate = useNavigate(); //Para redirigir despues de actualizar un producto.
   const esEdicion = !!id; //Si hay id el la URL estará editando y sino está creando.
@@ -97,7 +102,7 @@ const FormularioProducto = () => {
       //EDITAR
       //Sin estamos editando llamamos.
       if (esEdicion) {
-        await editarProducto(id, productoCompleto);
+        await actualizarProducto(id, productoCompleto);
         setMensaje({
           tipo: "exito",
           texto: `Producto "${productoCompleto.nombre}" actualizado correctamente.`,
@@ -135,14 +140,11 @@ const FormularioProducto = () => {
     }; */
 
   const todosLosErrores = Object.values(errores).flat();
-  //Renderizado bloqueante que sustituye al formulario.Muestra espiner mientras espera datos.
-  /*   if (cargando) {
-    return <Cargando />;
-  } */
+  //Muestra espiner mientras espera la carga del formulario.
+  if (cargando) return <Cargando />;
 
   return (
     <div className="contenedor-formulario-producto">
-      <h2>Formulario cargando</h2>
       <h2>{esEdicion ? "Editar Producto" : "Insertar Producto"}</h2>
 
       <form onSubmit={manejarEnvio} className="formulario-producto">
@@ -173,7 +175,7 @@ const FormularioProducto = () => {
             value={producto.peso}
             onChange={actualizarDato}
             className="input-formulario"
-            placeholder="Peso del producto"
+            placeholder="Peso del producto en gramos"
           />
         </div>
 
@@ -189,7 +191,7 @@ const FormularioProducto = () => {
             value={producto.precio}
             onChange={actualizarDato}
             className="input-formulario"
-            placeholder="Precio del producto"
+            placeholder="Introduzca el precio en euros"
           />
         </div>
         {/* Imagen_url */}

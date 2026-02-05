@@ -2,10 +2,13 @@ import React from "react";
 import "./Producto.css";
 import ProductoPP from "./ProductoPP.jsx";
 import ProductoInfo from "./ProductoInfo.jsx";
+import useSesion from "../hooks/useSesion.js";
+import ProductoAcciones from "./ProductoAcciones.jsx";
+
 
 const Producto = ({ producto }) => {
   //Leer del contexto.
-
+const { usuario } = useSesion();
   return (
     <div className="producto-item">
       <div className="producto-imagen">
@@ -19,6 +22,7 @@ const Producto = ({ producto }) => {
       <div className="producto-pp2">
         <ProductoPP producto={producto} />
       </div>
+      {usuario && <ProductoAcciones />}
     </div>
   );
 };

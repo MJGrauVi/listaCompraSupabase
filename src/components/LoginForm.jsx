@@ -81,7 +81,7 @@ const LoginForm = () => {
     }
   };
 
-  /*if (cargando) return <Cargando />; */
+  /* if (cargando) return <Cargando />; */
 
   return (
     <form className="form-login-registro" onSubmit={submitFormulario}>

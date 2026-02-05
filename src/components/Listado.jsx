@@ -7,13 +7,13 @@ import Cargando from "./Cargando.jsx";
 import FiltroProductos from "./FiltroProductos.jsx";
 import { calcularResumenProductos } from "../biblioteca/funciones.js";
 
+
 const Listado = () => {
   const { usuario } = useSesion();
-  const { productos, cargando, setOrden } = useProductos();
+  const { productos, cargando, setOrden,  } = useProductos();
 
   const [textoFiltro, setTextoFiltro] = useState("");
 
-  if (cargando) return <Cargando />;
 
   // Filtrado de productos.
   let productosFiltrados = productos.filter((p) => {
@@ -33,6 +33,7 @@ const Listado = () => {
   const manejarCambioFiltro = (e) => setTextoFiltro(e.target.value);
   const limpiarFiltro = () => setTextoFiltro("");
 
+  if (cargando) return <Cargando />;
   return (
     <div className="contenedor-listado-productos">
       <h2>Listado de productos</h2>
