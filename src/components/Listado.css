@@ -1,7 +1,7 @@
 .contenedor-listado-productos {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: px;
   font-family: Arial, sans-serif;
 }
 
@@ -61,23 +61,31 @@
   color: #721c24;
 }
 
- .mensaje-eliminado {
+.mensaje-eliminado {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #28a745; 
+  background-color: #28a745;
   color: white;
   padding: 1rem 2rem;
   border-radius: 8px;
   z-index: 1000;
   text-align: center;
   font-size: 1.2rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   opacity: 1;
   transition: opacity 0.3s ease;
-} 
+}
 
 .mensaje-eliminado.oculto {
   opacity: 0;
+}
+.productos-resumen {
+  margin-top: 25px;
+  margin: 20px;
+  background-color: rgb(231, 227, 227);
+  padding: 10px;
+  
+
 }
