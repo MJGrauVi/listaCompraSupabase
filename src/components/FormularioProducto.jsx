@@ -11,8 +11,8 @@ import useProductos from "../hooks/useProductos.js";
 const FormularioProducto = () => {
   /* const {cargando} = useSesion(); */
   const {
-  /*   productos,
-    cargarProducto, */
+    productos,
+    cargarProducto,
     guardarProducto,
     actualizarProducto,
     cargando,

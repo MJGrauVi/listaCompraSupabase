@@ -14,7 +14,7 @@ const FiltroProductos = ({ textoFiltro, onChange, onLimpiar}) => {
         />
       </div>
       <div>
-        <button
+        <button className="boton-filtro"
           type="button"
           onClick={onLimpiar}
           disabled={!textoFiltro.trim()}

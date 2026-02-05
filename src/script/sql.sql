@@ -29,10 +29,17 @@ INSERT INTO productos (nombre, peso, precio, imagen_url, descripcion) VALUES
 ),
 (
   'Sony WH-CH520',
-  147,
+  59,
   59.00,
   'https://m.media-amazon.com/images/I/610zLOuJmpL._AC_SL1500_.jpg',
   'Auriculares Bluetooth con 50 horas de batería y sonido equilibrado.'
+),
+(
+  'E-YOOSO Ratón Vertical 2.4G',
+  147,
+  27.51,
+  'https://img.kwcdn.com/product/fancy/ef437fb1-e5c8-47e9-8eb9-4a414773985f.jpg?imageView2/2/w/800/q/70/format/avif',
+  'Ratón Ergonómico para Oficina, Gaming, Uso Profesional, Cómodo, Ajustable Multi-DPI, Compatible con Escritorio, Portátil, Windows 7/8/10.'
 );
 
 //Eliminar

@@ -1,0 +1,27 @@
+.producto-acciones {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  margin: 0 20px;
+}
+.producto-acciones button {
+  padding: 6px 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.btn-editar {
+  background-color: #4caf50;
+  color: white;
+}
+.btn-editar:hover {
+  background-color: #45a049;
+}
+.producto-acciones button:last-child {
+  background-color: #e53935;
+  color: white;
+}
+.producto-acciones button:last-child:hover {
+  background-color: #c62828;
+}

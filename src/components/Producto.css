@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;     /* centra verticalmente */
   gap: 16px;               /* espacio entre columnas */
-  padding: 10px;
+  padding: 30px 5px 15px;
   border-bottom: 1px solid #ccc;
 
 }

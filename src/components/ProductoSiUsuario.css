@@ -1,9 +1,9 @@
 producto-item-usuario{
-    display:block;
-    flex-direction: column;
+    display:flex;
+   
 }
 
-.producto-item-usuario {
+.producto-item{
   display: flex;
   align-items: center;     /* centra verticalmente */
   gap: 16px;               /* espacio entre columnas */

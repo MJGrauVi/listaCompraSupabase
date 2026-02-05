@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import useProductos from "../hooks/useProductos.js";
+import "./ProductoAcciones.css";
 
 
 const ProductoAcciones = ({ producto}) => {

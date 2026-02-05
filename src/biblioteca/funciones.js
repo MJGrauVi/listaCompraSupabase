@@ -25,19 +25,24 @@ const validarProducto = ({ nombre, peso, precio, descripcion }) => {
 
   return errores;
 };
+
+
 const parsePrecio = (precio) => {
   return Number(
     precio
-      .replace(/\./g, "") // quitar separadores de miles
-      .replace(",", ".") // cambiar coma por punto
-      .replace("€", "") // quitar símbolo €
+      .replace(/\./g, "") // Quitar separadores de miles.
+      .replace(",", ".") // Cambiar coma por punto.
+      .replace("€", "") // Quitar símbolo €.
       .trim(),
   );
 };
 
 const calcularResumenProductos = (productos) => {
+  //.length nos da la cantidad de productos.
   const cantidad = productos.length;
 
+  //Acumulados en total el precio de cada producto si lo tiene, sino toma 0 como valor.
+  //Formateamos con 2 decimales.
   const precioMedio =
     cantidad > 0
       ? (

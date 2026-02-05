@@ -5,25 +5,28 @@ import ProductoInfo from "./ProductoInfo.jsx";
 import useSesion from "../hooks/useSesion.js";
 import ProductoAcciones from "./ProductoAcciones.jsx";
 
-
 const Producto = ({ producto }) => {
   //Leer del contexto.
-const { usuario } = useSesion();
+  const { usuario } = useSesion();
   return (
-    <div className="producto-item">
-      <div className="producto-imagen">
-        {producto.imagen_url ? (
-          <img src={producto.imagen_url} alt={producto.nombre} />
-        ) : (
-          <div className="sin-imagen">Sin imagen</div>
-        )}
-      </div>
-      <ProductoInfo producto={producto} />
-      <div className="producto-pp2">
-        <ProductoPP producto={producto} />
+    <>
+      <div className="producto-item">
+        <div className="producto-imagen">
+          {producto.imagen_url ? (
+            <img src={producto.imagen_url} alt={producto.nombre} />
+          ) : (
+            <div className="sin-imagen">Sin imagen</div>
+          )}
+        </div>
+
+        <ProductoInfo producto={producto} />
+
+        <div className="producto-pp2">
+          <ProductoPP producto={producto} />
+        </div>
       </div>
       {usuario && <ProductoAcciones producto={producto} />}
-    </div>
+    </>
   );
 };
 
