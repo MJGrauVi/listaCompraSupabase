@@ -22,7 +22,7 @@ const { usuario } = useSesion();
       <div className="producto-pp2">
         <ProductoPP producto={producto} />
       </div>
-      {usuario && <ProductoAcciones />}
+      {usuario && <ProductoAcciones producto={producto} />}
     </div>
   );
 };

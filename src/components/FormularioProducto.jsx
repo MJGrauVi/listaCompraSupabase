@@ -11,11 +11,12 @@ import useProductos from "../hooks/useProductos.js";
 const FormularioProducto = () => {
   /* const {cargando} = useSesion(); */
   const {
-    productos,
+  /*   productos,
+    cargarProducto, */
     guardarProducto,
     actualizarProducto,
     cargando,
-    borrarProducto,
+    obtenerProductoPorId
   } = useProductos(); //Para consumir los datos del contexto.
   const { id } = useParams(); //Obtenemos el id del elemento que queremos editar.
   const navigate = useNavigate(); //Para redirigir despues de actualizar un producto.
@@ -36,12 +37,11 @@ const FormularioProducto = () => {
 
   // Cargar datos del producto si estamos editando
   useEffect(() => {
+
+    const cargarProducto = async ()=>{ 
     if (!esEdicion) return;
-    //Protección por si el contexto aún no se ha inicializado.
-    if (!Array.isArray(productos) || productos.length === 0) return;
-
-    const productoEncontrado = productos.find((d) => String(d.id) === id);
-
+   
+    const productoEncontrado = await obtenerProductoPorId(id);
     if (productoEncontrado) {
       //Mostramos en pantalla datos numéricos formateados.
       setProducto({
@@ -52,7 +52,9 @@ const FormularioProducto = () => {
         descripcion: productoEncontrado.descripcion || "",
       });
     }
-  }, [id, productos, esEdicion]);
+  };
+  cargarProducto();
+  }, [id, esEdicion]);
 
   /* Actualiza el estado del formulario cuando cambia un campo */
 
@@ -77,6 +79,8 @@ const FormularioProducto = () => {
     evento.preventDefault(); //Eliminamos el comportamiento por defecto de submit en el form.
 
     // Validar todos los campos
+    console.log("Validando Producto: ", producto);
+    
     const listaErroresValidacion = validarProducto(producto);
     setErrores(listaErroresValidacion);
 
@@ -141,11 +145,11 @@ const FormularioProducto = () => {
 
   const todosLosErrores = Object.values(errores).flat();
   //Muestra espiner mientras espera la carga del formulario.
-  if (cargando) return <Cargando />;
+  if (!producto) return <Cargando />;
 
   return (
     <div className="contenedor-formulario-producto">
-      <h2>{esEdicion ? "Editar Producto" : "Insertar Producto"}</h2>
+      <h2>{esEdicion ? "Editar Producto" : "Insertar un producto a la base de datos."}</h2>
 
       <form onSubmit={manejarEnvio} className="formulario-producto">
         {/* Nombre del producto */}

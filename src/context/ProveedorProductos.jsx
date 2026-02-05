@@ -10,8 +10,6 @@ const ProveedorProductos = ({ children }) => {
   const [orden, setOrden] = useState(null);
   const { usuario } = useSesion();
 
-
-
   const cargarProductos = async (campoOrden = null) => {
     setCargando(true);
     try {
@@ -36,55 +34,68 @@ const ProveedorProductos = ({ children }) => {
     }
   };
 
-  const guardarProducto = async (nuevoProducto)=>{
-    try{
-      const {data} = await supabaseConexion
-      .from("productos")
-      .insert(nuevoProducto)
+  const guardarProducto = async (nuevoProducto) => {
+    try {
+      const { data } = await supabaseConexion
+        .from("productos")
+        .insert(nuevoProducto);
       console.log(data);
-    }catch(error){
-      throw new error;
-      
+    } catch (error) {
+      throw new error();
     }
-  }
-const actualizarProducto = async (id, datosActualizados) => {
-  try {
-    const { error } = await supabaseConexion
+  };
+  const actualizarProducto = async (id, datosActualizados) => {
+    try {
+      const { error } = await supabaseConexion
+        .from("productos")
+        .update(datosActualizados)
+        .eq("id", id);
+
+      if (error) {
+        console.error("Error al actualizar el producto:", error);
+        return null;
+      } else {
+        //Cargarmos desde Supabase los datos.
+        cargarProductos(orden);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const obtenerProductoPorId = async (id) => {
+    const { data, error } = await supabaseConexion
       .from("productos")
-      .update(datosActualizados)
-      .eq("id", id);
-
+      .select("*")
+      .eq("id", id)
+      .single();
     if (error) {
-      console.error("Error al actualizar el producto:", error);
-    } else {
-      //Cargarmos desde Supabase los datos.
-      cargarProductos(orden);
+      console.error("Error obteniendo producto:", error);
+      return null;
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+    console.log("Elemento.id:", data);
+    return data;
+    
+  };
 
+  const borrarProducto = async (id) => {
+    try {
+      //Borro el elemento de la BBDD.
+      const { error } = await supabaseConexion
+        .from("productos")
+        .delete()
+        .eq("id", id);
 
-const borrarProducto = async (id) => {
-  try {
-    //Borro el elemento de la BBDD.
-    const { error } = await supabaseConexion
-      .from("productos")
-      .delete()
-      .eq("id", id);
-
-    if (error) {
-      console.error("Error al borrar producto:", error);
-    } else {
-      // Actualizamos el estado local filtrando el listado del estado previo.
-      setProductos(prev=>prev.filter((p) => p.id !== id));
-      //Podemmos llamar de nuevo a cargarDatos() y hacer la peticion con los datos actualizados.
+      if (error) {
+        console.error("Error al borrar producto:", error);
+      } else {
+        // Actualizamos el estado local filtrando el listado del estado previo.
+        setProductos((prev) => prev.filter((p) => p.id !== id));
+        //Podemmos llamar de nuevo a cargarDatos() y hacer la peticion con los datos actualizados.
+      }
+    } catch (error) {
+      console.error(error);
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+  };
 
   // Carga inicial
   useEffect(() => {
@@ -93,7 +104,16 @@ const borrarProducto = async (id) => {
 
   return (
     <ContextoProductos.Provider
-      value={{ productos, cargando, cargarProductos, guardarProducto, setOrden, actualizarProducto, borrarProducto }}
+      value={{
+        productos,
+        cargando,
+        cargarProductos,
+        guardarProducto,
+        setOrden,
+        actualizarProducto,
+        borrarProducto,
+        obtenerProductoPorId
+      }}
     >
       {children}
     </ContextoProductos.Provider>

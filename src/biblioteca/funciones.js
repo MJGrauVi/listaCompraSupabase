@@ -1,20 +1,20 @@
 "use strict";
 const validarProducto = ({ nombre, peso, precio, descripcion }) => {
   let errores = [];
-  const regExp = /^[A-Za-z\s]{4,}$/;
+  const regExpNombre = /^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9\s\-.,()]{4,}$/;
   const regExpPeso = /^\d+([.,]\d+)?$/;
-  const regExpPrecio = /^\d{1,3}(\.\d{3})*(,\d{2})\s?€$/;
+  const regExpPrecio = /^\d{1,3}(\.\d{3})*(,\d{2})(\s?€)?$/;
 
-  if (!nombre || !regExp.test(nombre)) {
+  if (!nombre || !regExpNombre.test(nombre)) {
     errores.push(
       "El nombre es obligatorio y debe tener al menos 4 caracteres.",
     );
   }
 
-  if (!peso || regExpPeso.test(peso)) {
+  if (!peso || !regExpPeso.test(peso)) {
     errores.push("El peso es obligatorio, introduzca su valor.");
   }
-  if (!precio || regExpPrecio.test(precio)) {
+  if (!precio || !regExpPrecio.test(precio)) {
     errores.push(
       "Introduzca el valor del producto, debe tener formato 1.000,00 €.",
     );
