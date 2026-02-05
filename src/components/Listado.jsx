@@ -35,6 +35,8 @@ const Listado = () => {
 
   if (cargando) return <Cargando />;
   return (
+    <>
+  {/*   if (cargando) return <Cargando /> */}
     <div className="contenedor-listado-productos">
       <h2>Listado de productos</h2>
 
@@ -91,6 +93,7 @@ const Listado = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

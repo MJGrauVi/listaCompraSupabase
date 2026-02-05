@@ -5,7 +5,7 @@ const Contenedor = () => {
   
   return (
     <div className="contenedor-formulario">
-      <h2>Formulario Insertar prod</h2>
+      
       <FormularioProducto />
     </div>
   );
