@@ -26,7 +26,6 @@ const validarProducto = ({ nombre, peso, precio, descripcion }) => {
   return errores;
 };
 
-
 const parsePrecio = (precio) => {
   return Number(
     precio
@@ -38,6 +37,7 @@ const parsePrecio = (precio) => {
 };
 
 const calcularResumenProductos = (productos) => {
+
   //.length nos da la cantidad de productos.
   const cantidad = productos.length;
 
