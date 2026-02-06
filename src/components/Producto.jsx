@@ -5,9 +5,11 @@ import ProductoInfo from "./ProductoInfo.jsx";
 import useSesion from "../hooks/useSesion.js";
 import ProductoAcciones from "./ProductoAcciones.jsx";
 
-const Producto = ({ producto }) => {
+const Producto = ({ producto, onProductoEliminado }) => {
   //Leer del contexto.
   const { usuario } = useSesion();
+
+   
   return (
     <>
       <div className="producto-item">
@@ -25,7 +27,7 @@ const Producto = ({ producto }) => {
           <ProductoPP producto={producto} />
         </div>
       </div>
-      {usuario && <ProductoAcciones producto={producto} />}
+      {usuario && <ProductoAcciones producto={producto} onProductoEliminado={onProductoEliminado} />}
     </>
   );
 };

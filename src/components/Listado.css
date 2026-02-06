@@ -60,13 +60,28 @@
   background-color: #f8d7da;
   color: #721c24;
 }
+.seccion-filto{
+  margin: 30px 0;
+  background-color: rgb(245, 245, 245);
+  padding: 10px;
+  border: solid, 1px, gray;
+}
+.seccion-filto button{
+  background-color:rgb(176, 188, 199);
+  color:#616171e8;
+  width: 100px;
+  color: white;
+}
+button{
 
+}
 .mensaje-eliminado {
   position: fixed;
   top: 50%;
   left: 50%;
+  width: 300px;
   transform: translate(-50%, -50%);
-  background-color: #28a745;
+  background-color: #a78928;
   color: white;
   padding: 1rem 2rem;
   border-radius: 8px;
@@ -84,7 +99,7 @@
 .productos-resumen {
   margin-top: 25px;
   margin: 20px;
-  background-color: rgb(137, 240, 225);
+  background-color: rgb(231, 227, 227);
   padding: 10px;
   
 

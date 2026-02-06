@@ -11,7 +11,7 @@
   cursor: pointer;
   font-size: 14px;
 }
-.btn-editar {
+ .btn-editar {
   background-color: #4caf50;
   color: white;
 }
@@ -24,4 +24,4 @@
 }
 .producto-acciones button:last-child:hover {
   background-color: #c62828;
-}
+} 
