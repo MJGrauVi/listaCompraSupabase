@@ -11,8 +11,7 @@ import useProductos from "../hooks/useProductos.js";
 const FormularioProducto = () => {
   /* const {cargando} = useSesion(); */
   const {
-    productos,
-    cargarProducto,
+   
     guardarProducto,
     actualizarProducto,
     cargando,
@@ -30,7 +29,7 @@ const FormularioProducto = () => {
     imagen_url: "",
     descripcion: "",
   };
-  console.log("FormularioProducto renderizado");
+  
   const [producto, setProducto] = useState(valoresIniciales);
   const [errores, setErrores] = useState([]);
   const [mensaje, setMensaje] = useState({ tipo: "", texto: "" });
@@ -134,8 +133,9 @@ const FormularioProducto = () => {
       });
     }
   };
-
+  //Aplana el array de errores [] a uno de strings.
   const todosLosErrores = Object.values(errores).flat();
+
   //Muestra espiner mientras espera la carga del formulario.
   if (!producto) return <Cargando />;
 
@@ -220,7 +220,7 @@ const FormularioProducto = () => {
         </div>
       {/* Mostramos texto distinto según el estado,  */}
         <button type="submit" className="boton-guardar">
-          console.log("Estado cargando:", cargando);
+          
           {cargando
             ? "Guardando...."
             : esEdicion

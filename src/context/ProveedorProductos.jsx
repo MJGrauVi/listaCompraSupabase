@@ -75,7 +75,7 @@ const ProveedorProductos = ({ children }) => {
       /* console.error("Error obteniendo producto:", error); */
       return null;
     }
-    console.log("Elemento.id:", data);
+   // console.log("Elemento.id:", data);
     return data;
     
   };

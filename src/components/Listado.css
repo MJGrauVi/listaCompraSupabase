@@ -1,7 +1,7 @@
 .contenedor-listado-productos {
   max-width: 1200px;
   margin: 0 auto;
-  padding: px;
+ 
   font-family: Arial, sans-serif;
 }
 
@@ -81,7 +81,7 @@ button{
   left: 50%;
   width: 300px;
   transform: translate(-50%, -50%);
-  background-color: #a78928;
+  background-color: #33ecdf;
   color: white;
   padding: 1rem 2rem;
   border-radius: 8px;
