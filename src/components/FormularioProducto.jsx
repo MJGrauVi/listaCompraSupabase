@@ -73,14 +73,12 @@ const FormularioProducto = () => {
     setMensaje({ tipo: "", texto: "" }); //Limpia mensaje antiguo.
   };
 
-  //SUBMIT DEL FORMULARIO.
+  //Submit del formulario.
   //CREAR.
   const manejarEnvio = async (evento) => {
     evento.preventDefault(); //Eliminamos el comportamiento por defecto de submit en el form.
 
-    // Validar todos los campos
-    console.log("Validando Producto: ", producto);
-    
+    // Validar todos los campos.
     const listaErroresValidacion = validarProducto(producto);
     setErrores(listaErroresValidacion);
 
@@ -220,8 +218,9 @@ const FormularioProducto = () => {
             rows="4"
           />
         </div>
-
+      {/* Mostramos texto distinto según el estado,  */}
         <button type="submit" className="boton-guardar">
+          console.log("Estado cargando:", cargando);
           {cargando
             ? "Guardando...."
             : esEdicion
@@ -237,7 +236,6 @@ const FormularioProducto = () => {
           {mensaje.texto}
         </div>
       )}
-
       {todosLosErrores.length > 0 && (
         <Errores erroresMostrar={todosLosErrores} />
       )}

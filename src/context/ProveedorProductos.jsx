@@ -35,13 +35,16 @@ const ProveedorProductos = ({ children }) => {
   };
 
   const guardarProducto = async (nuevoProducto) => {
+    setCargando(true);
     try {
       const { data } = await supabaseConexion
         .from("productos")
         .insert(nuevoProducto);
-      console.log(data);
+        console.log(data);
     } catch (error) {
       throw new error();
+    }finally{
+      setCargando(false);
     }
   };
   const actualizarProducto = async (id, datosActualizados) => {
@@ -69,7 +72,7 @@ const ProveedorProductos = ({ children }) => {
       .eq("id", id)
       .single();
     if (error) {
-      console.error("Error obteniendo producto:", error);
+      /* console.error("Error obteniendo producto:", error); */
       return null;
     }
     console.log("Elemento.id:", data);
