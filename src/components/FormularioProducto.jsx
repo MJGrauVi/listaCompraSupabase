@@ -3,7 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./FormularioProducto.css";
 import Errores from "./Errores.jsx";
 import Cargando from "./Cargando.jsx";
-import { validarProducto, parsePrecio } from "../biblioteca/funciones.js";
+import {
+  validarProducto,
+  parsePrecio,
+  formatearPrecio,
+  formatearPeso,
+  parsePeso
+} from "../biblioteca/funciones.js";
 /* import useSesion from "../hooks/useSesion.js"; */
 import useProductos from "../hooks/useProductos.js";
 
@@ -11,11 +17,10 @@ import useProductos from "../hooks/useProductos.js";
 const FormularioProducto = () => {
   /* const {cargando} = useSesion(); */
   const {
-   
     guardarProducto,
     actualizarProducto,
     cargando,
-    obtenerProductoPorId
+    obtenerProductoPorId,
   } = useProductos(); //Para consumir los datos del contexto.
   const { id } = useParams(); //Obtenemos el id del elemento que queremos editar.
   const navigate = useNavigate(); //Para redirigir despues de actualizar un producto.
@@ -29,47 +34,41 @@ const FormularioProducto = () => {
     imagen_url: "",
     descripcion: "",
   };
-  
+
   const [producto, setProducto] = useState(valoresIniciales);
   const [errores, setErrores] = useState([]);
   const [mensaje, setMensaje] = useState({ tipo: "", texto: "" });
 
   // Cargar datos del producto si estamos editando
   useEffect(() => {
+    const cargarProducto = async () => {
+      if (!esEdicion) return;
 
-    const cargarProducto = async ()=>{ 
-    if (!esEdicion) return;
-   
-    const productoEncontrado = await obtenerProductoPorId(id);
-    if (productoEncontrado) {
-      //Mostramos en pantalla datos numéricos formateados.
-      setProducto({
-        nombre: productoEncontrado.nombre || "",
-        peso: productoEncontrado.peso.toString().replace(".", ",") || "",
-        precio: productoEncontrado.precio.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "",//Cuando modificamos carga con decimales.
-        imagen_url: productoEncontrado.imagen_url || "",
-        descripcion: productoEncontrado.descripcion || "",
-      });
-    }
-  };
-  cargarProducto();
+      const productoEncontrado = await obtenerProductoPorId(id);
+      if (productoEncontrado) {
+        //Mostramos en pantalla datos numéricos formateados.
+        setProducto({
+          nombre: productoEncontrado.nombre || "",
+          peso: `${productoEncontrado.peso.toLocaleString("es-ES")} gr.`, //To locale siempre devuelve string.
+          precio: formatearPrecio(productoEncontrado.precio) || "", //Cuando modificamos carga con decimales.
+          /* precio: productoEncontrado.precio.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "",Cuando modificamos carga con decimales.  */
+          imagen_url: productoEncontrado.imagen_url || "",
+          descripcion: productoEncontrado.descripcion || "",
+        });
+      }
+    };
+    cargarProducto();
   }, [id, esEdicion]);
 
   /* Actualiza el estado del formulario cuando cambia un campo */
 
   const actualizarDato = (evento) => {
-    const { name, value, type, checked } = evento.target;
-    const nuevoValor = type === "checkbox" ? checked : value; //ternaria para tomar el valor sobre el tipo de dato correcto.
-
-    setProducto((estadoPrevio) => {
-      const nuevoEstado = {
-        ...estadoPrevio,
-        [name]: nuevoValor,
-      };
-      return nuevoEstado;
-    });
-
-    setMensaje({ tipo: "", texto: "" }); //Limpia mensaje antiguo.
+    const { name, value } = evento.target;
+    setProducto((prev) => ({ 
+      ...prev, 
+      [name]: value 
+    }));
+    setMensaje({ tipo: "", texto: "" });
   };
 
   //Submit del formulario.
@@ -95,7 +94,7 @@ const FormularioProducto = () => {
       //Transformamos para guardar en bbdd a formato numero.
       const productoCompleto = {
         nombre: producto.nombre.trim(),
-        peso: Number(producto.peso.replace(",", ".")),
+        peso: parsePeso(producto.peso),
         precio: parsePrecio(producto.precio), //Guardamos en bbdd 1234.50
         imagen_url: producto.imagen_url,
         descripcion: producto.descripcion || "",
@@ -141,7 +140,11 @@ const FormularioProducto = () => {
 
   return (
     <div className="contenedor-formulario-producto">
-      <h2>{esEdicion ? "Editar Producto" : "Insertar un producto a la base de datos."}</h2>
+      <h2>
+        {esEdicion
+          ? "Editar Producto"
+          : "Insertar un producto a la base de datos."}
+      </h2>
 
       <form onSubmit={manejarEnvio} className="formulario-producto">
         {/* Nombre del producto */}
@@ -170,6 +173,12 @@ const FormularioProducto = () => {
             name="peso"
             value={producto.peso}
             onChange={actualizarDato}
+            onBlur={() => {
+              setProducto((prev) => ({
+                ...prev,
+                peso: formatearPeso(prev.peso),
+              }));
+            }}
             className="input-formulario"
             placeholder="Peso del producto en gramos"
           />
@@ -186,6 +195,12 @@ const FormularioProducto = () => {
             name="precio"
             value={producto.precio}
             onChange={actualizarDato}
+            onBlur={() => {
+              setProducto((prev) => ({
+                ...prev,
+                precio: formatearPrecio(prev.precio),
+              }));
+            }}
             className="input-formulario"
             placeholder="Introduzca el precio en euros"
           />
@@ -218,9 +233,8 @@ const FormularioProducto = () => {
             rows="4"
           />
         </div>
-      {/* Mostramos texto distinto según el estado,  */}
+        {/* Mostramos texto distinto según el estado,  */}
         <button type="submit" className="boton-guardar">
-          
           {cargando
             ? "Guardando...."
             : esEdicion
