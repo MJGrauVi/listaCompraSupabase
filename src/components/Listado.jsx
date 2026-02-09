@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./Listado.css";
-import useProductos from "../hooks/useProductos.js";
-import useSesion from "../hooks/useSesion.js";
+import useContextoProductos from "../hooks/useContextoProductos.js";
+import useContextoSesion from "../hooks/useContextoSesion.js";
 import Producto from "./Producto.jsx";
 import Cargando from "./Cargando.jsx";
 import FiltroProductos from "./FiltroProductos.jsx";
 import ResumenProductos from "./ResumenProductos.jsx";
-import { calcularResumenProductos } from "../biblioteca/funciones.js";
+import { calcularResumenProductos, formatearPrecio } from "../biblioteca/funciones.js";
 
 const Listado = () => {
-  const { usuario } = useSesion();
-  const { productos, cargando, setOrden } = useProductos();
+  const { usuario } = useContextoSesion();
+  const { productos, cargando, setOrden } = useContextoProductos();
 
   const [textoFiltro, setTextoFiltro] = useState("");
   const [mensajeEliminado, setMensajeEliminado] = useState("");
@@ -100,7 +100,7 @@ const Listado = () => {
 
         {/* Resumen solo si hay usuario. */}
         {usuario && (
-          <ResumenProductos cantidad={cantidad} precioMedio={precioMedio} />
+          <ResumenProductos cantidad={cantidad} precioMedio={formatearPrecio(precioMedio)} />
         )}
 
         {/* Si mensajeEliminado tiene contenido renderizo el div. */}

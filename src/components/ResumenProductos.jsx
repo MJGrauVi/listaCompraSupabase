@@ -7,7 +7,7 @@ const ResumenProductos = ({ cantidad, precioMedio }) => {
     <div className="resumen">
       <h2>ResumenProductos</h2>
       <p><strong>Número de productos: </strong>{cantidad}</p>
-      <p><strong>Precio medio:</strong> {precioMedio} €</p>
+      <p><strong>Precio medio:</strong> {precioMedio}</p>
     </div>
   );
 };

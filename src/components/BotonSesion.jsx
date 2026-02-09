@@ -1,9 +1,9 @@
-import useSesion from "../hooks/useSesion.js";
+import useContextoSesion from "../hooks/useContextoSesion.js";
 import {useNavigate} from "react-router-dom";
 import Mensaje from "./Mensaje.jsx";
 
 const BotonSesion = () => {
-  const { usuario, cerrarSesion } = useSesion();
+  const { usuario, cerrarSesion } = useContextoSesion();
   const navigate = useNavigate();
 
   const handleCerrarSesion = async ()=>{

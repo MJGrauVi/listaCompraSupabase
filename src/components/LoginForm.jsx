@@ -3,10 +3,10 @@ import { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 import Mensaje from "./Mensaje.jsx";
-import useSesion from "../hooks/useSesion.js";
+import useContextoSesion from "../hooks/useContextoSesion.js";
 
 const LoginForm = () => {
-  const { iniciarLogin, registrarUsuario, cargando } = useSesion();
+  const { iniciarLogin, registrarUsuario, cargando } = useContextoSesion();
 
   const [modoRegistro, setModoRegistro] = useState(true);
   const [mensaje, setMensaje] = useState({ tipo: "", texto: "" });

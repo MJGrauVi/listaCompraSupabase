@@ -2,12 +2,12 @@ import React from "react";
 import "./Producto.css";
 import ProductoPP from "./ProductoPP.jsx";
 import ProductoInfo from "./ProductoInfo.jsx";
-import useSesion from "../hooks/useSesion.js";
+import useContextoSesion from "../hooks/useContextoSesion.js";
 import ProductoAcciones from "./ProductoAcciones.jsx";
 
 const Producto = ({ producto, onProductoEliminado }) => {
   //Leer del contexto.
-  const { usuario } = useSesion();
+  const { usuario } = useContextoSesion();
 
    
   return (

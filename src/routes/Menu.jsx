@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import useSesion from "../hooks/useSesion.js";
+import useContextoSesion from "../hooks/useContextoSesion.js";
 import "./Menu.css";
 
 const Menu = () => {
-  const { usuario } = useSesion();
+  const { usuario } = useContextoSesion();
   return (
     <>
       <nav>

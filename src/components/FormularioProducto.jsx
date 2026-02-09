@@ -11,7 +11,7 @@ import {
   parsePeso
 } from "../biblioteca/funciones.js";
 /* import useSesion from "../hooks/useSesion.js"; */
-import useProductos from "../hooks/useProductos.js";
+import useProductos from "../hooks/useContextoProductos.js";
 
 //Formulario para insertar o editar Productos.
 const FormularioProducto = () => {
@@ -39,17 +39,25 @@ const FormularioProducto = () => {
   const [errores, setErrores] = useState([]);
   const [mensaje, setMensaje] = useState({ tipo: "", texto: "" });
 
+console.log("ID recibido:", id); 
+console.log("¿Es edición?:", esEdicion);
+
+
   // Cargar datos del producto si estamos editando
   useEffect(() => {
+    console.log("useEffect ejecutado. esEdicion:", esEdicion, "id:", id);
     const cargarProducto = async () => {
       if (!esEdicion) return;
 
       const productoEncontrado = await obtenerProductoPorId(id);
+      console.log("Producto encontrado:", productoEncontrado);
       if (productoEncontrado) {
-        //Mostramos en pantalla datos numéricos formateados.
+        console.log("Precio antes de formatear:", productoEncontrado.precio, typeof productoEncontrado.precio);
+        //Recibo producto y metemos en el estado.
         setProducto({
           nombre: productoEncontrado.nombre || "",
-          peso: `${productoEncontrado.peso.toLocaleString("es-ES")} gr.`, //To locale siempre devuelve string.
+          peso: `${productoEncontrado.peso.toLocaleString("es-ES")} gr.`, //To locale siempre devuelve string. 
+         /*  peso: formatearPeso(productoEncontrado.peso) || "", */
           precio: formatearPrecio(productoEncontrado.precio) || "", //Cuando modificamos carga con decimales.
           /* precio: productoEncontrado.precio.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "",Cuando modificamos carga con decimales.  */
           imagen_url: productoEncontrado.imagen_url || "",
@@ -107,9 +115,10 @@ const FormularioProducto = () => {
           tipo: "exito",
           texto: `Producto "${productoCompleto.nombre}" actualizado correctamente.`,
         });
+        //Muestro el listado a los 3 segundos.
         setTimeout(() => {
           navigate("/productos");
-        }, 5000);
+        }, 3000);
       } else {
         //Guardamos el producto creado.
         await guardarProducto(productoCompleto);

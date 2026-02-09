@@ -1,7 +1,7 @@
 // context/ProveedorProductos.jsx
 import { createContext, useState, useEffect } from "react";
 import useSupabaseAPI from "../hooks/useSupabaseApi.js";
-import useSesion from "../hooks/useSesion.js";
+import useSesion from "../hooks/useContextoSesion.js";
 
 //
 const ContextoProductos = createContext();
@@ -46,6 +46,7 @@ const ProveedorProductos = ({ children }) => {
   // Obtener un producto por ID
   const obtenerProductoPorId = async (id) => {
     const datos = await obtener("productos", { eq: ["id", id] });
+    
     return datos?.[0] || null;
   };
 

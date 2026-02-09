@@ -1,12 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import useProductos from "../hooks/useProductos.js";
+import useContextoProductos from "../hooks/useContextoProductos.js";
 import "./ProductoAcciones.css";
 
 
 const ProductoAcciones = ({ producto, onProductoEliminado}) => {
   const navigate = useNavigate();
-  const { borrarProducto} = useProductos();
+  const { borrarProducto} = useContextoProductos();
 
   if(!producto) return null;
   return (

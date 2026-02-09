@@ -1,6 +1,5 @@
 import FormularioProducto from "../components/FormularioProducto.jsx";
 
-/*  Pendiente formulario para insertar productos ******************/
 const Contenedor = () => {
   
   return (

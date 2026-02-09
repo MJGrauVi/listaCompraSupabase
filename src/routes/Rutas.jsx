@@ -5,10 +5,10 @@ import Contenedor from "../pages/Contenedor.jsx";
 import Listado from "../components/Listado.jsx";
 import Error from "../pages/Error";
 import LoginForm from "../components/LoginForm.jsx";
-import useSesion from "../hooks/useSesion.js";
+import useContextoSesion from "../hooks/useContextoSesion.js";
 
 const Rutas = () => {
-  const { usuario } = useSesion();
+  const { usuario } = useContextoSesion();
 
   return (
     <Routes>
