@@ -30,8 +30,10 @@
 
 .producto-acciones {
   display: flex;
+ /*  flex-direction:column; */
   gap: 0.5rem;
   margin-top: 0.75rem;
+  /* justify-content: space-around; */
 }
 
 /* Botón base */

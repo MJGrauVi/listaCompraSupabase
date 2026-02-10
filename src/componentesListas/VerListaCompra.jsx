@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useContextoListaProductos from "../hooks/useContextoListaProductos.js";
+import useContextoListasCompra from "../hooks/useContextoListasCompra.js";
 import Listado from "../components/Listado.jsx";
 import "./VerListaCompra.css";
 
@@ -14,7 +15,7 @@ const VerListaCompra = () => {
     eliminarProductoDeLista,
     actualizarCantidad,
   } = useContextoListaProductos();
-  
+  const {listasCompra} = useContextoListasCompra();
 
   const [mostrarListado, setMostrarListado] = useState(false);
 
@@ -47,20 +48,21 @@ const VerListaCompra = () => {
     cargarProductosDeLista(id);
   };
 
+  const listaActual = listasCompra.find((lista)=>String(lista.id) === String(id));
   return (
     <div className="lista-detalle-container">
-      <h2 className="lista-detalle-titulo">Productos en esta lista</h2>
+      <h2 className="lista-detalle-titulo">Productos en lista: <strong>{listaActual?.nombre_lista}</strong></h2>
 
       <ul className="lista-productos">
         {productosLista.map((p) => (
           <li key={p.id} className="lista-producto-item">
-            <span className="producto-info">
-              Producto #{p.producto_id}
-              <span className="producto-cantidad">x {p.cantidad}</span>
+            <span className="producto-nombre">
+              Producto ID: {p.producto_id}
+              <span className="producto-cantidad"> - Cantidad: <strong>{p.cantidad}</strong></span>
             </span>
 
             <button
-              className="btn btn-borrar"
+              className="btn btn-restar"
               onClick={() => onRestarProducto(p)}
             >
               Quitar

@@ -90,7 +90,7 @@ const Listado = ({ onProductoSeleccionado }) => {
         {usuario && (
           <ResumenProductos
             cantidad={cantidad}
-            precioMedio={formatearPrecio(precioMedio)}
+            precioMedio={precioMedio}
           />
         )}
 
