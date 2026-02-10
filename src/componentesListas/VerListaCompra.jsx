@@ -10,7 +10,8 @@ const VerListaCompra = () => {
     productosLista,
     cargarProductosDeLista,
     agregarProductoALista,
-    eliminarProductoDeLista
+    eliminarProductoDeLista,
+    actualizarCantidad
   } = useContextoListaProductos();
 
   useEffect(() => {
@@ -18,7 +19,12 @@ const VerListaCompra = () => {
   }, [id]);
 
   const onProductoSeleccionado = async (producto) => {
-    await agregarProductoALista(id, producto.id, 1);
+    const existente = productosLista.find((p) => p.producto_id === producto.id);
+    if (existente) {
+      await actualizarCantidad(existente.id, existente.cantidad + 1);
+    } else {
+      await agregarProductoALista(id, producto.id, 1);
+    }
     cargarProductosDeLista(id);
   };
 

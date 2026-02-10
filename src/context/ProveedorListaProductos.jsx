@@ -27,7 +27,7 @@ const ProveedorListaProductos = ({ children }) => {
   const eliminarProductoDeLista = async (idRelacion) => {
     return await borrar("lista_productos", idRelacion);
   };
-
+//Para poder incrementar el contador al incluir productos que ya existen el la lista.
   const actualizarCantidad = async (idRelacion, nuevaCantidad) => {
     return await actualizar("lista_productos", idRelacion, {
       cantidad: nuevaCantidad

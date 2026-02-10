@@ -1,0 +1,45 @@
+.producto-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Parte superior del producto */
+.producto-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Imagen */
+.producto-imagen {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.producto-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.sin-imagen {
+  width: 100%;
+  height: 100%;
+  background-color: #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Precio / PP */
+.producto-pp2 {
+  margin-left: auto;
+}

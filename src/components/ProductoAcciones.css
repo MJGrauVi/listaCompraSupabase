@@ -83,3 +83,13 @@
 .btn-add:hover {
   background-color: #166534;
 }
+/*****************************************/
+
+.producto-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+}
