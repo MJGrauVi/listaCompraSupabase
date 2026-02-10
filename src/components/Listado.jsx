@@ -42,7 +42,7 @@ const Listado = ({ onProductoSeleccionado }) => {
     <>
       <div className="contenedor-listado-productos">
         <h2>Listado de productos</h2>
-
+     {/*  <Listado onProductoSeleccionado={onProductoSeleccionado} /> */}
         {usuario && (
           <div className="seccion-filto">
             <FiltroProductos
@@ -80,16 +80,9 @@ const Listado = ({ onProductoSeleccionado }) => {
                 onProductoEliminado={(nombre) =>
                   setMensajeEliminado(`Producto "${nombre}" eliminado correctamente`)
                 }
+                onProductoSeleccionado={onProductoSeleccionado}
               />
 
-              {onProductoSeleccionado && (
-                <button
-                  className="btn btn-success btn-sm mt-2"
-                  onClick={() => onProductoSeleccionado(producto)}
-                >
-                  Añadir a la lista
-                </button>
-              )}
             </div>
           ))}
         </div>

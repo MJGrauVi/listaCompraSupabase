@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useContextoListaProductos from "../hooks/useContextoListaProductos.js";
 import Listado from "../components/Listado.jsx";
+import "./VerListaCompra.css";
 
 const VerListaCompra = () => {
   const { id } = useParams();
@@ -11,15 +12,21 @@ const VerListaCompra = () => {
     cargarProductosDeLista,
     agregarProductoALista,
     eliminarProductoDeLista,
-    actualizarCantidad
+    actualizarCantidad,
   } = useContextoListaProductos();
+  
+
+  const [mostrarListado, setMostrarListado] = useState(false);
 
   useEffect(() => {
     cargarProductosDeLista(id);
   }, [id]);
 
   const onProductoSeleccionado = async (producto) => {
-    const existente = productosLista.find((p) => p.producto_id === producto.id);
+    const existente = productosLista.find(
+      (p) => p.producto_id === producto.id
+    );
+
     if (existente) {
       await actualizarCantidad(existente.id, existente.cantidad + 1);
     } else {
@@ -28,25 +35,33 @@ const VerListaCompra = () => {
     cargarProductosDeLista(id);
   };
 
-  const handleEliminar = async (idRelacion) => {
-    await eliminarProductoDeLista(idRelacion);
+  const onRestarProducto = async (productoRelacion) => {
+    if (productoRelacion.cantidad > 1) {
+      await actualizarCantidad(
+        productoRelacion.id,
+        productoRelacion.cantidad - 1
+      );
+    } else {
+      await eliminarProductoDeLista(productoRelacion.id);
+    }
     cargarProductosDeLista(id);
   };
 
   return (
-    <div className="contenedor-detalle-lista">
-      <h2>Productos en esta lista</h2>
+    <div className="lista-detalle-container">
+      <h2 className="lista-detalle-titulo">Productos en esta lista</h2>
 
-      <ul>
+      <ul className="lista-productos">
         {productosLista.map((p) => (
-          <li key={p.id} className="d-flex justify-content-between">
-            <span>
-              Producto ID: {p.producto_id} — Cantidad: {p.cantidad}
+          <li key={p.id} className="lista-producto-item">
+            <span className="producto-info">
+              Producto #{p.producto_id}
+              <span className="producto-cantidad">x {p.cantidad}</span>
             </span>
 
             <button
-              className="btn btn-danger btn-sm"
-              onClick={() => handleEliminar(p.id)}
+              className="btn btn-borrar"
+              onClick={() => onRestarProducto(p)}
             >
               Quitar
             </button>
@@ -54,11 +69,20 @@ const VerListaCompra = () => {
         ))}
       </ul>
 
-      <hr />
+      <div className="lista-acciones-extra">
+        <button
+          className="btn btn-add"
+          onClick={() => setMostrarListado(!mostrarListado)}
+        >
+          {mostrarListado ? "Ocultar productos" : "Añadir productos"}
+        </button>
 
-      <h3>Añadir productos</h3>
-
-      <Listado onProductoSeleccionado={onProductoSeleccionado} />
+        {mostrarListado && (
+          <div className="listado-wrapper">
+            <Listado onProductoSeleccionado={onProductoSeleccionado} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

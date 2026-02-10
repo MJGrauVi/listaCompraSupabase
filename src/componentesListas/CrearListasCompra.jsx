@@ -105,7 +105,7 @@ console.log("¿Es edición?:", esEdicion);
         });
         //Muestro el listado a los 3 segundos.
         setTimeout(() => {
-          navigate("/listas_compra");
+          navigate("/listasCompra");
         }, 3000);
       } else {
         //Guardamos la lista creada.

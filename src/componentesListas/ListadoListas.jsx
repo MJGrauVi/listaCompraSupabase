@@ -1,29 +1,32 @@
 import { Link } from "react-router-dom";
 import useListasCompra from "../hooks/useContextoListasCompra.js";
+import "./ListadoListas.css";
 
 const ListadoListas = () => {
   const { listasCompra, cargando } = useListasCompra();
 
-  if (cargando) return <p>Cargando listas...</p>;
+  if (cargando) return <p className="listas-loading">Cargando listas...</p>;
 
   return (
-    <div className="container mt-4">
-      <h2>Mis listas de compra</h2>
+    <div className="listas-container">
+      <h2 className="listas-titulo">Mis listas de compra</h2>
 
-      {listasCompra.length === 0 && <p>No hay listas creadas.</p>}
+      {listasCompra.length === 0 && (
+        <p className="listas-vacio">No hay listas creadas.</p>
+      )}
 
       {listasCompra.map((lista) => (
-        <div key={lista.id} className="card p-3 mb-2 shadow-sm">
-          <h5>{lista.nombre_lista}</h5>
+        <div key={lista.id} className="lista-card">
+          <h5 className="lista-nombre">{lista.nombre_lista}</h5>
 
-          <div className="d-flex gap-2">
-            <Link to={`/listasCompra/${lista.id}`} className="btn btn-primary">
+          <div className="lista-acciones">
+            <Link to={`/listasCompra/${lista.id}`} className="btn btn-ver">
               Ver lista
             </Link>
 
             <Link
               to={`/listasCompra/${lista.id}/editar`}
-              className="btn btn-warning"
+              className="btn btn-editar"
             >
               Editar
             </Link>

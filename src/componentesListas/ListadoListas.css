@@ -1,0 +1,75 @@
+.listas-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.listas-titulo {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.listas-loading,
+.listas-vacio {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* Tarjeta de lista */
+.lista-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lista-nombre {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Acciones */
+.lista-acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Botones reutilizables */
+.btn {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Ver */
+.btn-ver {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn-ver:hover {
+  background-color: #1e40af;
+}
+
+/* Editar */
+.btn-editar {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: #b45309;
+}
