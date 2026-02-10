@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabaseConexion } from "../supabase/supabase.js";
 
 //Se encarga de lógica de c´nexión, errores y carga.
-const useSupabaseAPI = () => {
+const useSupabaseCrud = () => {
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
@@ -12,6 +12,8 @@ const useSupabaseAPI = () => {
     setError(null);
     try {
       let query = supabaseConexion.from(tabla).select("*");
+
+      
       //Ordenación .
       if (opciones.orderBy) {
         query = query.order(opciones.orderBy, { ascending: true });
@@ -124,4 +126,4 @@ const useSupabaseAPI = () => {
   };
 };
 
-export default useSupabaseAPI;
+export default useSupabaseCrud;

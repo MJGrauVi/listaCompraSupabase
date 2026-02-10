@@ -56,7 +56,7 @@ const useSupabaseAuth = () => {
   const logout = async () => {
       await supabaseConexion.auth.signOut();
   };
-//Controla el arranque de la sesión, no si la hay o no, si la hay devuelve el usuario, sino devuelve null.
+//Obtiene sesión actual.
   const getSesion = async () => {
     const { data } = await supabaseConexion.auth.getSession();
     return data.session?.user ?? null;

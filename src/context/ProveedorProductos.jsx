@@ -1,6 +1,6 @@
 // context/ProveedorProductos.jsx
 import { createContext, useState, useEffect } from "react";
-import useSupabaseAPI from "../hooks/useSupabaseApi.js";
+import useSupabaseCrud from "../hooks/useSupabaseCrud.js";
 import useSesion from "../hooks/useContextoSesion.js";
 
 //
@@ -12,16 +12,19 @@ const ProveedorProductos = ({ children }) => {
 
   const { usuario } = useSesion();
   const { cargando, error, obtener, insertar, actualizar, borrar } =
-    useSupabaseAPI();
+    useSupabaseCrud();
 
-  // Cargar productos con orden dinámico
+  // Cargar productos con orden dinámico.
   const cargarProductos = async (campoOrden = null) => {
-    const orderBy = usuario ? campoOrden || null : "nombre"; // si no hay usuario, orden por defecto
-
-    const datos = await obtener("productos", {
-      orderBy,
-    });
-
+    let orderBy;
+    if (usuario) {
+      // Si hay usuario usa el orden indicado o uno por defecto .
+      orderBy = campoOrden || "nombre";
+    } else {
+      // Si NO hay usuario ordena por precio.
+      orderBy = "precio"; // o "nombre", o "peso", fecha creacion.
+    }
+    const datos = await obtener("productos", { orderBy });
     setProductos(datos || []);
   };
 
@@ -46,16 +49,22 @@ const ProveedorProductos = ({ children }) => {
   // Obtener un producto por ID
   const obtenerProductoPorId = async (id) => {
     const datos = await obtener("productos", { eq: ["id", id] });
-    
+
     return datos?.[0] || null;
   };
 
-  const filtrarProductos = async ({ nombre, precioMin, precioMax, pesoMin, pesoMax }) => {
+  const filtrarProductos = async ({
+    nombre,
+    precioMin,
+    precioMax,
+    pesoMin,
+    pesoMax,
+  }) => {
     const filtros = {};
     if (nombre) filtros.ilike = ["nombre", `%${nombre}%`];
     if (precioMin !== undefined) filtros.gte = ["precio", precioMin];
     if (precioMax !== undefined) filtros.lte = ["precio", precioMax];
-    if (pesoMin !== undefined) filtros.gte = ["peso", pesoMin]; 
+    if (pesoMin !== undefined) filtros.gte = ["peso", pesoMin];
     if (pesoMax !== undefined) filtros.lte = ["peso", pesoMax];
     return await obtener("productos", filtros);
   };

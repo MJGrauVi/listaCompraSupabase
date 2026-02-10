@@ -5,14 +5,17 @@ import ProveedorSesion from "./context/ProveedorSesion.jsx";
 import ProveedorProductos from "./context/ProveedorProductos.jsx";
 import "./index.css";
 import App from "./App.jsx";
+import ProveedorListasCompra from "./context/ProveedorListasCompra.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ProveedorSesion>
       <ProveedorProductos>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+        <ProveedorListasCompra>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+        </ProveedorListasCompra>
       </ProveedorProductos>
     </ProveedorSesion>
   </StrictMode>,

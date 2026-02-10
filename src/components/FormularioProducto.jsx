@@ -5,13 +5,12 @@ import Errores from "./Errores.jsx";
 import Cargando from "./Cargando.jsx";
 import {
   validarProducto,
-  parsePrecio,
   formatearPrecio,
   formatearPeso,
-  parsePeso
+  parseNumeroES
 } from "../biblioteca/funciones.js";
-/* import useSesion from "../hooks/useSesion.js"; */
-import useProductos from "../hooks/useContextoProductos.js";
+/* import useSesion from "../hooks/useContextoSesion.js"; */
+import useContextoProductos from "../hooks/useContextoProductos.js";
 
 //Formulario para insertar o editar Productos.
 const FormularioProducto = () => {
@@ -21,7 +20,7 @@ const FormularioProducto = () => {
     actualizarProducto,
     cargando,
     obtenerProductoPorId,
-  } = useProductos(); //Para consumir los datos del contexto.
+  } = useContextoProductos(); //Para consumir los datos del contexto.
   const { id } = useParams(); //Obtenemos el id del elemento que queremos editar.
   const navigate = useNavigate(); //Para redirigir despues de actualizar un producto.
   const esEdicion = !!id; //Si hay id el la URL estará editando y sino está creando.
@@ -56,10 +55,10 @@ console.log("¿Es edición?:", esEdicion);
         //Recibo producto y metemos en el estado.
         setProducto({
           nombre: productoEncontrado.nombre || "",
-          peso: `${productoEncontrado.peso.toLocaleString("es-ES")} gr.`, //To locale siempre devuelve string. 
-         /*  peso: formatearPeso(productoEncontrado.peso) || "", */
-          precio: formatearPrecio(productoEncontrado.precio) || "", //Cuando modificamos carga con decimales.
-          /* precio: productoEncontrado.precio.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "",Cuando modificamos carga con decimales.  */
+         /*  peso: `${productoEncontrado.peso.toLocaleString("es-ES")} gr.`, */ //To locale siempre devuelve string. 
+          peso: formatearPrecio(productoEncontrado.peso) || "", 
+         /* precio: formatearPrecio(productoEncontrado.precio) || "", //Cuando modificamos carga con decimales.
+           precio: productoEncontrado.precio.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "",Cuando modificamos carga con decimales.  */
           imagen_url: productoEncontrado.imagen_url || "",
           descripcion: productoEncontrado.descripcion || "",
         });
@@ -102,8 +101,8 @@ console.log("¿Es edición?:", esEdicion);
       //Transformamos para guardar en bbdd a formato numero.
       const productoCompleto = {
         nombre: producto.nombre.trim(),
-        peso: parsePeso(producto.peso),
-        precio: parsePrecio(producto.precio), //Guardamos en bbdd 1234.50
+        peso: parseNumeroES(producto.peso),
+        precio: parseNumeroES(producto.precio), //Guardamos en bbdd 1234.50
         imagen_url: producto.imagen_url,
         descripcion: producto.descripcion || "",
       };

@@ -1,5 +1,5 @@
 .contenedor-header {
-  width: 600px;
+  width: 1200px;
   border: solid 2px #1e1e2f;
   border: solid 2px #ada2a2;
   border-radius: 5px;
@@ -9,8 +9,8 @@
   border-radius: 12px;
   
   margin: 20px auto;
-  max-width: 700px;
+  max-width: 1200px;
   display: flex;
-  justify-content: right;
+  justify-content: right; 
 
 }

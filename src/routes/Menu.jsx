@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import useContextoSesion from "../hooks/useContextoSesion.js";
+
 import "./Menu.css";
 
 const Menu = () => {
@@ -21,6 +22,13 @@ const Menu = () => {
             <Link className="menu-elemento" to="/insertar">
               Insertar
             </Link>
+            <Link className="menu-elemento" to="/crearLista">
+              Crear Lista compra
+            </Link>
+            <Link className="menu-elemento" to="/listasCompra">
+              Ver Listas compra
+            </Link>
+        
           </>
         )}
       </nav>

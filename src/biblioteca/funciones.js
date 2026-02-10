@@ -10,7 +10,7 @@ const validarProducto = ({ nombre, peso, precio, descripcion }) => {
       "El nombre es obligatorio y debe tener al menos 4 caracteres.",
     );
   }
-  const pesoNumero = parsePeso(peso);
+  const pesoNumero = parseNumeroES(peso);
   if (!pesoNumero || pesoNumero <= 0) {
     errores.push("El peso es obligatorio y debe ser un número válido.");
   }
@@ -22,6 +22,20 @@ const validarProducto = ({ nombre, peso, precio, descripcion }) => {
     errores.descripcion = "La descripción debe tener al menos 10 caracteres.";
   }
 
+  return errores;
+};
+const validarListaCompra = ({ nombre_lista}) => {
+  let errores = [];
+  const regExpNombre = /^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9\s\-.,()]{4,}$/;
+ 
+
+  if (!nombre_lista || !regExpNombre.test(nombre_lista)) {
+    errores.push(
+      "El nombre es obligatorio y debe tener al menos 4 caracteres.",
+    );
+  }
+
+ 
   return errores;
 };
 //Parseamo para guardar en bbdd.
@@ -38,18 +52,24 @@ const parsePrecio = (precio) => {
 };
 
 //Parseamos el peso.
-const parsePeso = (valor) => {
+const parseNumeroES = (valor, valorPorDefecto = 0) => {
   if (typeof valor === "number") return valor;
-  if (!valor) return 0; 
-  let limpio = valor.replace(/[^\d,.-]/g, ""); // 1. Quitar "g", espacios y cualquier letra.
-  limpio = limpio.replace(/\./g, ""); // 2. Quitar separadores de miles
-  limpio = limpio.replace(",", "."); // 3. Convertir coma en punto
-  return Number(limpio);// 4. Convertir a número real
+  if (!valor) return valorPorDefecto;
+
+  const numero = Number(
+    valor
+      .toString() //Aseguramos string.
+      .replace(/\./g, "") //Eliminanos el .
+      .replace(",", ".") //Reemplazamos la coma por . para decimales.
+      .replace(/[^\d.-]/g, "") //Niego todo lo que no sea digito, punto o guion(para números negativos).
+      .trim(),
+  );
+  return isNaN(numero) ? valorPorDefecto : numero;
 };
 
 //Damos formato
 const formatearPrecio = (precio) => {
-  const numero = parsePrecio(precio); // ← LIMPIA PRIMERO
+  const numero = parseNumeroES(precio); // ← LIMPIA PRIMERO
   return numero.toLocaleString("es-ES", {
     style: "currency",
     currency: "EUR",
@@ -63,11 +83,7 @@ function formatearPeso(valor) {
   if (!valor) return "";
 
   // Quitamos todo lo que no sea número o coma/punto
-  const numero = parseFloat(
-    valor
-      .replace(/[^\d,.-]/g, "")
-      .replace(",", ".")
-  );
+  const numero = parseFloat(valor.replace(/[^\d,.-]/g, "").replace(",", "."));
 
   if (isNaN(numero)) return "";
 
@@ -94,12 +110,24 @@ const calcularResumenProductos = (productos) => {
     formatearPeso,
   };
 };
+const calcularPrecioTotal = (items) => {
+  const sumaTotal = 
+  items.reduce((acc, item) => acc + item.productos.precio * item.cantidad, 0);
+  return sumaTotal;
+};
 
+const calcularPesoTotal = (items)=>{
+  const pesoTotal = items.reduce((acc, item)=> acc + item.productos.peso * item.cantidad, 0);
+  return pesoTotal;
+}
 export {
   validarProducto,
   parsePrecio,
   calcularResumenProductos,
   formatearPrecio,
   formatearPeso,
-  parsePeso,
+  parseNumeroES,
+  calcularPrecioTotal,
+   calcularPesoTotal,
+   validarListaCompra
 };

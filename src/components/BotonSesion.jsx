@@ -8,7 +8,7 @@ const BotonSesion = () => {
 
   const handleCerrarSesion = async ()=>{
     await cerrarSesion();
-    navigate("/")
+    navigate("/");
   };
 
   return (

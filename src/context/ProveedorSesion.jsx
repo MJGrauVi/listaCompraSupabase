@@ -7,7 +7,7 @@ const ContextoSesion = createContext();
 const ProveedorSesion = ({ children }) => {
   // Estado global de sesión(supabase devuelve null cuando no hay user.)
   const [usuario, setUsuario] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);//C
 
   // Traemos de useSupabaseAuth;
   const { login, registro, logout, cargando, error } = useSupabaseAuth();
@@ -40,6 +40,7 @@ const ProveedorSesion = ({ children }) => {
   const cerrarSesion = async () => {
     await logout();
     setUsuario(null);
+   
   };
 
   return (
