@@ -25,3 +25,61 @@
 .producto-acciones button:last-child:hover {
   background-color: #c62828;
 } 
+
+/************************************************************/
+
+.producto-acciones {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+/* Botón base */
+.btn {
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Efecto general */
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Editar */
+.btn-editar {
+  background-color: #2563eb; /* azul */
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: #1e40af;
+}
+
+/* Borrar */
+.btn-borrar {
+  background-color: #dc2626; /* rojo */
+  color: white;
+}
+
+.btn-borrar:hover {
+  background-color: #991b1b;
+}
+
+/* Añadir */
+.btn-add {
+  background-color: #16a34a; /* verde */
+  color: white;
+}
+
+.btn-add:hover {
+  background-color: #166534;
+}

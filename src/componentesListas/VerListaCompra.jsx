@@ -1,58 +1,58 @@
-import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { Card, Button } from "react-bootstrap";
-import useListasCompra from "../hooks/useContextoListasCompra.js";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import useContextoListaProductos from "../hooks/useContextoListaProductos.js";
+import Listado from "../components/Listado.jsx";
 
 const VerListaCompra = () => {
   const { id } = useParams();
-  const { obtenerListaCompraPorId, cargando } = useListasCompra();
 
-  const [lista, setLista] = useState(null);
+  const {
+    productosLista,
+    cargarProductosDeLista,
+    agregarProductoALista,
+    eliminarProductoDeLista
+  } = useContextoListaProductos();
 
   useEffect(() => {
-    const cargar = async () => {
-      const datos = await obtenerListaCompraPorId(id);
-      setLista(datos);
-    };
-    cargar();
+    cargarProductosDeLista(id);
   }, [id]);
 
-  if (cargando || !lista) {
-    return <p className="mt-3">Cargando lista...</p>;
-  }
+  const onProductoSeleccionado = async (producto) => {
+    await agregarProductoALista(id, producto.id, 1);
+    cargarProductosDeLista(id);
+  };
+
+  const handleEliminar = async (idRelacion) => {
+    await eliminarProductoDeLista(idRelacion);
+    cargarProductosDeLista(id);
+  };
 
   return (
-    <div className="container mt-4">
-      <Card className="shadow-sm">
-        <Card.Body>
-          <Card.Title className="mb-3">
-            🛒 {lista.nombre_lista}
-          </Card.Title>
+    <div className="contenedor-detalle-lista">
+      <h2>Productos en esta lista</h2>
 
-          <Card.Subtitle className="text-muted mb-4">
-            Propietario: {lista.propietario_id}
-          </Card.Subtitle>
+      <ul>
+        {productosLista.map((p) => (
+          <li key={p.id} className="d-flex justify-content-between">
+            <span>
+              Producto ID: {p.producto_id} — Cantidad: {p.cantidad}
+            </span>
 
-          <div className="d-flex gap-2">
-            <Link
-              to={`/listasCompra/${lista.id}/editar`}
-              className="btn btn-warning"
+            <button
+              className="btn btn-danger btn-sm"
+              onClick={() => handleEliminar(p.id)}
             >
-              Editar
-            </Link>
+              Quitar
+            </button>
+          </li>
+        ))}
+      </ul>
 
-            <Link to="/listasCompra" className="btn btn-secondary">
-              Volver
-            </Link>
-          </div>
-        </Card.Body>
-      </Card>
+      <hr />
 
-      {/* Aquí podrás añadir productos asociados a la lista */}
-      <div className="mt-4">
-        <h4>Productos de esta lista</h4>
-        <p>(Aquí puedes mostrar productos asociados si los tienes en tu BD)</p>
-      </div>
+      <h3>Añadir productos</h3>
+
+      <Listado onProductoSeleccionado={onProductoSeleccionado} />
     </div>
   );
 };

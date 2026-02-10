@@ -6,15 +6,18 @@ import ProveedorProductos from "./context/ProveedorProductos.jsx";
 import "./index.css";
 import App from "./App.jsx";
 import ProveedorListasCompra from "./context/ProveedorListasCompra.jsx";
+import ProveedorListaProductos from "./context/ProveedorListaProductos.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ProveedorSesion>
       <ProveedorProductos>
         <ProveedorListasCompra>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+          <ProveedorListaProductos>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </ProveedorListaProductos>
         </ProveedorListasCompra>
       </ProveedorProductos>
     </ProveedorSesion>

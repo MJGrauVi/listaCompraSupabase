@@ -8,13 +8,16 @@ import FiltroProductos from "./FiltroProductos.jsx";
 import ResumenProductos from "./ResumenProductos.jsx";
 import { calcularResumenProductos, formatearPrecio } from "../biblioteca/funciones.js";
 
-const Listado = ({ onProductoSeleccionado }) => {
+//Incorporo funcionalidad m
+const Listadooriginal = ({onSelectProducto}) => {
   const { usuario } = useContextoSesion();
   const { productos, cargando, setOrden } = useContextoProductos();
 
   const [textoFiltro, setTextoFiltro] = useState("");
   const [mensajeEliminado, setMensajeEliminado] = useState("");
 
+
+  // Filtrado de productos.
   let productosFiltrados = productos.filter((p) => {
     if (!textoFiltro.trim()) return true;
     const texto = textoFiltro.toLowerCase();
@@ -28,11 +31,15 @@ const Listado = ({ onProductoSeleccionado }) => {
   const manejarCambioFiltro = (e) => setTextoFiltro(e.target.value);
   const limpiarFiltro = () => setTextoFiltro("");
 
-  const { cantidad, precioMedio } = calcularResumenProductos(productosFiltrados);
+  // LLamo a la función para mostrar el resumen con el cálculo.
+  const { cantidad, precioMedio } =
+    calcularResumenProductos(productosFiltrados);
 
   useEffect(() => {
     if (!mensajeEliminado) return;
-    const timer = setTimeout(() => setMensajeEliminado(""), 3000);
+    const timer = setTimeout(() => {
+      setMensajeEliminado("");
+    }, 3000);
     return () => clearTimeout(timer);
   }, [mensajeEliminado]);
 
@@ -40,9 +47,11 @@ const Listado = ({ onProductoSeleccionado }) => {
 
   return (
     <>
+      {/*  if (cargando) return <Cargando /> */}
       <div className="contenedor-listado-productos">
         <h2>Listado de productos</h2>
 
+        {/* FILTRADO SOLO SI HAY USUARIO */}
         {usuario && (
           <div className="seccion-filto">
             <FiltroProductos
@@ -53,6 +62,7 @@ const Listado = ({ onProductoSeleccionado }) => {
           </div>
         )}
 
+        {/* Selector para ordenar, solo visible si usuario. */}
         {usuario && (
           <div className="ordenar">
             <label>Ordenar por: </label>
@@ -66,47 +76,47 @@ const Listado = ({ onProductoSeleccionado }) => {
         )}
 
         {usuario && (
-          <p>
-            Mostrando {productosFiltrados.length} de {productos.length} productos
-            {textoFiltro.trim() && ` (filtrados por "${textoFiltro}")`}
-          </p>
+          <>
+            <p>
+              Mostrando {productosFiltrados.length} de {productos.length}{" "}
+              productos
+              {textoFiltro.trim() && ` (filtrados por "${textoFiltro}")`}
+            </p>
+          </>
         )}
 
+        {/* Lista de productos. */}
         <div className="lista-productos">
           {productosFiltrados.map((producto) => (
-            <div key={producto.id} className="producto-contenedor">
-              <Producto
-                producto={producto}
-                onProductoEliminado={(nombre) =>
-                  setMensajeEliminado(`Producto "${nombre}" eliminado correctamente`)
-                }
-              />
-
-              {onProductoSeleccionado && (
-                <button
-                  className="btn btn-success btn-sm mt-2"
-                  onClick={() => onProductoSeleccionado(producto)}
-                >
-                  Añadir a la lista
-                </button>
-              )}
-            </div>
-          ))}
+            <Producto
+              key={producto.id}
+              producto={producto}
+              onProductoEliminado={(nombre) =>
+                setMensajeEliminado(
+                  `Producto "${nombre}" eliminado correctamente`)
+              }
+            />
+           {onSelectProducto && (
+      <button className="btn btn-success btn-sm mt-1" onClick={() => onSelectProducto(producto)}
+      >
+        Añadir a la lista
+      </button>
+    )}
         </div>
 
+        {/* Resumen solo si hay usuario. */}
         {usuario && (
-          <ResumenProductos
-            cantidad={cantidad}
-            precioMedio={formatearPrecio(precioMedio)}
-          />
+          <ResumenProductos cantidad={cantidad} precioMedio={formatearPrecio(precioMedio)} />
         )}
 
-        {mensajeEliminado && (
-          <div className="mensaje-eliminado">{mensajeEliminado}</div>
-        )}
+        {/* Si mensajeEliminado tiene contenido renderizo el div. */}
+
+          {mensajeEliminado && ( <div className="mensaje-eliminado"> {mensajeEliminado} </div> )}
+
+        {/* Muestra mensaje al clicar en Borrar. */}
       </div>
     </>
   );
 };
 
-export default Listado;
+export default Listadooriginal;
