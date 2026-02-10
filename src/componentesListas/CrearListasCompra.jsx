@@ -115,7 +115,7 @@ console.log("¿Es edición?:", esEdicion);
           texto: `Lista de la compra "${listaCompraCompleta.nombre_lista}" añadida correctamente a la colección.`,
         });
         setTimeout(() => {
-          navigate("/listas_compra");
+          navigate("/productos");
         }, 2000);
       }
 

@@ -22,7 +22,7 @@ const Menu = () => {
             <Link className="menu-elemento" to="/insertar">
               Insertar
             </Link>
-            <Link className="menu-elemento" to="/crearLista">
+            <Link className="menu-elemento" to="/crearListaCompra">
               Crear Lista compra
             </Link>
             <Link className="menu-elemento" to="/listasCompra">
