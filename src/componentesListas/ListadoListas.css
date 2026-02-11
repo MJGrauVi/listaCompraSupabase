@@ -46,8 +46,12 @@
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 500;
+  background-color: #2563eb;
+  color: white;
   text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
 }
 
 .btn:hover {
@@ -64,12 +68,13 @@
   background-color: #1e40af;
 }
 
-/* Editar */
-.btn-editar {
-  background-color: #f59e0b;
+/* Eliminar */
+.btn-eliminar {
+  background-color: #ca2121;
   color: white;
 }
 
-.btn-editar:hover {
-  background-color: #b45309;
+.btn-eliminar:hover {
+  background-color: #921717;
+;
 }

@@ -37,23 +37,17 @@ const DetalleCompra = () => {
     cargarDatos();
   }, [id]);
 
-  const pesoTotal = formatoSegunTipo(
-    calcularPesoTotal(detalleListaCompra),
-    "peso",
-  );
-
-  const precioTotal = formatoSegunTipo(
-    calcularPrecioTotal(detalleListaCompra),
-    "precio",
-  );
-
-  const pesoReal = calcularPesoTotal(detalleListaCompra);
+  const pesoReal = calcularPesoTotal(detalleListaCompra); // número
+  const pesoTotal = formatoSegunTipo(pesoReal, "peso"); // string formateado
   const necesitaTransporte = pesoReal > 1500;
 
-  useEffect(() => {
-    if (pesoReal > 15000) {
-      setMostrarMensaje(true);
+  const precio = calcularPrecioTotal(detalleListaCompra); //número.
+  const precioTotal = formatoSegunTipo(precio,"precio");
 
+  useEffect(() => {
+    if (pesoReal > 1500) {
+      setMostrarMensaje(true);
+      console.log("pesoReal:", pesoReal);
       const timer = setTimeout(() => {
         setMostrarMensaje(false);
       }, 5000);
@@ -90,17 +84,18 @@ const DetalleCompra = () => {
         <hr />
 
         <p className="detalle-total">
-          <strong>Importe total:</strong> {precioTotal}
+          <strong>Importe total:</strong> <span>{precioTotal}</span>
         </p>
 
         <p className="detalle-peso">
-          <strong>Peso total:</strong> {pesoTotal}
+          <strong>Peso total:</strong> <span>{pesoTotal}</span>
         </p>
 
         {necesitaTransporte && mostrarMensaje && (
           <Mensaje
-            tipo="error"
+            tipo="mensaje-flotante"
             texto="La compra supera los 15 kg. Considera usar el coche."
+            /* className="mensaje-flotante" */
           />
         )}
       </div>

@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import useContextoListasCompra from "../hooks/useContextoListasCompra.js";
 import Cargando from "../components/Cargando.jsx";
 import Mensaje from "../components/Mensaje.jsx";
-import {useParams} from "react-router-dom";
-import {formatoSegunTipo} from "../biblioteca/funciones.js";
+import { useParams } from "react-router-dom";
+import { formatoSegunTipo } from "../biblioteca/funciones.js";
 
 import {
   calcularPesoTotal,
@@ -12,7 +12,7 @@ import {
 } from "../biblioteca/funciones.js";
 
 const DetalleCompra2 = () => {
-    const {id}= useParams();//Id correcto desde la url.
+  const { id } = useParams(); //Id correcto desde la url.
   const {
     detalleListaCompra,
     cargarDetalleListaCompra,
@@ -37,19 +37,19 @@ const DetalleCompra2 = () => {
     cargarDatos();
   }, [id]);
 
-  const pesoTotal = formatoSegunTipo(calcularPesoTotal(detalleListaCompra), "peso");
+  const pesoReal = calcularPesoTotal(detalleListaCompra); //número para cálculos.
+  const pesoTotal = formatoSegunTipo(pesoReal,"peso"); //Para formato 1.000 gr.
 
-  const precioTotal = formatoSegunTipo(calcularPrecioTotal(detalleListaCompra), "precio");
+  const precioTotal = formatoSegunTipo(calcularPrecioTotal(detalleListaCompra),"precio");
 
-  console.log("tipo dato precoTotal: ",typeof precioTotal);
-  const necesitaTransporte = pesoTotal > 1500;
+  const necesitaTransporte = pesoReal > 15000;//peso en gramos.
 
   //Mostramos mensaje si la compra supera el peso establecido, en mi caso en gramos.
   //Pendiente tengo cambiar el formato a kg cuando supere los 999gr.
 
   useEffect(() => {
-    if (pesoTotal > 15000) {
-
+    if (pesoReal > 15000) {
+      console.log("pesoReal:", pesoReal);
       setMostrarMensaje(true);
 
       const timer = setTimeout(() => {
@@ -59,7 +59,6 @@ const DetalleCompra2 = () => {
     }
   }, [pesoTotal]);
 
- 
   if (!listaInfo) return <Cargando />;
 
   return (

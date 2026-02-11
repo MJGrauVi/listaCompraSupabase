@@ -21,11 +21,10 @@ const ListadoListas = () => {
 
           <div className="lista-acciones">
             <Link to={`/listasCompra/${lista.id}`} className="btn btn-ver">
-              Ver lista
+              Añadir producto
             </Link>
-
-            <Link to={`/listasCompra/${lista.id}/editar`}className="btn btn-editar">Editar</Link>
             <Link to={`/listasCompra/${lista.id}/detalle`} className="btn btn-detalle"> Ver detalle </Link>
+            <Link to={`/listasCompra/${lista.id}/eliminar`} className="btn btn-eliminar">Eliminar Lista</Link>
           </div>
         </div>
       ))}

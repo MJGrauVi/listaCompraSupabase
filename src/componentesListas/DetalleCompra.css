@@ -1,5 +1,3 @@
-
-body { outline: 5px solid red; }
 .detalle-container {
   max-width: 800px;
   margin: 0 auto;
@@ -21,9 +19,11 @@ body { outline: 5px solid red; }
 }
 
 .detalle-nombre {
-  color: #2c3e50;
+  color: #c0289a;
   margin-bottom: 10px;
   font-size: 1.5rem;
+  text-align: left;
+  margin-left: 1em;
 }
 
 .detalle-fecha {
@@ -40,7 +40,6 @@ body { outline: 5px solid red; }
 }
 
 .detalle-productos ul {
-  
   padding-left: 0;
 }
 
@@ -59,10 +58,53 @@ body { outline: 5px solid red; }
 .detalle-peso {
   font-size: 18px;
   margin-top: 15px;
-  color: #2c3e50;
+  font-style: italic;
+}
+
+.detalle-total span,
+.detalle-peso span {
+  color: #c0289a;
+  font-size: larger;
+  font-weight: 900;
 }
 
 .detalle-total strong,
 .detalle-peso strong {
   color: #2c3e50;
+  font-size: larger;
+  font-weight: 900;
 }
+.mensaje-flotante {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  transform: translate(-50%, -50%);
+  background-color: #33ecdf;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  z-index: 1000;
+  text-align: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+/* 
+.mensaje-eliminado.oculto {
+  opacity: 0;
+}
+.mensaje-flotante {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #e74c3c;
+  color: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  font-size: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+} */

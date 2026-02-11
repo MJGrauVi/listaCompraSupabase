@@ -8,7 +8,7 @@ import useSesion from "../hooks/useContextoSesion.js";
 import useContextoListasCompra from "../hooks/useContextoListasCompra.js";
 
 //Formulario para insertar o editar listaCompras.
-const CrearListasCompra = () => {
+const CrearListasCompraOrg = () => {
    const {usuario} = useSesion(); 
   const {
     guardarListaCompra,
@@ -185,4 +185,4 @@ console.log("¿Es edición?:", esEdicion);
   );
 };
 
-export default CrearListasCompra;
+export default CrearListasCompraOrg;

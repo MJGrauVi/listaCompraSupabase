@@ -38,21 +38,16 @@ const FormularioProducto = () => {
   const [errores, setErrores] = useState([]);
   const [mensaje, setMensaje] = useState({ tipo: "", texto: "" });
 
-console.log("ID recibido:", id); 
-console.log("¿Es edición?:", esEdicion);
-
-
   // Cargar datos del producto si estamos editando
   useEffect(() => {
-    console.log("useEffect ejecutado. esEdicion:", esEdicion, "id:", id);
+   
     const cargarProducto = async () => {
       if (!esEdicion) return;
 
       const productoEncontrado = await obtenerProductoPorId(id);
-      console.log("Producto encontrado:", productoEncontrado);
+   
       if (productoEncontrado) {
-        console.log("Peso antes de formatear:", productoEncontrado.peso, typeof productoEncontrado.peso);
-        console.log("Precio antes de formatear:", productoEncontrado.precio, typeof productoEncontrado.precio);
+       
         //Recibo producto y metemos en el estado.
         setProducto({
           nombre: productoEncontrado.nombre || "",
