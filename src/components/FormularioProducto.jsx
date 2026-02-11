@@ -6,7 +6,8 @@ import Cargando from "./Cargando.jsx";
 import {
   validarProducto,
   formatearValor,
-  parsearValor
+  parsearValor,
+  formatoSegunTipo
 } from "../biblioteca/funciones.js";
 /* import useSesion from "../hooks/useContextoSesion.js"; */
 import useContextoProductos from "../hooks/useContextoProductos.js";
@@ -50,12 +51,13 @@ console.log("¿Es edición?:", esEdicion);
       const productoEncontrado = await obtenerProductoPorId(id);
       console.log("Producto encontrado:", productoEncontrado);
       if (productoEncontrado) {
+        console.log("Peso antes de formatear:", productoEncontrado.peso, typeof productoEncontrado.peso);
         console.log("Precio antes de formatear:", productoEncontrado.precio, typeof productoEncontrado.precio);
         //Recibo producto y metemos en el estado.
         setProducto({
           nombre: productoEncontrado.nombre || "",
-          peso: formatearValor(productoEncontrado.peso) || "", 
-          precio: formatearValor(productoEncontrado.precio) || "", //Cuando modificamos carga con decimales.
+          peso: formatoSegunTipo(productoEncontrado.peso, "peso") || "", 
+          precio: formatoSegunTipo(productoEncontrado.precio, "precio") || "",
           imagen_url: productoEncontrado.imagen_url || "",
           descripcion: productoEncontrado.descripcion || "",
         });

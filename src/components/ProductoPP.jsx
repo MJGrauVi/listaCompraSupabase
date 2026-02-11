@@ -1,6 +1,6 @@
 import React from "react";
 import "./ProductoPP.css";
-import { formatearValor } from "../biblioteca/funciones.js";
+import { formatoSegunTipo } from "../biblioteca/funciones.js";
 
 const ProductoPP = ({ producto }) => {
   return (
@@ -14,8 +14,8 @@ const ProductoPP = ({ producto }) => {
         </thead>
         <tbody>
           <tr>
-            <td>{formatearValor(producto.peso, "peso")}</td>
-            <td>{formatearValor(producto.precio, "precio")}</td>
+            <td>{formatoSegunTipo(producto.peso, "peso")}</td>
+            <td>{formatoSegunTipo(producto.precio, "precio")}</td>
           </tr>
         </tbody>
       </table>

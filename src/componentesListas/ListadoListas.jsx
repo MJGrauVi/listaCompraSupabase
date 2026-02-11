@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import useListasCompra from "../hooks/useContextoListasCompra.js";
+import useContextoListasCompra from "../hooks/useContextoListasCompra.js";
 import "./ListadoListas.css";
 
 const ListadoListas = () => {
-  const { listasCompra, cargando } = useListasCompra();
+  const { listasCompra, cargando } = useContextoListasCompra();
 
   if (cargando) return <p className="listas-loading">Cargando listas...</p>;
 
@@ -24,12 +24,8 @@ const ListadoListas = () => {
               Ver lista
             </Link>
 
-            <Link
-              to={`/listasCompra/${lista.id}/editar`}
-              className="btn btn-editar"
-            >
-              Editar
-            </Link>
+            <Link to={`/listasCompra/${lista.id}/editar`}className="btn btn-editar">Editar</Link>
+            <Link to={`/listasCompra/${lista.id}/detalle`} className="btn btn-detalle"> Ver detalle </Link>
           </div>
         </div>
       ))}

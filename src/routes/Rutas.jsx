@@ -5,8 +5,9 @@ import FormularioProducto from "../components/FormularioProducto.jsx";
 import CrearListasCompra from "../componentesListas/CrearListasCompra.jsx";
 import ListadoListas from "../componentesListas/ListadoListas.jsx";
 import VerListaCompra from "../componentesListas/VerListaCompra.jsx";
+import DetalleCompra from "../componentesListas/DetalleCompra.jsx";
 import Listado from "../components/Listado.jsx";
-import Error from "../pages/Error";
+import Error from "../pages/Error.jsx";
 import LoginForm from "../components/LoginForm.jsx";
 import useContextoSesion from "../hooks/useContextoSesion.js";
 
@@ -30,6 +31,7 @@ const Rutas = () => {
           <Route path="/listasCompra/:id/editar" element={<CrearListasCompra />} />
           <Route path="/listasCompra" element={<ListadoListas />} />
           <Route path="/listasCompra/:id" element={<VerListaCompra />} />
+          <Route path="/listasCompra/:id/detalle" element={<DetalleCompra />} />
         </>
       )}
 

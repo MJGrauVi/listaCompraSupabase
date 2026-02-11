@@ -10,11 +10,11 @@ const validarProducto = ({ nombre, peso, precio, descripcion }) => {
       "El nombre es obligatorio y debe tener al menos 4 caracteres.",
     );
   }
-  const pesoNumero = parseNumeroES(peso);
+  const pesoNumero = parsearValor(peso);
   if (!pesoNumero || pesoNumero <= 0) {
     errores.push("El peso es obligatorio y debe ser un número válido.");
   }
-  const precioNumero = parsePrecio(precio);
+  const precioNumero = parsearValor(precio);
   if (!precioNumero || precioNumero <= 0) {
     errores.push("El precio debe tener un formato válido.");
   }
@@ -36,64 +36,37 @@ const validarListaCompra = ({ nombre_lista }) => {
 
   return errores;
 };
-
-//Parseamos el valor para guardar en supabase.
-const parsearValor = (valor, tipo) => {
-  if (!valor) return 0;
-  let limpio = valor
-    .replace(/[^\d.,]/g, "") // quita letras, €, gr, etc.
-    .replace(/\./g, "") // quita separadores de miles
-    .replace(",", "."); // coma → punto
-  const numero = Number(limpio);
-  if (isNaN(numero)) return 0;
-  return tipo === "precio" ? Number(numero.toFixed(2)) : Math.round(numero);
+/***************************************************************** */
+//1.-Convertimos el texto (valor) a número.
+const parsearValor = (valor) => {
+  if (typeof valor === "number") return valor; //solución clave.
+  if (!valor) return null;
+  valor = valor.replace(/\s|€|gr/gi, ""); // Eliminar espacios y símbolos € y gr.
+  valor = valor.replace(/\./g, ""); // Quitar puntos de miles.
+  valor = valor.replace(/,/g, "."); // Cambiar coma decimal por punto.
+  return parseFloat(valor); // Convertir a número.
 };
-
-//Parseamos el peso.
-const parseNumeroES = (valor, valorPorDefecto = 0) => {
-  if (typeof valor === "number") return valor;
-  if (!valor) return valorPorDefecto;
-
-  const numero = Number(
-    valor
-      .toString() //Aseguramos string.
-      .replace(/\./g, "") //Eliminanos el .
-      .replace(",", ".") //Reemplazamos la coma por . para decimales.
-      .replace(/[^\d.-]/g, "") //Niego todo lo que no sea digito, punto o guion(para números negativos).
-      .trim(),
-  );
-  return isNaN(numero) ? valorPorDefecto : numero;
+//2.-Formatear número a texto.
+const formatearValor = (valor, decimales = 2) => {
+  return Number(valor).toLocaleString("es-ES", {
+    minimumFractionDigits: decimales,
+    maximumFractionDigits: decimales,
+  });
 };
-
-//Damos formato a precio y peso.
-const formatearValor = (valor, tipo) => {
-  if (valor == null || valor === "") return "";
-  const numero = Number(valor);
-  if (tipo === "precio") {
-    return (
-      numero.toLocaleString("es-ES", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }) + " €"
-    );
-  } 
-  
-  if (tipo === "peso") {
-    return `${numero.toLocaleString("es-ES")} gr.`;
+//3.-Formatear según el tipo.(llega numero).
+const formatoSegunTipo = (valor, tipo) =>{
+  let numero = parsearValor(valor);
+  if(tipo === "peso"){
+    numero = Math.round(numero);//sin decimales.
+    return formatearValor(numero, 0) + " gr.";
   }
-};
-
-//Formato para peso. Limpia el input y retorna formato 1.000 gr.
-function formatearPeso(valor) {
-  if (!valor) return "";
-
-  // Quitamos todo lo que no sea número o coma/punto
-  const numero = parseFloat(valor.replace(/[^\d,.-]/g, "").replace(",", "."));
-
-  if (isNaN(numero)) return "";
-
-  return `${numero.toLocaleString("es-ES")} gr.`;
+  if (tipo === "precio"){
+    return formatearValor(numero, 2) + " €";
+  }
+  return valor;
 }
+
+
 
 const calcularResumenProductos = (productos) => {
   //.length nos da la cantidad de productos.
@@ -106,16 +79,18 @@ const calcularResumenProductos = (productos) => {
       ? (
           productos.reduce((total, p) => total + Number(p.precio || 0), 0) /
           cantidad
-        ).toFixed(2)
+        ).toLocaleString("es-ES", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
       : 0;
 
   return {
     cantidad,
     precioMedio,
-    formatearPeso,
   };
 };
-const calcularPrecioTotal = (items) => {
+const calcularPrecioTotal = (items=[]) => {
   const sumaTotal = items.reduce(
     (acc, item) => acc + item.productos.precio * item.cantidad,
     0,
@@ -123,13 +98,14 @@ const calcularPrecioTotal = (items) => {
   return sumaTotal;
 };
 
-const calcularPesoTotal = (items) => {
+const calcularPesoTotal = (items=[]) => {
   const pesoTotal = items.reduce(
     (acc, item) => acc + item.productos.peso * item.cantidad,
     0,
   );
   return pesoTotal;
 };
+
 export {
   validarProducto,
   calcularResumenProductos,
@@ -138,4 +114,6 @@ export {
   validarListaCompra,
   parsearValor,
   formatearValor,
+  formatoSegunTipo
+
 };

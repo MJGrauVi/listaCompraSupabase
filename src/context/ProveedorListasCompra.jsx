@@ -2,12 +2,15 @@
 import { createContext, useState, useEffect } from "react";
 import useSupabaseCrud from "../hooks/useSupabaseCrud.js";
 import useSesion from "../hooks/useContextoSesion.js";
+import { supabaseConexion } from "../supabase/supabase.js";
+
 
 const ContextoListasCompra = createContext();
 
 const ProveedorListasCompra = ({ children }) => {
   const [listasCompra, setListasCompra] = useState([]);
   const [orden, setOrden] = useState("nombre_lista");
+  const [detalleListaCompra, setDetalleListaCompra] = useState([]);
  
 
   const { usuario } = useSesion();
@@ -61,6 +64,20 @@ const ProveedorListasCompra = ({ children }) => {
     return datos || [];
   };
 
+  //Utilizamos la conexion a supabase para este caso concreto.
+  //Porque el hook de conexion no esta preparado,usamos una tabla intermedia y select embebido.
+  const cargarDetalleListaCompra = async (idListaCompra)=>{
+    if(!usuario) return;
+    const {data, error} = await supabaseConexion
+    .from("lista_productos")
+    .select(`cantidad, productos(id, nombre, precio, peso)`)
+    .eq("lista_id", idListaCompra);
+
+    if(!error){
+      setDetalleListaCompra(data || [])
+    }
+  }
+
   // Cargar al iniciar o cuando cambia el usuario o el orden
   useEffect(() => {
     cargarListasCompra();
@@ -79,6 +96,8 @@ const ProveedorListasCompra = ({ children }) => {
         obtenerListaCompraPorId,
         filtrarListaCompra,
         setOrden,
+        detalleListaCompra,
+        cargarDetalleListaCompra
       }}
     >
       {children}
