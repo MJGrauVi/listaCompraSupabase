@@ -1,17 +1,18 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import useContextoListasCompra from "../hooks/useContextoListasCompra.js";
 import Cargando from "../components/Cargando.jsx";
 import Mensaje from "../components/Mensaje.jsx";
-import {useParams} from "react-router-dom";
-
+import { formatoSegunTipo } from "../biblioteca/funciones.js";
 import {
   calcularPesoTotal,
   calcularPrecioTotal,
 } from "../biblioteca/funciones.js";
+import "./DetalleCompra.css";
 
-const DetalleCompra = ({ idListaCompra }) => {
-    const {id}= useParams();
+const DetalleCompra = () => {
+  const { id } = useParams();
+
   const {
     detalleListaCompra,
     cargarDetalleListaCompra,
@@ -32,53 +33,77 @@ const DetalleCompra = ({ idListaCompra }) => {
 
       setListaInfo(listaCompra);
     };
-    cargarDatos();
-  }, [idListaCompra]);
 
-  const pesoTotal = calcularPesoTotal(detalleListaCompra);
-  const precioTotal = calcularPrecioTotal(detalleListaCompra);
-  const necesitaTransporte = pesoTotal > 1500;
+    cargarDatos();
+  }, [id]);
+
+  const pesoTotal = formatoSegunTipo(
+    calcularPesoTotal(detalleListaCompra),
+    "peso",
+  );
+
+  const precioTotal = formatoSegunTipo(
+    calcularPrecioTotal(detalleListaCompra),
+    "precio",
+  );
+
+  const pesoReal = calcularPesoTotal(detalleListaCompra);
+  const necesitaTransporte = pesoReal > 1500;
 
   useEffect(() => {
-    if (pesoTotal > 15000) {
-
+    if (pesoReal > 15000) {
       setMostrarMensaje(true);
 
       const timer = setTimeout(() => {
         setMostrarMensaje(false);
       }, 5000);
+
       return () => clearTimeout(timer);
     }
-  }, [pesoTotal]);
+  }, [pesoReal]);
 
- 
   if (!listaInfo) return <Cargando />;
 
   return (
-    <div>
-      <h3>Detalle de la lista</h3>
+    <div className="detalle-container">
+      <h2 className="detalle-titulo">Detalle de la lista</h2>
 
-      <p>Fecha creación: {listaInfo.created_at.toLocaleDateString("es-ES")}</p>
+      <div className="detalle-card">
+        <h3 className="detalle-nombre">{listaInfo.nombre_lista}</h3>
 
-      <ul>
-        {detalleListaCompra.map((item) => (
-          <li key={item.productos.id}>
-            {item.productos.nombre} — {item.cantidad} uds.
-          </li>
-        ))}
-      </ul>
+        <p className="detalle-fecha">
+          Fecha creación:{" "}
+          <strong>{listaInfo.created_at.toLocaleDateString("es-ES")}</strong>
+        </p>
 
-      <hr />
+        <div className="detalle-productos">
+          <h4>Productos incluidos</h4>
+          <ul>
+            {detalleListaCompra.map((item) => (
+              <li key={item.productos.id}>
+                <strong>{item.productos.nombre}</strong> — {item.cantidad} uds.
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <p>Total: {precioTotal.toFixed(2)} €</p>
-      <p>Peso total: {pesoTotal} Gr.</p>
+        <hr />
 
-      {necesitaTransporte && (
-        <Mensaje
-          tipo="error"
-          texto="La compra supera los 15 kg. Considera usar el coche."
-        />
-      )}
+        <p className="detalle-total">
+          <strong>Importe total:</strong> {precioTotal}
+        </p>
+
+        <p className="detalle-peso">
+          <strong>Peso total:</strong> {pesoTotal}
+        </p>
+
+        {necesitaTransporte && mostrarMensaje && (
+          <Mensaje
+            tipo="error"
+            texto="La compra supera los 15 kg. Considera usar el coche."
+          />
+        )}
+      </div>
     </div>
   );
 };

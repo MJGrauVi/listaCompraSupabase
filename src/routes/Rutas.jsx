@@ -5,7 +5,7 @@ import FormularioProducto from "../components/FormularioProducto.jsx";
 import CrearListasCompra from "../componentesListas/CrearListasCompra.jsx";
 import ListadoListas from "../componentesListas/ListadoListas.jsx";
 import VerListaCompra from "../componentesListas/VerListaCompra.jsx";
-import DetalleCompra from "../componentesListas/DetalleCompra.jsx";
+import DetalleCompra from "../componentesListas/DetalleCompra2.jsx";
 import Listado from "../components/Listado.jsx";
 import Error from "../pages/Error.jsx";
 import LoginForm from "../components/LoginForm.jsx";
