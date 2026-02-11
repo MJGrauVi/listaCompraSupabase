@@ -24,10 +24,9 @@ const validarProducto = ({ nombre, peso, precio, descripcion }) => {
 
   return errores;
 };
-const validarListaCompra = ({ nombre_lista}) => {
+const validarListaCompra = ({ nombre_lista }) => {
   let errores = [];
   const regExpNombre = /^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9\s\-.,()]{4,}$/;
- 
 
   if (!nombre_lista || !regExpNombre.test(nombre_lista)) {
     errores.push(
@@ -35,20 +34,19 @@ const validarListaCompra = ({ nombre_lista}) => {
     );
   }
 
- 
   return errores;
 };
-//Parseamo para guardar en bbdd.
-const parsePrecio = (precio) => {
-  if (typeof precio === "number") return precio;
-  if (!precio) return 0;
-  return Number(
-    precio
-      .replace(/\./g, "") // Quitar separadores de miles.
-      .replace(",", ".") // Cambiar coma por punto.
-      .replace(/[^\d,.-]/g, "") // Quitar símbolo € y letras.
-      .trim(),
-  );
+
+//Parseamos el valor para guardar en supabase.
+const parsearValor = (valor, tipo) => {
+  if (!valor) return 0;
+  let limpio = valor
+    .replace(/[^\d.,]/g, "") // quita letras, €, gr, etc.
+    .replace(/\./g, "") // quita separadores de miles
+    .replace(",", "."); // coma → punto
+  const numero = Number(limpio);
+  if (isNaN(numero)) return 0;
+  return tipo === "precio" ? Number(numero.toFixed(2)) : Math.round(numero);
 };
 
 //Parseamos el peso.
@@ -67,15 +65,22 @@ const parseNumeroES = (valor, valorPorDefecto = 0) => {
   return isNaN(numero) ? valorPorDefecto : numero;
 };
 
-//Damos formato
-const formatearPrecio = (precio) => {
-  const numero = parseNumeroES(precio); // ← LIMPIA PRIMERO
-  return numero.toLocaleString("es-ES", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+//Damos formato a precio y peso.
+const formatearValor = (valor, tipo) => {
+  if (valor == null || valor === "") return "";
+  const numero = Number(valor);
+  if (tipo === "precio") {
+    return (
+      numero.toLocaleString("es-ES", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }) + " €"
+    );
+  } 
+  
+  if (tipo === "peso") {
+    return `${numero.toLocaleString("es-ES")} gr.`;
+  }
 };
 
 //Formato para peso. Limpia el input y retorna formato 1.000 gr.
@@ -111,23 +116,26 @@ const calcularResumenProductos = (productos) => {
   };
 };
 const calcularPrecioTotal = (items) => {
-  const sumaTotal = 
-  items.reduce((acc, item) => acc + item.productos.precio * item.cantidad, 0);
+  const sumaTotal = items.reduce(
+    (acc, item) => acc + item.productos.precio * item.cantidad,
+    0,
+  );
   return sumaTotal;
 };
 
-const calcularPesoTotal = (items)=>{
-  const pesoTotal = items.reduce((acc, item)=> acc + item.productos.peso * item.cantidad, 0);
+const calcularPesoTotal = (items) => {
+  const pesoTotal = items.reduce(
+    (acc, item) => acc + item.productos.peso * item.cantidad,
+    0,
+  );
   return pesoTotal;
-}
+};
 export {
   validarProducto,
-  parsePrecio,
   calcularResumenProductos,
-  formatearPrecio,
-  formatearPeso,
-  parseNumeroES,
   calcularPrecioTotal,
-   calcularPesoTotal,
-   validarListaCompra
+  calcularPesoTotal,
+  validarListaCompra,
+  parsearValor,
+  formatearValor,
 };

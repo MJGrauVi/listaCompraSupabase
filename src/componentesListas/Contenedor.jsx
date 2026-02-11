@@ -1,4 +1,4 @@
-import CrearListasCompra from "../componentesListas/CrearListasCompra.jsx";
+import CrearListasCompra from "./CrearListasCompra.jsx";
 import FormularioProducto from "../components/FormularioProducto.jsx";
 
 
@@ -7,8 +7,8 @@ const Contenedor = () => {
   return (
     <div className="contenedor-formulario">
       
-      <FormularioProducto />
-      <CrearListasCompra />
+     {/*  <FormularioProducto />
+      <CrearListasCompra /> */}
     </div>
   );
 };

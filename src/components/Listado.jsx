@@ -6,7 +6,7 @@ import Producto from "./Producto.jsx";
 import Cargando from "./Cargando.jsx";
 import FiltroProductos from "./FiltroProductos.jsx";
 import ResumenProductos from "./ResumenProductos.jsx";
-import { calcularResumenProductos, formatearPrecio } from "../biblioteca/funciones.js";
+import { calcularResumenProductos } from "../biblioteca/funciones.js";
 
 const Listado = ({ onProductoSeleccionado }) => {
   const { usuario } = useContextoSesion();

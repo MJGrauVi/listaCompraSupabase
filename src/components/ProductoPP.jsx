@@ -1,5 +1,6 @@
 import React from "react";
 import "./ProductoPP.css";
+import { formatearValor } from "../biblioteca/funciones.js";
 
 const ProductoPP = ({ producto }) => {
   return (
@@ -13,9 +14,8 @@ const ProductoPP = ({ producto }) => {
         </thead>
         <tbody>
           <tr>
-            <td>{producto.peso.toLocaleString("es-ES")} gr.</td>
-            <td>{producto.precio.toLocaleString("es-ES", {style: "currency", currency: "EUR"})}
-            </td>
+            <td>{formatearValor(producto.peso, "peso")}</td>
+            <td>{formatearValor(producto.precio, "precio")}</td>
           </tr>
         </tbody>
       </table>

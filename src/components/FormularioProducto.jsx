@@ -5,9 +5,8 @@ import Errores from "./Errores.jsx";
 import Cargando from "./Cargando.jsx";
 import {
   validarProducto,
-  formatearPrecio,
-  formatearPeso,
-  parseNumeroES
+  formatearValor,
+  parsearValor
 } from "../biblioteca/funciones.js";
 /* import useSesion from "../hooks/useContextoSesion.js"; */
 import useContextoProductos from "../hooks/useContextoProductos.js";
@@ -55,10 +54,8 @@ console.log("¿Es edición?:", esEdicion);
         //Recibo producto y metemos en el estado.
         setProducto({
           nombre: productoEncontrado.nombre || "",
-         /*  peso: `${productoEncontrado.peso.toLocaleString("es-ES")} gr.`, */ //To locale siempre devuelve string. 
-          peso: formatearPrecio(productoEncontrado.peso) || "", 
-         /* precio: formatearPrecio(productoEncontrado.precio) || "", //Cuando modificamos carga con decimales.
-           precio: productoEncontrado.precio.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "",Cuando modificamos carga con decimales.  */
+          peso: formatearValor(productoEncontrado.peso) || "", 
+          precio: formatearValor(productoEncontrado.precio) || "", //Cuando modificamos carga con decimales.
           imagen_url: productoEncontrado.imagen_url || "",
           descripcion: productoEncontrado.descripcion || "",
         });
@@ -101,8 +98,8 @@ console.log("¿Es edición?:", esEdicion);
       //Transformamos para guardar en bbdd a formato numero.
       const productoCompleto = {
         nombre: producto.nombre.trim(),
-        peso: parseNumeroES(producto.peso),
-        precio: parseNumeroES(producto.precio), //Guardamos en bbdd 1234.50
+        peso: parsearValor(producto.peso),
+        precio: parsearValor(producto.precio), //Guardamos en bbdd 1234.50
         imagen_url: producto.imagen_url,
         descripcion: producto.descripcion || "",
       };
@@ -184,7 +181,7 @@ console.log("¿Es edición?:", esEdicion);
             onBlur={() => {
               setProducto((prev) => ({
                 ...prev,
-                peso: formatearPeso(prev.peso),
+                peso: formatearValor(prev.peso),
               }));
             }}
             className="input-formulario"
@@ -206,7 +203,7 @@ console.log("¿Es edición?:", esEdicion);
             onBlur={() => {
               setProducto((prev) => ({
                 ...prev,
-                precio: formatearPrecio(prev.precio),
+                precio: formatearValor(prev.precio),
               }));
             }}
             className="input-formulario"
