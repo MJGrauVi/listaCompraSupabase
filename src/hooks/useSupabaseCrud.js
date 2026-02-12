@@ -13,7 +13,6 @@ const useSupabaseCrud = () => {
     try {
       let query = supabaseConexion.from(tabla).select("*");
 
-      
       //Ordenación .
       if (opciones.orderBy) {
         query = query.order(opciones.orderBy, { ascending: true });
@@ -114,6 +113,20 @@ const useSupabaseCrud = () => {
     } finally {
       setCargando(false);
     }
+  };
+
+  const obtenerPerfil = async (idUsuario) => {
+    return await supabaseConexion
+      .from("perfiles")
+      .select("*")
+      .eq("id", idUsuario)
+      .single();
+  };
+  const actualizarPerfil = async (idUsuario, datos) => {
+    return await supabaseConexion
+      .from("perfiles")
+      .update(datos)
+      .eq("id", idUsuario);
   };
 
   return {
