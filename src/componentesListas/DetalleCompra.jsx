@@ -37,8 +37,10 @@ const DetalleCompra = () => {
     cargarDatos();
   }, [id]);
 
-  const pesoReal = calcularPesoTotal(detalleListaCompra); // número
+  const pesoReal = calcularPesoTotal(detalleListaCompra); // número.
+  
   const pesoTotal = formatoSegunTipo(pesoReal, "peso"); // string formateado
+ 
   const necesitaTransporte = pesoReal > 1500;
 
   const precio = calcularPrecioTotal(detalleListaCompra); //número.
@@ -47,7 +49,7 @@ const DetalleCompra = () => {
   useEffect(() => {
     if (pesoReal > 1500) {
       setMostrarMensaje(true);
-      console.log("pesoReal:", pesoReal);
+    
       const timer = setTimeout(() => {
         setMostrarMensaje(false);
       }, 5000);
@@ -95,7 +97,7 @@ const DetalleCompra = () => {
           <Mensaje
             tipo="mensaje-flotante"
             texto="La compra supera los 15 kg. Considera usar el coche."
-            /* className="mensaje-flotante" */
+            
           />
         )}
       </div>

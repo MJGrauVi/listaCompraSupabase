@@ -48,7 +48,7 @@ const parsearValor = (valor) => {
 };
 //2.-Formatear número a texto.
 const formatearValor = (valor, decimales = 2) => {
-  return Number(valor).toLocaleString("es-ES", {
+  return valor.toLocaleString("es-ES", {
     minimumFractionDigits: decimales,
     maximumFractionDigits: decimales,
   });
