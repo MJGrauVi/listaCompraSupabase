@@ -114,8 +114,23 @@ const useSupabaseCrud = () => {
       setCargando(false);
     }
   };
+  const obtenerTodosLosRoles = async () => { 
+    return await supabaseConexion
+    .from("roles")
+    .select("*")
+    .order("correo", { ascending: true }); 
+  }; 
 
-  const obtenerPerfil = async (idUsuario) => {
+  const actualizarRol = async (idUsuario, nuevoRol) => { 
+    return await supabaseConexion
+    .from("roles")
+    .update({ rol: nuevoRol })
+    .eq("id_usuario", idUsuario); 
+  };
+
+
+
+/*   const obtenerPerfil = async (idUsuario) => {
     return await supabaseConexion
       .from("perfiles")
       .select("*")
@@ -127,7 +142,7 @@ const useSupabaseCrud = () => {
       .from("perfiles")
       .update(datos)
       .eq("id", idUsuario);
-  };
+  }; */
 
   return {
     cargando,
@@ -136,6 +151,8 @@ const useSupabaseCrud = () => {
     insertar,
     actualizar,
     borrar,
+    obtenerTodosLosRoles,
+    actualizarRol
   };
 };
 
