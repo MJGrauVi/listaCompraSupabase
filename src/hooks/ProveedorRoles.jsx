@@ -5,7 +5,7 @@ import useContextoSesion from "./useContextoSesion.js";
 
 const ContextoRoles = createContext();
 export const ProveedorRoles = ({ children }) => {
-  const { usuario } = useContext(ContextoSesion);
+  const { usuario } = useContext(useContextoSesion);
   const { obtenerTodosLosRoles, actualizarRol } = useSupabaseCrud();
   const [usuarios, setUsuarios] = useState([]);
   const [cargando, setCargando] = useState(true);

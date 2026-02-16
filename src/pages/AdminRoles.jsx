@@ -1,7 +1,14 @@
 import React from 'react';
+import { useState } from 'react';
+import useContextoSesion from "../context/useContextoSesion.js";
+
 
 
 const AdminRoles = () => {
+
+  const {usuario} = useContextoSesion();
+  const [usuarios, setUsuarios]=useState([]);
+
 
 /**
    * Gestión de roles de usuario en Supabase.
