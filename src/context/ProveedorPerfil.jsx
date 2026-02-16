@@ -1,13 +1,13 @@
 // context/ProveedorPerfil.jsx
 
-import { createContext, useContext, useEffect, useState } from "react";
-import useSupabaseAuth from "../hooks/useSupabaseAuth.jsx";
-import useSupabaseCrud from "../hooks/useSupabaseCrud";
+import { createContext, useEffect, useState } from "react";
+import useContextoSesion from "../hooks/useContextoSesion.js";
+import useSupabaseCrud from "../hooks/useSupabaseCrud.js";
 
 const ContextoPerfil = createContext();
 
 export const ProveedorPerfil = ({ children }) => {
-  const { usuario } = useSupabaseAuth(); // viene del ProveedorSesion
+  const { usuario } = useContextoSesion(); // viene del ProveedorSesion
   const { obtenerPerfil, actualizarPerfil } = useSupabaseCrud();
 
   const [perfil, setPerfil] = useState(null);
@@ -54,4 +54,5 @@ export const ProveedorPerfil = ({ children }) => {
   );
 };
 
-export const usePerfilContexto = () => useContext(ContextoPerfil);
+export { ContextoPerfil };
+export default ProveedorPerfil;

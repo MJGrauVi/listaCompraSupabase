@@ -18,8 +18,6 @@ const App = () => {
           </Header>
           <Contenedor>
             <Menu />
-          </Contenedor>
-          <Contenedor>
             <Rutas />
           </Contenedor>
           <Footer />

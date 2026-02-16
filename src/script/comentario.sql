@@ -1,5 +1,6 @@
 /* 
 -- 1. TABLA ROLES
+/* drop table if exists public.roles; */
 
 create table public.roles (
   id_rol uuid primary key references auth.users(id) on delete cascade,
@@ -9,7 +10,8 @@ create table public.roles (
 
 alter table public.roles enable row level security;
 
-/*id_rol (clave principal) será el mismo ID del usuario en Supabase Auth, references conecta esta tabla con auth.users y con on delete cascade si se borra un usuario se borra su rol automaticamente. */
+/*id_rol (clave principal) será el mismo ID del usuario en Supabase Auth, references conecta esta tabla con auth.users y 
+con on delete cascade si se borra un usuario se borra su rol automaticamente. */
 
 -- 2. FUNCIÓN (SECURITY DEFINER) PARA INSERTAR EN ROLES AL CREAR USUARIO
 
