@@ -1,80 +1,92 @@
 /* ============================================================
-   1. TABLA ROLES
-   Guarda el rol de cada usuario (usuario / administrador)
-   ============================================================ */
+1. TABLA ROLES
+Guarda el rol de cada usuario (usuario / administrador)
+============================================================ */
+drop table if exists public.roles cascade;
 
 create table public.roles (
-  id_usuario uuid primary key references auth.users(id) on delete cascade,
-  correo text not null unique,
-  rol text not null default 'usuario' check (rol in ('usuario','administrador'))
+  id_rol uuid primary key references auth.users (id) on delete cascade,
+  email text not null,
+  rol text not null default 'usuario' check (rol in ('usuario', 'administrador'))
 );
 
 alter table public.roles enable row level security;
 
-
 /* ============================================================
-   2. FUNCIÓN PARA INSERTAR AUTOMÁTICAMENTE EL ROL AL CREAR USUARIO
-   ============================================================ */
-
-create or replace function public.fn_insertar_rol()
-returns trigger
-language plpgsql
-security definer
-set search_path = public
-as $$
-begin
-  insert into public.roles (id_usuario, correo, rol)
-  values (new.id, new.email, 'usuario')
-  on conflict (id_usuario) do nothing;
-
+2. FUNCIÓN PARA INSERTAR AUTOMÁTICAMENTE EL ROL AL CREAR USUARIO
+============================================================ */
+create or replace function public.insertar_rol() 
+returns trigger 
+language plpgsql 
+security definer 
+set search_path = public 
+as $$ 
+begin 
+  insert into public.roles (id_rol, email, rol) 
+  values (new.id, new.email, 'usuario') 
+  on conflict (id_rol) do nothing; 
   return new;
-end;
-$$;
-
+ end; 
+ $$;
 
 /* ============================================================
-   3. TRIGGER QUE EJECUTA LA FUNCIÓN AL CREAR UN USUARIO
-   ============================================================ */
+3. TRIGGER QUE EJECUTA LA FUNCIÓN AL CREAR UN USUARIO
+============================================================ */
+drop trigger if exists trg_insertar_rol on auth.users; 
 
 create trigger trg_insertar_rol
-after insert on auth.users
-for each row
-execute function public.fn_insertar_rol();
-
+after insert on auth.users 
+for each row 
+execute function public.insertar_rol();
 
 /* ============================================================
-   4. POLÍTICAS RLS PARA LA TABLA ROLES
-   Solo los administradores pueden ver y modificar roles
-   ============================================================ */
+4. POLÍTICAS RLS PARA LA TABLA ROLES
+Solo los administradores pueden ver y modificar roles
+============================================================ */
+-- 4.1 Permitir INSERT desde el trigger (imprescindible para evitar error 500)
 
-create policy "roles_solo_admin_ver"
-on public.roles
-for select
-using (
-  exists (
-    select 1 from public.roles r
-    where r.id_usuario = auth.uid()
-      and r.rol = 'administrador'
-  )
-);
+create policy "roles_insert_trigger" 
+on public.roles 
+for insert 
+with check (true);
 
-create policy "roles_solo_admin_modificar"
-on public.roles
-for update
-using (
-  exists (
-    select 1 from public.roles r
-    where r.id_usuario = auth.uid()
-      and r.rol = 'administrador'
-  )
-)
-with check (
-  exists (
-    select 1 from public.roles r
-    where r.id_usuario = auth.uid()
-      and r.rol = 'administrador'
-  )
-);
+-- 4.2 Cada usuario puede ver su propio rol 
+create policy "roles_ver_propio" 
+on public.roles 
+for select 
+using (auth.uid() = id_rol); 
+
+-- 4.3 Solo administradores pueden ver todos los roles 
+
+create policy "roles_admin_ver_todos" 
+on public.roles 
+for select 
+using ( 
+  exists ( 
+    select 1 from public.roles r 
+    where r.id_rol = auth.uid() 
+    and r.rol = 'administrador' 
+  ) 
+); 
+    -- 4.4 Solo administradores pueden modificar roles
+    
+    create policy "roles_admin_modificar" 
+    on public.roles 
+    for update 
+    using ( 
+      exists ( 
+        select 1 from public.roles r 
+        where r.id_rol = auth.uid() and r.rol = 'administrador' 
+      ) 
+    ) 
+    with check ( 
+      exists ( 
+        select 1 from public.roles r 
+         where r.id_rol = auth.uid() 
+        and r.rol = 'administrador' 
+      ) 
+    );
+/************************************************************************************************/
 
 
 /* ============================================================

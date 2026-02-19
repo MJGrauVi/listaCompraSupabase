@@ -9,17 +9,16 @@ const useSupabaseAuth = () => {
     setCargando(true);
     setError(null);
     try {
-      const { data, error } =
-        await supabaseConexion.auth.signInWithPassword({ 
-            email, 
-            password/* , 
-            options:{
+      const { data, error } = await supabaseConexion.auth.signInWithPassword({
+        email,
+        password,
+        options: {
           emailRedirectTo: "http://localhost:5173/",
-        } */ });
+        },
+      });
 
       if (error) throw error;
       return data.user;
-     
     } catch (err) {
       //Si hay error se guarda en el estado.
       setError(err.message);
@@ -54,15 +53,37 @@ const useSupabaseAuth = () => {
   };
 
   const logout = async () => {
-      await supabaseConexion.auth.signOut();
+    await supabaseConexion.auth.signOut();
   };
-//Obtiene sesión actual.
+  //Obtiene sesión actual.
   const getSesion = async () => {
     const { data } = await supabaseConexion.auth.getSession();
     return data.session?.user ?? null;
   };
+  const getRol = async () => {
+    //Obtiene sesion actual.
+    try{ 
+    const { data: sessionData } = await supabaseConexion.auth.getSession();
+    const user = sessionData.session?.user ?? null;
 
-  return { cargando, error, login, registro, logout, getSesion };
+    if (!user) return null;
+    //Consulta el rol en la tabla roles.
+    const { data, error } = await supabaseConexion
+      .from("roles")
+      .select("rol")
+      .eq("id_rol", user.id)
+      .single();
+
+    if (error) return null;
+
+    return data.rol;
+    }catch(err){
+      console.error("Error en getRol:", err.message); 
+      return null;
+    }
+  };
+
+  return { cargando, error, login, registro, logout, getSesion, getRol };
 };
 
 export default useSupabaseAuth;

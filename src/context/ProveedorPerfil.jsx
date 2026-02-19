@@ -1,52 +1,68 @@
-// context/ProveedorPerfil.jsx
-
-import { createContext, useEffect, useState } from "react";
-import useContextoSesion from "../hooks/useContextoSesion.js";
-import useSupabaseCrud from "../hooks/useSupabaseCrud.js";
+import { createContext, useContext, useEffect, useState } from "react";
+import { ContextoSesion } from "./ProveedorSesion.jsx";
+import useSupabaseCrud from "../hooks/useSupabaseCrud";
+import { supabaseConexion } from "../supabase/supabase";
 
 const ContextoPerfil = createContext();
 
-export const ProveedorPerfil = ({ children }) => {
-  const { usuario } = useContextoSesion(); // viene del ProveedorSesion
-  const { obtenerPerfil, actualizarPerfil } = useSupabaseCrud();
+const ProveedorPerfil = ({ children }) => {
+  const { usuario } = useContext(ContextoSesion);
+  const { obtener, actualizar } = useSupabaseCrud();
 
   const [perfil, setPerfil] = useState(null);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
+  const [cargandoPerfil, setCargandoPerfil] = useState(true);
 
-  // Cargar perfil al iniciar sesión
+  const cargarPerfil = async () => {
+    setCargandoPerfil(true);
+
+    const data = await obtener("perfiles", {
+      eq: ["id", usuario.id]
+    });
+
+    setPerfil(data[0]);
+    setCargandoPerfil(false);
+  };
+
   useEffect(() => {
-    async function cargar() {
-      if (!usuario) {
-        setPerfil(null);
-        setCargando(false);
-        return;
-      }
-
-      const { data, error } = await obtenerPerfil(usuario.id);
-
-      if (error) setError(error.message);
-      else setPerfil(data);
-
-      setCargando(false);
-    }
-
-    cargar();
+    if (usuario) cargarPerfil();
+    else setPerfil(null);
   }, [usuario]);
 
-  const guardarPerfil = async () => {
-    const { error } = await actualizarPerfil(usuario.id, perfil);
-    if (error) setError(error.message);
+  const subirAvatar = async (file) => {
+    if (!file) return perfil.avatar_url;
+
+    const ext = file.name.split(".").pop();
+    const fileName = `${usuario.id}.${ext}`;
+    const filePath = `avatars/${fileName}`;
+
+    await supabaseConexion.storage
+      .from("avatars")
+      .upload(filePath, file, { upsert: true });
+
+    const { data } = supabaseConexion.storage
+      .from("avatars")
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  };
+
+  const actualizarPerfil = async (datos, avatarFile) => {
+    const avatar_url = await subirAvatar(avatarFile);
+
+    await actualizar("perfiles", usuario.id, {
+      ...datos,
+      avatar_url,
+    });
+
+    await cargarPerfil();
   };
 
   return (
     <ContextoPerfil.Provider
       value={{
         perfil,
-        setPerfil,
-        cargando,
-        error,
-        guardarPerfil,
+        cargandoPerfil,
+        actualizarPerfil,
       }}
     >
       {children}

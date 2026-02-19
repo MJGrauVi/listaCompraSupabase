@@ -9,7 +9,7 @@ const ListadoListas = () => {
 
   return (
     <div className="listas-container">
-      <h2 className="listas-titulo">Mis listas de compra</h2>
+      <h2 >Mis listas de compra</h2>
 
       {listasCompra.length === 0 && (
         <p className="listas-vacio">No hay listas creadas.</p>

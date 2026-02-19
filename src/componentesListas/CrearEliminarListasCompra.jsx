@@ -14,13 +14,13 @@ const CrearEliminarListasCompra = () => {
   const {
     guardarListaCompra,
     obtenerListaCompraPorId,
-    borrarListaCompra,   // ← AÑADIDO
+    borrarListaCompra,   
     cargando
   } = useContextoListasCompra();
 
-  const { id } = useParams();
+  const { id } = useParams();//Toma el parámetro id de la url
   const navigate = useNavigate();
-  const esEdicion = !!id; // Si hay id, significa ELIMINAR
+  const esEdicion = !!id; // Si hay id, significa ELIMINAR.
 
   const valoresIniciales = {
     nombre_lista: "",
@@ -31,7 +31,7 @@ const CrearEliminarListasCompra = () => {
   const [errores, setErrores] = useState([]);
   const [mensaje, setMensaje] = useState({ tipo: "", texto: "" });
 
-  // Cargar datos si estamos eliminando
+  // Cargar datos si estamos eliminando.
   useEffect(() => {
     const cargarListaCompra = async () => {
       if (!esEdicion) return;
@@ -56,13 +56,20 @@ const CrearEliminarListasCompra = () => {
     setMensaje({ tipo: "", texto: "" });
   };
 
-  // Submit del formulario
+  // Submit del formulario.
   const manejarEnvio = async (evento) => {
     evento.preventDefault();
 
-    // Si NO es edición → CREAR (igual que antes)
+    // Si NO es edición; CREAR (igual que antes).
     if (!esEdicion) {
-      const listaErroresValidacion = validarListaCompra(listaCompra);
+
+// Construimos el objeto REAL que vamos a insertar *****************
+  const listaCompraCompleta = { 
+    nombre_lista: listaCompra.nombre_lista.trim(), 
+    propietario_id: usuario.id, // ← AQUÍ está la clave 
+    };
+
+      const listaErroresValidacion = validarListaCompra(listaCompraCompleta);
       setErrores(listaErroresValidacion);
 
       if (listaErroresValidacion.length > 0) {

@@ -1,16 +1,18 @@
 import { createContext, useEffect, useState } from "react";
 import { supabaseConexion } from "../supabase/supabase.js";
-import useSupabaseAuth from "./../hooks/UseSupabaseAuth.js";
+import useSupabaseAuth from "./../hooks/useSupabaseAuth.js"; 
+
+
 
 const ContextoSesion = createContext();
 
 const ProveedorSesion = ({ children }) => {
   // Estado global de sesión(supabase devuelve null cuando no hay user.)
   const [usuario, setUsuario] = useState(null);
-  const [loading, setLoading] = useState(true);//C
+  const [loading, setLoading] = useState(true);
 
   // Traemos de useSupabaseAuth;
-  const { login, registro, logout, cargando, error } = useSupabaseAuth();
+  const { login, registro, logout, cargando, error, getRol } = useSupabaseAuth();
 
   // Sesión inicial, con getSesion para arrancar.
   useEffect(() => {
@@ -42,6 +44,10 @@ const ProveedorSesion = ({ children }) => {
     setUsuario(null);
    
   };
+  const obtenerRolUsuario = async ()=>{
+    const rol = await getRol();
+    return rol;
+  }
 
   return (
     <ContextoSesion.Provider
@@ -53,6 +59,7 @@ const ProveedorSesion = ({ children }) => {
         iniciarLogin,
         registrarUsuario,
         cerrarSesion,
+        obtenerRolUsuario
       }}
     >
       {!loading && children}

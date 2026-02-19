@@ -4,7 +4,7 @@ import { ContextoSesion } from "../context/ProveedorSesion";
 import Cargando from "../components/Cargando";
 import "./AdminPages.css";
 
-const AdminRoles = () => {
+const AdminRoles2 = () => {
   const { usuario, obtenerRolUsuario } = useContext(ContextoSesion);
 
   const [usuarios, setUsuarios] = useState([]);
@@ -64,7 +64,7 @@ const AdminRoles = () => {
       if (error) throw error;
 
       setUsuarios((prev) =>
-        prev.map((u) => (u.id_rol === id_rol ? { ...u, rol: nuevoRol } : u)),
+        prev.map((u) => (u.id_rol === id_rol ? { ...u, rol: nuevoRol } : u))
       );
     } catch (err) {
       setError(err.message);
@@ -77,30 +77,41 @@ const AdminRoles = () => {
   if (!esAdmin) return <p>No tienes permisos para ver esta página.</p>;
 
   return (
-    <div className="admin-container">
-      <h2 className="admin-titulo">Administración de Roles</h2>
-      {usuarios
-        .filter((u) => u.id_rol !== usuario.id)
-        .map((u) => (
-          <div key={u.id_rol} className="admin-card">
-            <div>
-              <p className="admin-email">{u.email}</p>
-              <p className="admin-rol">Rol actual: {u.rol}</p>
-            </div>
-            <div className="admin-select-container">
-              <select
-                className="admin-select"
-                value={u.rol}
-                onChange={(e) => cambiarRol(u.id_rol, e.target.value)}
-              >
-                <option value="usuario">usuario</option>
-                <option value="administrador">administrador</option>
-              </select>
-            </div>
-          </div>
-        ))}
+
+     <div className="listas-container">
+      <h2 className="listas-titulo">Administración de Roles</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Rol actual</th>
+            <th>Cambiar rol</th>
+          </tr>
+        </thead>
+        <tbody> 
+          {/* Muestro todos los usuarios distintos del actual, para que no se pueda cambiar el rol a si mismo. */}
+          {usuarios.filter((u)=>u.id_rol !== usuario.id)
+          .map((u) => (
+            <tr key={u.id_rol} className="lista-card">
+              <td>{u.email}</td>
+              <td>{u.rol}</td>
+              <td>
+                <select
+                  value={u.rol}
+                  onChange={(e) => cambiarRol(u.id_rol, e.target.value)}
+                >
+                  <option value="usuario">usuario</option>
+                  <option value="administrador">administrador</option>
+                </select>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-  );
+
+  ); 
+
 };
 
-export default AdminRoles;
+export default AdminRoles2;

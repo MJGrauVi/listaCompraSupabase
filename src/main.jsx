@@ -7,19 +7,22 @@ import "./index.css";
 import App from "./App.jsx";
 import ProveedorListasCompra from "./context/ProveedorListasCompra.jsx";
 import ProveedorListaProductos from "./context/ProveedorListaProductos.jsx";
+import ProveedorPerfil from "./context/ProveedorPerfil.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ProveedorSesion>
-      <ProveedorProductos>
-        <ProveedorListasCompra>
-          <ProveedorListaProductos>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </ProveedorListaProductos>
-        </ProveedorListasCompra>
-      </ProveedorProductos>
+      <ProveedorPerfil>
+        <ProveedorProductos>
+          <ProveedorListasCompra>
+            <ProveedorListaProductos>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </ProveedorListaProductos>
+          </ProveedorListasCompra>
+        </ProveedorProductos>
+      </ProveedorPerfil>
     </ProveedorSesion>
   </StrictMode>,
 );

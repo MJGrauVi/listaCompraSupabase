@@ -114,6 +114,8 @@ const useSupabaseCrud = () => {
       setCargando(false);
     }
   };
+
+
   const obtenerTodosLosRoles = async () => { 
     return await supabaseConexion
     .from("roles")
@@ -129,8 +131,7 @@ const useSupabaseCrud = () => {
   };
 
 
-
-/*   const obtenerPerfil = async (idUsuario) => {
+   const obtenerPerfil = async (idUsuario) => {
     return await supabaseConexion
       .from("perfiles")
       .select("*")
@@ -142,7 +143,7 @@ const useSupabaseCrud = () => {
       .from("perfiles")
       .update(datos)
       .eq("id", idUsuario);
-  }; */
+  }; 
 
   return {
     cargando,
@@ -152,7 +153,10 @@ const useSupabaseCrud = () => {
     actualizar,
     borrar,
     obtenerTodosLosRoles,
-    actualizarRol
+    actualizarRol,
+    obtenerPerfil,
+    actualizarPerfil
+
   };
 };
 
