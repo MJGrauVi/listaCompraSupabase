@@ -8,6 +8,7 @@ const Perfil = () => {
   const [editando, setEditando] = useState(false);
 
   if (cargandoPerfil || !perfil) return <Cargando />;
+  if (!perfil) return <FormularioPerfil modo="crear" />;
 
   if (editando) {
     return (

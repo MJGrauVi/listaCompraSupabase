@@ -224,6 +224,8 @@ using (
     public.es_admin()
 );
 
+
+/**********************************************************************************/
 /*Ver usuarios en Auth.users*/
 select id, email from auth.users;
 

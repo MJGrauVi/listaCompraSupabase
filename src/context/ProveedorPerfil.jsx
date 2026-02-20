@@ -19,6 +19,13 @@ const ProveedorPerfil = ({ children }) => {
       eq: ["id", usuario.id],
     });
 
+    //Si no existe el perfil, lo creamos vacio.
+    if(data.length === 0){
+      await insertar("perfiles", { id: usuario.id, nombre_completo: "", descripcion: "", avatar_url: null});
+
+        return cargarPerfil(); // volvemos a cargarlo.
+    }
+
     setPerfil(data[0]);
     setCargandoPerfil(false);
   };
@@ -31,19 +38,22 @@ const ProveedorPerfil = ({ children }) => {
   const subirAvatar = async (file) => {
     //Sin no hay avatar null.
     if (!file) return null;
+
     const nombreArchivo = `${usuario.id}-${Date.now()}`;
-    const { data, error } = await supabaseConexion.storage
-      .from("avatars")
+
+    const {error } = await supabaseConexion.storage
+      .from("avatars") //Creado bucket "avatars" en storage.
       .upload(nombreArchivo, file, {
         cacheControl: "3600",
         upsert: true,
       });
-
     if (error) throw error;
-
+   
+      //Obtenemos la url pública de la imagen.
     const { data: urlData } = supabaseConexion.storage
       .from("avatars")
       .getPublicUrl(nombreArchivo);
+
     return urlData.publicUrl;
   };
 
@@ -79,7 +89,8 @@ const ProveedorPerfil = ({ children }) => {
         perfil,
         cargandoPerfil,
         actualizarPerfil,
-        crearPerfil
+        crearPerfil,
+        cargarPerfil, subirAvatar
       }}
     >
       {children}

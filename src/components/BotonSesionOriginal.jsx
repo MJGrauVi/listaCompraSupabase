@@ -1,10 +1,9 @@
 import useContextoSesion from "../hooks/useContextoSesion.js";
-import useContextoPerfil from "../hooks/useContextoPerfil.js";
 import { useNavigate } from "react-router-dom";
 import Mensaje from "./Mensaje.jsx";
-import "./BotonSesion.css";
+import useContextoPerfil from "../hooks/useContextoPerfil.js";
 
-const BotonSesion = () => {
+const BotonSesionOriginal = () => {
   const { usuario, cerrarSesion } = useContextoSesion();
   const { perfil } = useContextoPerfil();
   const navigate = useNavigate();
@@ -14,44 +13,53 @@ const BotonSesion = () => {
     navigate("/");
   };
 
-  const irAlPerfil = () => navigate("/perfil");
+  const irAlPerfil = () => {
+    navigate("/perfil");
+  };
 
   const avatar = perfil?.avatar_url;
   const inicial = usuario?.user_metadata?.display_name?.[0]?.toUpperCase() || "?";
 
   return (
-    <div className="header-session">
+    <div className="inicio-sesion flex items-center gap-3">
       <Mensaje tipo={Mensaje.tipo} texto={Mensaje.texto} />
 
       {usuario ? (
         <>
+          {/* Avatar redondo */}
           <div
-            className="avatar"
             onClick={irAlPerfil}
+            className="w-10 h-10 rounded-full bg-gray-300 cursor-pointer overflow-hidden flex items-center justify-center"
             title="Ver perfil"
           >
             {avatar ? (
-              <img src={avatar} alt="avatar" />
+              <img
+                src={avatar}
+                alt="avatar"
+                className="w-full h-full object-cover"
+              />
             ) : (
-              <span className="letra-avatar">{inicial}</span>
+              <span className="text-lg font-bold">{inicial}</span>
             )}
           </div>
 
-          <span className="user-name">
+          {/* Nombre */}
+          <span className="font-medium">
             Hola {usuario.user_metadata.display_name}
           </span>
 
+          {/* Botón logout */}
           <button className="btn-logout" onClick={handleCerrarSesion}>
             Cerrar sesión
           </button>
         </>
       ) : (
-        <button className="btn-login" onClick={() => navigate("/login")}>
-          Iniciar sesión / Regístrate
+        <button className="btn-inicio" onClick={() => navigate("/login")}>
+          Iniciar sesión / Registrate
         </button>
       )}
     </div>
   );
 };
 
-export default BotonSesion;
+export default BotonSesionOriginal;
