@@ -4,23 +4,23 @@ import "./CrearEliminarListasCompra.css";
 import Errores from "../components/Errores.jsx";
 import Cargando from "../components/Cargando.jsx";
 import { validarListaCompra } from "../biblioteca/funciones.js";
-import useSesion from "../hooks/useContextoSesion.js";
+import useContextoSesion from "../hooks/useContextoSesion.js";
 import useContextoListasCompra from "../hooks/useContextoListasCompra.js";
 
 // Formulario para insertar o eliminar listaCompras.
 const CrearEliminarListasCompra = () => {
-  const { usuario } = useSesion();
+  const { usuario, obtenerRolUsuario } = useContextoSesion();
 
   const {
     guardarListaCompra,
     obtenerListaCompraPorId,
-    borrarListaCompra,   
-    cargando
+    borrarListaCompra,
+    cargando,
   } = useContextoListasCompra();
 
-  const { id } = useParams();//Toma el parámetro id de la url
+  const { id } = useParams(); //Toma el parámetro id de la url
   const navigate = useNavigate();
-  const esEdicion = !!id; // Si hay id, significa ELIMINAR.
+  const esEliminar = !!id; // Si hay id, significa ELIMINAR.
 
   const valoresIniciales = {
     nombre_lista: "",
@@ -34,7 +34,7 @@ const CrearEliminarListasCompra = () => {
   // Cargar datos si estamos eliminando.
   useEffect(() => {
     const cargarListaCompra = async () => {
-      if (!esEdicion) return;
+      if (!esEliminar) return;
 
       const listaCompraEncontrada = await obtenerListaCompraPorId(id);
       if (listaCompraEncontrada) {
@@ -45,7 +45,7 @@ const CrearEliminarListasCompra = () => {
       }
     };
     cargarListaCompra();
-  }, [id, esEdicion]);
+  }, [id, esEliminar]);
 
   const actualizarDato = (evento) => {
     const { name, value } = evento.target;
@@ -61,13 +61,12 @@ const CrearEliminarListasCompra = () => {
     evento.preventDefault();
 
     // Si NO es edición; CREAR (igual que antes).
-    if (!esEdicion) {
-
-// Construimos el objeto REAL que vamos a insertar *****************
-  const listaCompraCompleta = { 
-    nombre_lista: listaCompra.nombre_lista.trim(), 
-    propietario_id: usuario.id, // ← AQUÍ está la clave 
-    };
+    if (!esEliminar) {
+      // Construimos el objeto REAL que vamos a insertar *****************
+      const listaCompraCompleta = {
+        nombre_lista: listaCompra.nombre_lista.trim(),
+        propietario_id: usuario.id, // AQUÍ está la clave.
+      };
 
       const listaErroresValidacion = validarListaCompra(listaCompraCompleta);
       setErrores(listaErroresValidacion);
@@ -92,8 +91,16 @@ const CrearEliminarListasCompra = () => {
           tipo: "exito",
           texto: `Lista "${listaCompraCompleta.nombre_lista}" creada correctamente.`,
         });
+        //Dependiendo del rol renderizamos una lista u otra.
+        const rol = await obtenerRolUsuario();
 
-        setTimeout(() => navigate("/productos"), 2000);
+        setTimeout(() => {
+          if (rol === "administrador") {
+            navigate("/productos");
+          } else {
+            navigate("/listasCompra");
+          }
+        }, 2000);
       } catch (error) {
         console.error(error);
         setMensaje({
@@ -105,7 +112,7 @@ const CrearEliminarListasCompra = () => {
       return;
     }
 
-    // Si SÍ es edición eliminamos la lista.
+    // Si ?? eliminamos la lista.
     try {
       await borrarListaCompra(id);
 
@@ -113,7 +120,8 @@ const CrearEliminarListasCompra = () => {
         tipo: "exito",
         texto: `La lista "${listaCompra.nombre_lista}" ha sido eliminada correctamente.`,
       });
-
+      
+      //Tras eliminar la lista vuelve al listado.
       setTimeout(() => navigate("/listasCompra"), 2000);
     } catch (error) {
       console.error(error);
@@ -130,9 +138,7 @@ const CrearEliminarListasCompra = () => {
 
   return (
     <div className="contenedor-formulario-listaCompra">
-      <h2>
-        {esEdicion ? "¿Deseas eliminar la lista?" : "Crear Lista"}
-      </h2>
+      <h2>{esEliminar ? "¿Deseas eliminar la lista?" : "Crear Lista"}</h2>
 
       <form onSubmit={manejarEnvio} className="formulario-listaCompra">
         {/* Nombre de la lista */}
@@ -148,14 +154,18 @@ const CrearEliminarListasCompra = () => {
             onChange={actualizarDato}
             className="input-formulario"
             placeholder="Nombre de la lista de la compra"
-            disabled={esEdicion}   // ← No editable si estamos eliminando
+            disabled={esEliminar} // ← No editable si estamos eliminando
           />
         </div>
 
         <button type="submit" className="boton-guardar">
           {cargando
-            ? esEdicion ? "Eliminando..." : "Guardando..."
-            : esEdicion ? "Eliminar" : "Guardar"}
+            ? esEliminar
+              ? "Eliminando..."
+              : "Guardando..."
+            : esEliminar
+              ? "Eliminar"
+              : "Guardar"}
         </button>
       </form>
 

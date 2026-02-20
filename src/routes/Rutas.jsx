@@ -41,6 +41,7 @@ const Rutas = () => {
             path="/listasCompra/:id/eliminar"
             element={<CrearEliminarListasCompra />}
           />
+          {/* <Route path="/listasCompra" element={<ListadoListas />} /> */}
           <Route path="/listasCompra" element={<ListadoListas />} />
           <Route path="/listasCompra/:id" element={<VerListaCompra />} />
           <Route path="/listasCompra/:id/detalle" element={<DetalleCompra />} />

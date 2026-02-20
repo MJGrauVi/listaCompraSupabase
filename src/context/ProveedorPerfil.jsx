@@ -1,13 +1,13 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { ContextoSesion } from "./ProveedorSesion.jsx";
-import useSupabaseCrud from "../hooks/useSupabaseCrud";
-import { supabaseConexion } from "../supabase/supabase";
+import { createContext, useEffect, useState } from "react";
+import useContextoSesion from "../hooks/useContextoSesion.js";
+import useSupabaseCrud from "../hooks/useSupabaseCrud.js";
+import { supabaseConexion } from "../supabase/supabase.js";
 
 const ContextoPerfil = createContext();
 
 const ProveedorPerfil = ({ children }) => {
-  const { usuario } = useContext(ContextoSesion);
-  const { obtener, actualizar } = useSupabaseCrud();
+  const { usuario } = useContextoSesion();
+  const { obtener, actualizar, insertar } = useSupabaseCrud();
 
   const [perfil, setPerfil] = useState(null);
   const [cargandoPerfil, setCargandoPerfil] = useState(true);
@@ -16,7 +16,7 @@ const ProveedorPerfil = ({ children }) => {
     setCargandoPerfil(true);
 
     const data = await obtener("perfiles", {
-      eq: ["id", usuario.id]
+      eq: ["id", usuario.id],
     });
 
     setPerfil(data[0]);
@@ -29,26 +29,42 @@ const ProveedorPerfil = ({ children }) => {
   }, [usuario]);
 
   const subirAvatar = async (file) => {
-    if (!file) return perfil.avatar_url;
-
-    const ext = file.name.split(".").pop();
-    const fileName = `${usuario.id}.${ext}`;
-    const filePath = `avatars/${fileName}`;
-
-    await supabaseConexion.storage
+    //Sin no hay avatar null.
+    if (!file) return null;
+    const nombreArchivo = `${usuario.id}-${Date.now()}`;
+    const { data, error } = await supabaseConexion.storage
       .from("avatars")
-      .upload(filePath, file, { upsert: true });
+      .upload(nombreArchivo, file, {
+        cacheControl: "3600",
+        upsert: true,
+      });
 
-    const { data } = supabaseConexion.storage
+    if (error) throw error;
+
+    const { data: urlData } = supabaseConexion.storage
       .from("avatars")
-      .getPublicUrl(filePath);
+      .getPublicUrl(nombreArchivo);
+    return urlData.publicUrl;
+  };
 
-    return data.publicUrl;
+  const crearPerfil = async (datos, avatarFile) => {
+    let avatar_url = null;
+    if (avatarFile) {
+      avatar_url = await subirAvatar(avatarFile);
+    }
+    await insertar("perfiles", {
+      id: usuario.id,
+      ...datos,
+      avatar_url,
+    });
+    await cargarPerfil();
   };
 
   const actualizarPerfil = async (datos, avatarFile) => {
-    const avatar_url = await subirAvatar(avatarFile);
-
+    let avatar_url = perfil?.avatar_url;
+    if (avatarFile) {
+      avatar_url = await subirAvatar(avatarFile);
+    }
     await actualizar("perfiles", usuario.id, {
       ...datos,
       avatar_url,
@@ -63,6 +79,7 @@ const ProveedorPerfil = ({ children }) => {
         perfil,
         cargandoPerfil,
         actualizarPerfil,
+        crearPerfil
       }}
     >
       {children}

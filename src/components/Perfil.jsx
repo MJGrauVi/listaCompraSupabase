@@ -1,25 +1,30 @@
 import { useState } from "react";
 import useContextoPerfil from "../hooks/useContextoPerfil.js";
 import Cargando from "./Cargando.jsx";
+import FormularioPerfil from "./FormularioPerfil.jsx";
 
 const Perfil = () => {
-  const { perfil, cargandoPerfil, actualizarPerfil } = useContextoPerfil();
+  const { perfil, cargandoPerfil } = useContextoPerfil();
+  const [editando, setEditando] = useState(false);
 
-  const [nombre, setNombre] = useState(perfil?.nombre_completo || "");
-  const [descripcion, setDescripcion] = useState(perfil?.descripcion || "");
-  const [avatarFile, setAvatarFile] = useState(null);
+  if (cargandoPerfil || !perfil) return <Cargando />;
 
-  if (cargandoPerfil) return <Cargando />;
-
-  const guardar = () => {
-    actualizarPerfil(
-      { nombre_completo: nombre, descripcion },
-      avatarFile
+  if (editando) {
+    return (
+      <div className="max-w-xl mx-auto p-6">
+        <FormularioPerfil />
+        <button
+          onClick={() => setEditando(false)}
+          className="w-full bg-gray-500 text-white py-2 mt-4 rounded"
+        >
+          Cancelar
+        </button>
+      </div>
     );
-  };
+  }
 
   return (
-    <div className="max-w-xl mx-auto p-6">
+    <div className="max-w-xl mx-auto p-6 text-center">
       <h2 className="text-2xl font-bold mb-4">Mi Perfil</h2>
 
       <img
@@ -27,25 +32,15 @@ const Perfil = () => {
         className="w-32 h-32 rounded-full object-cover mx-auto mb-4"
       />
 
-      <input type="file" onChange={(e) => setAvatarFile(e.target.files[0])} />
+      <h3 className="text-xl font-semibold">{perfil.nombre_completo}</h3>
 
-      <input
-        className="w-full border p-2 mt-4"
-        value={nombre}
-        onChange={(e) => setNombre(e.target.value)}
-      />
-
-      <textarea
-        className="w-full border p-2 mt-4"
-        value={descripcion}
-        onChange={(e) => setDescripcion(e.target.value)}
-      />
+      <p className="mt-2 text-gray-700">{perfil.descripcion}</p>
 
       <button
-        onClick={guardar}
-        className="w-full bg-blue-600 text-white py-2 mt-4 rounded"
+        onClick={() => setEditando(true)}
+        className="w-full bg-blue-600 text-white py-2 mt-6 rounded"
       >
-        Guardar cambios
+        Editar Perfil
       </button>
     </div>
   );

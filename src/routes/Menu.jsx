@@ -30,9 +30,9 @@ const Menu = () => {
       <Link className="menu-elemento" to="/productos">
         Productos
       </Link>
-      
+
       <Link className="menu-elemento" to="/perfil">
-      Perfil
+        Perfil
       </Link>
 
       {usuario && (
@@ -50,9 +50,14 @@ const Menu = () => {
           </Link>
 
           {rol === "administrador" && (
-            <Link className="menu-elemento" to="/adminRoles">
-              Administrar Roles
-            </Link>
+            <>
+              <Link className="menu-elemento" to="/adminRoles">
+                Administrar Roles
+              </Link>
+              <Link className="menu-elemento" to="/insertar">
+                Insertar
+              </Link>
+            </>
           )}
         </>
       )}
