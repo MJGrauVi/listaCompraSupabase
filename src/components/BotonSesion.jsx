@@ -24,12 +24,9 @@ const BotonSesion = () => {
       <Mensaje tipo={Mensaje.tipo} texto={Mensaje.texto} />
 
       {usuario ? (
-        <>
-          <div
-            className="avatar"
-            onClick={irAlPerfil}
-            title="Ver perfil"
-          >
+        <div className="disposicion-avatar">
+          <div className="avatar" onClick={irAlPerfil} title="Ver perfil">
+            {/* Si hay avatar lo muestra, sino muestra la inicial de display_name */}
             {avatar ? (
               <img src={avatar} alt="avatar" />
             ) : (
@@ -44,7 +41,7 @@ const BotonSesion = () => {
           <button className="btn-logout" onClick={handleCerrarSesion}>
             Cerrar sesión
           </button>
-        </>
+        </div>
       ) : (
         <button className="btn-login" onClick={() => navigate("/login")}>
           Iniciar sesión / Regístrate

@@ -1,25 +1,10 @@
-import React, { useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
 import useContextoSesion from "../hooks/useContextoSesion.js";
-
 import "./Menu.css";
 
 const Menu = () => {
-  const { usuario, obtenerRolUsuario } = useContextoSesion();
-  const [rol, setRol] = useState(null);
-
-  useEffect(() => {
-    const cargarRol = async () => {
-      if (usuario) {
-        const r = await obtenerRolUsuario();
-        setRol(r);
-      } else {
-        setRol(null);
-      }
-    };
-
-    cargarRol();
-  }, [usuario]);
+  const { usuario, rol } = useContextoSesion();
 
   return (
     <nav>
@@ -27,38 +12,39 @@ const Menu = () => {
         Inicio
       </Link>
 
-      <Link className="menu-elemento" to="/productos">
-        Productos
-      </Link>
+      {/* Mostrar Productos SOLO si: - NO hay usuario logueado - O el usuario es administrador */}
+      {(!usuario || rol === "administrador") && (
+        <Link className="menu-elemento" to="/productos">
+          Productos
+        </Link>
+      )}
 
-      <Link className="menu-elemento" to="/perfil">
-        Perfil
-      </Link>
-
-      {usuario && (
+      {/* MENÚ PARA USUARIO NORMAL */}
+      {usuario && rol === "usuario" && (
         <>
-          <Link className="menu-elemento" to="/insertar">
-            Insertar
-          </Link>
-
           <Link className="menu-elemento" to="/crearListaCompra">
             Crear Lista compra
           </Link>
+          <Link className="menu-elemento" to="/listasCompra">
+            Ver Listas compra
+          </Link>
+        </>
+      )}
 
+      {/* MENÚ PARA ADMINISTRADOR */}
+      {usuario && rol === "administrador" && (
+        <>
           <Link className="menu-elemento" to="/listasCompra">
             Ver Listas compra
           </Link>
 
-          {rol === "administrador" && (
-            <>
-              <Link className="menu-elemento" to="/adminRoles">
-                Administrar Roles
-              </Link>
-              <Link className="menu-elemento" to="/insertar">
-                Insertar
-              </Link>
-            </>
-          )}
+          <Link className="menu-elemento" to="/insertar">
+            Insertar Producto
+          </Link>
+
+          <Link className="menu-elemento" to="/adminRoles">
+            Administrar Roles
+          </Link>
         </>
       )}
     </nav>

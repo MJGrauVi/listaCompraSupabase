@@ -28,20 +28,9 @@ const Rutas = () => {
       {usuario && (
         <>
           <Route path="/insertar" element={<FormularioProducto />} />
-          <Route
-            path="/productos/:id/editar"
-            element={<FormularioProducto />}
-          />
-
-          <Route
-            path="/crearListaCompra"
-            element={<CrearEliminarListasCompra />}
-          />
-          <Route
-            path="/listasCompra/:id/eliminar"
-            element={<CrearEliminarListasCompra />}
-          />
-          {/* <Route path="/listasCompra" element={<ListadoListas />} /> */}
+          <Route path="/productos/:id/editar" element={<FormularioProducto />} />
+          <Route path="/crearListaCompra" element={<CrearEliminarListasCompra />} />
+          <Route path="/listasCompra/:id/eliminar" element={<CrearEliminarListasCompra />} />
           <Route path="/listasCompra" element={<ListadoListas />} />
           <Route path="/listasCompra/:id" element={<VerListaCompra />} />
           <Route path="/listasCompra/:id/detalle" element={<DetalleCompra />} />

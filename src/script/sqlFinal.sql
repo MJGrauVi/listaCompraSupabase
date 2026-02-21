@@ -29,19 +29,40 @@ alter table public.roles enable row level security;
   create trigger insertar_rol_usuario 
   after insert on auth.users 
   for each row 
-  execute function public.crear_rol_usuario();
+  execute /* function */procedure public.crear_rol_usuario();
+
+   
+
+
 
   /*Crear esta funcion, es_admin simplifica la creacion de la politicas RLS(Row Level Security).*/
 
-  create or replace function public.es_admin() 
-  returns boolean 
-  language sql
-   security definer 
-   as $$ 
-   select rol = 'administrador' 
-   from public.roles 
-   where id_rol = auth.uid(); 
+
+create or replace function public.es_admin() 
+returns boolean 
+language plpgsql 
+security definer 
+set search_path = public 
+as $$ 
+begin 
+return exists ( 
+    select 1 
+    from public.roles 
+    where id_rol = auth.uid() 
+    and rol = 'administrador' 
+); 
+end; 
 $$;
+/*Politicas para roles*/
+/*SELECT, permitir que cada usuario lea su propio rol*/
+create policy "usuario puede leer su rol" on roles for select using (id_rol = auth.uid());
+/*SELECT-Admin.Permitir que el administrador lea todos los roles */
+create policy "admin puede leer todos los roles" on roles for select using (public.es_admin());
+/*INSERT-Permitir que el servicio (auth triggers) inserte*/
+create policy "inserción desde trigger" on roles for insert with check (true);
+/*UPDATE-Permitir que el administrador cambie el rol*/
+create policy "admin puede actualizar roles" on roles for update using (public.es_admin()) with check (public.es_admin());
+
 
 /*Politicas RLS para la tabla "productos", solo los administradores podrán gestioner los productos.*/
 
@@ -71,7 +92,6 @@ create policy "admin puede borrar productos"
 on public.productos 
 for delete 
 using (public.es_admin());
-
 
 
 
@@ -223,9 +243,11 @@ for delete
 using (
     public.es_admin()
 );
+/********************************BUCKET**************************************************/
 
 
-/**********************************************************************************/
+
+/***********************************Varios***********************************************/
 /*Ver usuarios en Auth.users*/
 select id, email from auth.users;
 

@@ -3,31 +3,35 @@ import { supabaseConexion } from "../supabase/supabase.js";
 import useSupabaseAuth from "./../hooks/useSupabaseAuth.js"; 
 
 
-
 const ContextoSesion = createContext();
 
 const ProveedorSesion = ({ children }) => {
   // Estado global de sesión(supabase devuelve null cuando no hay user.)
   const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [rol, setRol] = useState(null);
 
   // Traemos de useSupabaseAuth;
   const { login, registro, logout, cargando, error, getRol } = useSupabaseAuth();
 
   // Sesión inicial, con getSesion para arrancar.
-  useEffect(() => {
-    //podemos omitir getSesion(), porque supabase escucha y dispara automaticamente event === "INITIAL_SESSION", pero
-    //así controlo yo momento del arranque de la app.
-    //  Escucha cambios de Auth (Login/Logout) en tiempo real
-    const { data: authListener } = supabaseConexion.auth.onAuthStateChange(
-      (event, session) => {
-        setUsuario(session?.user ?? null);
-        setLoading(false);
-      },
-    );
+useEffect(() => {
+  const { data: authListener } = supabaseConexion.auth.onAuthStateChange(
+    async (event, session) => {
+      console.log("EVENT:", event); 
+      console.log("SESSION:", session);
+      
+      const user = session?.user ?? null;
+      console.log("USER EN LISTENER:", user);
 
-    return () => authListener.subscription.unsubscribe();
-  }, []);
+      //setUsuario(user);
+
+      if (user) { const rolObtenido = await getRol(user.id); console.log("ROL OBTENIDO EN LISTENER:", rolObtenido); setRol(rolObtenido); } else { console.log("NO HAY USER, ROL = null"); setRol(null); } setLoading(false); }
+  );
+
+  return () => authListener.subscription.unsubscribe();
+}, []);
+
 
   const iniciarLogin = async (email, password) => {
     const user = await login(email, password);
@@ -44,8 +48,8 @@ const ProveedorSesion = ({ children }) => {
     setUsuario(null);
    
   };
-  const obtenerRolUsuario = async ()=>{
-    const rol = await getRol();
+  const obtenerRolUsuario = async (id)=>{
+    const rol = await getRol(id);
     return rol;
   }
 
@@ -59,7 +63,8 @@ const ProveedorSesion = ({ children }) => {
         iniciarLogin,
         registrarUsuario,
         cerrarSesion,
-        obtenerRolUsuario
+        obtenerRolUsuario,
+        rol
       }}
     >
       {!loading && children}

@@ -60,25 +60,44 @@ const useSupabaseAuth = () => {
     const { data } = await supabaseConexion.auth.getSession();
     return data.session?.user ?? null;
   };
-  const getRol = async () => {
+/*   const getRole = async () => {
     //Obtiene sesion actual.
-    try{ 
-    const { data: sessionData } = await supabaseConexion.auth.getSession();
-    const user = sessionData.session?.user ?? null;
+    try {
+      const { data: sessionData } = await supabaseConexion.auth.getSession();
+      const user = sessionData.session?.user ?? null;
 
-    if (!user) return null;
-    //Consulta el rol en la tabla roles.
-    const { data, error } = await supabaseConexion
-      .from("roles")
-      .select("rol")
-      .eq("id_rol", user.id)
-      .single();
+      if (!user) return null;
+      //Consulta el rol en la tabla roles.
+      const { data, error } = await supabaseConexion
+        .from("roles")
+        .select("rol")
+        .eq("id_rol", user.id)
+        .single();
 
-    if (error) return null;
+      if (error) return null;
 
-    return data.rol;
-    }catch(err){
-      console.error("Error en getRol:", err.message); 
+      return data.rol;
+    } catch (err) {
+      console.error("Error en getRol:", err.message);
+      return null;
+    }
+  }; */
+
+  const getRol = async (userId) => {
+    try {
+      const { data, error } = await supabaseConexion
+        .from("roles")
+        .select("rol")
+        .eq("id_rol", userId)
+        .single();
+      if (error) {
+        console.error("Error obteniendo rol:", error);
+        return null;
+      }
+      return data.rol;
+      // "usuario" o "administrador"
+    } catch (err) {
+      console.error("Error en getRol:", err.message);
       return null;
     }
   };

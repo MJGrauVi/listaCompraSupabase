@@ -1,0 +1,103 @@
+.contenedor-perfil {
+  max-width: 850px; /* Antes 600px */
+  margin: 60px auto;
+  padding: 40px; /* Más espacio interno */
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.contenedor-perfil h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 35px;
+  font-size: 2.4rem;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 15px;
+}
+
+.avatar {
+  width: 220px; /* Antes 150px */
+  height: 220px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 30px auto;
+  border: 4px solid #3498db;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.formulario-perfil {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formulario-perfil input[type="text"],
+.formulario-perfil textarea,
+.formulario-perfil input[type="file"] {
+  padding: 14px;
+  border: 1px solid #bdc3c7;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+.formulario-perfil textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.formulario-perfil input:focus,
+.formulario-perfil textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 6px rgba(52, 152, 219, 0.3);
+}
+
+.formulario-perfil button {
+  padding: 16px;
+  background-color: #3498db;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.formulario-perfil button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.mensaje {
+  margin-top: 25px;
+  padding: 16px;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.mensaje.exito {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.mensaje.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+.avatar-contenedor {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden; /* Recorta la imagen dentro del círculo */
+  margin: 0 auto 20px; /* Centrado + margen inferior */
+}
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ajusta sin deformar */
+  object-position: center;
+}

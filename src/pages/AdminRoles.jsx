@@ -1,16 +1,17 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { supabaseConexion } from "../supabase/supabase";
-import { ContextoSesion } from "../context/ProveedorSesion";
+import useContextoSesion from "../hooks/useContextoSesion.js";
 import Cargando from "../components/Cargando";
 import "./AdminPages.css";
 
 const AdminRoles = () => {
-  const { usuario, obtenerRolUsuario } = useContext(ContextoSesion);
+  const { usuario, rol } = useContextoSesion();
 
   const [usuarios, setUsuarios] = useState([]);
   const [cargando, setCargando] = useState(true);
-  const [esAdmin, setEsAdmin] = useState(false);
   const [error, setError] = useState(null);
+
+  const esAdmin = rol === "administrador";
 
   useEffect(() => {
     const cargar = async () => {
@@ -18,23 +19,12 @@ const AdminRoles = () => {
       setError(null);
 
       try {
-        // 1. Si no hay usuario → no es admin
-        if (!usuario) {
-          setEsAdmin(false);
+        // 1. Si no es admin → no cargar nada
+        if (!esAdmin) {
           return;
         }
 
-        // 2. Obtener rol del usuario actual
-        const rol = await obtenerRolUsuario();
-
-        if (rol !== "administrador") {
-          setEsAdmin(false);
-          return;
-        }
-
-        setEsAdmin(true);
-
-        // 3. Cargar todos los usuarios
+        // 2. Cargar todos los usuarios
         const { data, error } = await supabaseConexion
           .from("roles")
           .select("id_rol, email, rol")
@@ -51,7 +41,7 @@ const AdminRoles = () => {
     };
 
     cargar();
-  }, [usuario]);
+  }, [esAdmin]);
 
   // Cambiar rol
   const cambiarRol = async (id_rol, nuevoRol) => {
@@ -64,7 +54,7 @@ const AdminRoles = () => {
       if (error) throw error;
 
       setUsuarios((prev) =>
-        prev.map((u) => (u.id_rol === id_rol ? { ...u, rol: nuevoRol } : u)),
+        prev.map((u) => (u.id_rol === id_rol ? { ...u, rol: nuevoRol } : u))
       );
     } catch (err) {
       setError(err.message);
@@ -80,7 +70,7 @@ const AdminRoles = () => {
     <div className="admin-container">
       <h2 className="admin-titulo">Administración de Roles</h2>
       {usuarios
-        .filter((u) => u.id_rol !== usuario.id)
+        .filter((u) => u.id_rol !== usuario?.id)
         .map((u) => (
           <div key={u.id_rol} className="admin-card">
             <div>

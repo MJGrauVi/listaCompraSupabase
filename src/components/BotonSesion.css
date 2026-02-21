@@ -2,9 +2,16 @@
 .header-session {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  padding: 10px;
+ /*  gap: 1rem; */
 }
-
+/* NUEVO */
+.disposicion-avatar {
+/*   display: flex; */
+  /* flex-direction:row; */
+ /*  align-items: center; */
+ /*  gap: 1rem; */
+}
 /* Avatar */
 .avatar {
   width: 42px !important;
@@ -14,22 +21,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  object-position: center;
+  /*  overflow: hidden; */
   cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
-.letra-avatar{
-
+.letra-avatar {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #902e97;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 .avatar:hover {
-  box-shadow: 0 0 0 3px #3b82f6; /* azul suave */
+  box-shadow: 0 0 0 1px #3b82f6; /* azul suave */
   transform: scale(1.05);
 }
 
+/* Imagen del avatar */
 .avatar img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* recorta sin deformar */
+  border-radius: 50%; /* asegura forma circular */
 }
 
 .avatar span {

@@ -7,7 +7,7 @@ import ProductoAcciones from "./ProductoAcciones.jsx";
 
 const Producto = ({ producto, onProductoEliminado, onProductoSeleccionado }) => {
   //Leer del contexto.
-  const { usuario } = useContextoSesion();
+  const { usuario, rol } = useContextoSesion();
 
    
   return (
@@ -27,7 +27,8 @@ const Producto = ({ producto, onProductoEliminado, onProductoSeleccionado }) => 
           <ProductoPP producto={producto} />
         </div>
       </div>
-      {usuario && <ProductoAcciones producto={producto} onProductoEliminado={onProductoEliminado} onProductoSeleccionado={onProductoSeleccionado} />}
+      <p style={{color: "red"}}>ROL ACTUAL: {rol}</p>
+      {usuario &&  <ProductoAcciones producto={producto} onProductoEliminado={onProductoEliminado} onProductoSeleccionado={onProductoSeleccionado} />}
     </>
   );
 };
