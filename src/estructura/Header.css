@@ -7,7 +7,7 @@
   border-radius: 12px;
   margin: 20px auto;
   max-width: 1200px;
-  padding: 10px;
+  padding: 5px;
   display: flex;
   justify-content: right; 
   align-items: center; /* ← ESTO ES LO QUE FALTABA */

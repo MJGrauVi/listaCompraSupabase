@@ -5,20 +5,13 @@
   padding: 10px;
  /*  gap: 1rem; */
 }
-/* NUEVO */
-.disposicion-avatar {
-/*   display: flex; */
-  /* flex-direction:row; */
- /*  align-items: center; */
- /*  gap: 1rem; */
-}
+
 /* Avatar */
 .avatar {
-  width: 42px !important;
-  height: 42px !important;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
   background: #d1d5db; /* gris suave */
-  display: flex;
   align-items: center;
   justify-content: center;
   object-position: center;
@@ -39,7 +32,7 @@
   height: 100%;
 }
 .avatar:hover {
-  box-shadow: 0 0 0 1px #3b82f6; /* azul suave */
+  box-shadow: 0 0 0 1px #eaeced; /* azul suave */
   transform: scale(1.05);
 }
 
