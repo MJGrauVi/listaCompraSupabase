@@ -10,7 +10,6 @@ import Listado from "../components/Listado.jsx";
 import Error from "../pages/Error.jsx";
 import LoginForm from "../components/LoginForm.jsx";
 import AdminRoles from "../pages/AdminRoles.jsx";
-import RutaAdmin from "../routes/RutaAdmin.jsx";
 import useContextoSesion from "../hooks/useContextoSesion.js";
 import Perfil from "../components/Perfil.jsx";
 
@@ -37,7 +36,7 @@ const Rutas = () => {
         </>
       )}
       {/* Ruta solo para administradores */}{" "}
-      {/* <Route path="/adminRoles" element={<RutaAdmin><AdminRoles /></RutaAdmin>}/> */}
+     
       <Route path="/adminRoles" element={<AdminRoles />}/>
 
       {/* 404 */}

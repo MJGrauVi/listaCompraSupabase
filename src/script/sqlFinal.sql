@@ -31,12 +31,8 @@ alter table public.roles enable row level security;
   for each row 
   execute /* function */procedure public.crear_rol_usuario();
 
-   
-
-
 
   /*Crear esta funcion, es_admin simplifica la creacion de la politicas RLS(Row Level Security).*/
-
 
 create or replace function public.es_admin() 
 returns boolean 
@@ -87,7 +83,7 @@ for update
 using (public.es_admin());
 
 
-/*DELETE solo administrador*/
+/*DELETE solo administrador.*/
 create policy "admin puede borrar productos"
 on public.productos 
 for delete 
@@ -100,7 +96,7 @@ using (public.es_admin());
 
 alter table public.listas_compra enable row level security;
 
-/*SELECT  para usuarios y administrador*/
+/*SELECT  para usuarios y administrador.*/
 create policy "usuarios ven sus listas o admin ve todas" 
 on public.listas_compra 
 for select 
@@ -109,7 +105,7 @@ using (
     or public.es_admin() 
 );
 
-/*INSERTAR (crear listas) solo rol usuario*/
+/*INSERTAR (crear listas) solo rol usuario.*/
 
 create policy "solo usuarios crean listas" 
 on public.listas_compra 
@@ -129,7 +125,7 @@ using (
     and not public.es_admin() 
 );
 
-/*DELETE solo rol usuario*/
+/*DELETE solo rol usuario.*/
 
 create policy "solo dueño borra listas" 
 on public.listas_compra 
@@ -194,7 +190,7 @@ using (
 );
 
 /********************************** PERFILES ****************************************/
-/*Cear tabla perfiles*/
+/*Cear tabla perfiles.*/
 
 create table public.perfiles ( 
   id uuid primary key references auth.users(id) on delete cascade, 
@@ -246,6 +242,52 @@ using (
 /********************************BUCKET**************************************************/
 
 
+/*Usuarios puedes subir sus propios archivos.ok*/
+
+create policy "usuarios pueden subir archivos" 
+on storage.objects 
+for insert 
+to authenticated 
+with check (auth.uid() = owner);
+
+/*Usuarios puedes leer archivos el el bucket.*/
+
+create policy "usuarios pueden leer su avatar" 
+on storage.objects 
+for select 
+to authenticated 
+using (auth.uid() = owner);
+
+create policy "usuarios pueden leer sus archivos" 
+on storage.objects 
+for select 
+to authenticated 
+using (auth.uid() = owner);
+
+/*Usuarios puedes actualizar sus propios archivos.*/
+
+create policy "usuarios pueden actualizar sus archivos" 
+on storage.objects 
+for update 
+to authenticated 
+using (auth.uid() = owner);
+
+/*Usuarios puedes borrar sus propios archivos.*/
+
+create policy "usuarios pueden borrar sus archivos" 
+on storage.objects 
+for delete 
+to authenticated 
+using (auth.uid() = owner);
+
+/*Administrador puede borrar.*/
+create policy "admin puede borrar cualquier avatar" 
+on storage.objects 
+for delete 
+to authenticated 
+using ( 
+    owner = auth.uid() or public.es_admin() 
+);
 
 /***********************************Varios***********************************************/
 /*Ver usuarios en Auth.users*/
@@ -267,3 +309,6 @@ insert into public.roles (id_rol, correo, rol) values ('ID_DEL_USUARIO', 'email@
 
 /*ver la tabla ordenada por email.*/
 select * from public.roles order by correo;
+
+drop policy "permitir subir avatares" on storage.objects;
+drop policy "archivos publicos" on storage.objects;

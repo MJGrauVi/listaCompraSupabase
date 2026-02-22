@@ -11,14 +11,14 @@ const Perfil = () => {
   // Si está cargando muestra el spinner.
   if (cargandoPerfil) return <Cargando />;
 
-  // El perfil se genera al cargar perfil con datos en blanco, aqui podemos editarlo.
+  // El perfil se genera al cargar perfil con datos en blanco, aquí podemos editarlo.
   if (editando) {
     return (
-      <div className="max-w-xl mx-auto p-6">
+      <div className="contenedor-cancelar">
         <FormularioPerfil />
         <button
           onClick={() => setEditando(false)}
-          className="w-full bg-gray-500 text-white py-2 mt-4 rounded"
+          className="btn-cancelar"
         >
           Cancelar
         </button>
@@ -26,7 +26,7 @@ const Perfil = () => {
     );
   }
 
-  // Muestra el perfíl.
+  // Muestra el perfíl al clicar en el avatar.
   return (
     <div className="max-w-xl mx-auto p-6 text-center">
       <h2 className="text-2xl font-bold mb-4">Mi Perfil</h2>

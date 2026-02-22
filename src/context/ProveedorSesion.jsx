@@ -18,15 +18,20 @@ const ProveedorSesion = ({ children }) => {
 useEffect(() => {
   const { data: authListener } = supabaseConexion.auth.onAuthStateChange(
     async (event, session) => {
-      console.log("EVENT:", event); 
-      console.log("SESSION:", session);
-      
+   
       const user = session?.user ?? null;
-      console.log("USER EN LISTENER:", user);
-
+     
       //setUsuario(user);
 
-      if (user) { const rolObtenido = await getRol(user.id); console.log("ROL OBTENIDO EN LISTENER:", rolObtenido); setRol(rolObtenido); } else { console.log("NO HAY USER, ROL = null"); setRol(null); } setLoading(false); }
+      if (user) { const rolObtenido = await getRol(user.id); 
+   
+        setRol(rolObtenido); 
+      } else { 
+      
+        setRol(null); 
+      } 
+      setLoading(false); 
+    }
   );
 
   return () => authListener.subscription.unsubscribe();
